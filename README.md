@@ -16,10 +16,9 @@ For your final project, we'll be building a Command Line database application.
 
 ## Instructions
 
-1. Create a new repository on GitHub for your application, ie: `name-cli-app`.
-2. When you create the CLI app for your assessment, add the spec.md file from this repo to the root directory of the project, commit it to Git and push it up to GitHub.
-3. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-4. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
-5. Make sure your project checks off each of the above requirements.
-6. Prepare a video demo (narration helps!) describing how a user would interact with your working gem.
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
+1. Fork and clone this repository. 
+2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
+3. Make sure to create a good README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
+4. Make sure your project checks off each of the above requirements.
+5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
+6. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
