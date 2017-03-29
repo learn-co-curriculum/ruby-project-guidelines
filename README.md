@@ -6,12 +6,10 @@ For your final project, we'll be building a Command Line database application.
 
 ## Project Requirements
 
-1. Provide a CLI
-2. The CLI must provide access to data from a SQLITE3 database using ActiveRecord.
-3. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database with data from an API that you hit using a separate adapter class.
-4. The data provided must go at least one level deep, generally by showing the user a list of available data and then being able to drill down into a specific item. i.e If I'm building a library, I should have an option to view all of the books using `Book.all` and then an option to find a book by the id number.
-5. The CLI application can not be a Music CLI application as that is too similar to the other OO Ruby final project. Also please refrain from using Kickstarter as that was used for the scraping 'code along'. Look at the example domains below for inspiration.
+1. Access a Sqlite3 Database using ActiveRecord. 
+2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
+3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
+4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews? 
 6. Use good OO design patterns. You should be creating and accessing objects - not hashes.
 
 ## Instructions
