@@ -15,6 +15,8 @@ For your final project, we'll be building a Command Line database application.
 5. You should provide a CLI to display the return values of your interesting methods.  
 6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
 
+  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
+
 ### Option Two - Command Line CRUD App
 
 1. Access a Sqlite3 Database using ActiveRecord.
