@@ -11,4 +11,3 @@ tmp
 *.swp
 
 db/*.db
-db/schema.rb
