@@ -46,7 +46,7 @@ Projects need to be approved prior to launching into them, so take some time to 
     * Your presentation should:
       - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
       - Discuss 3 things you learned in the process of working on this project.
-      - Address, if anything, what you would change or add to what you have today?
+      - Address what, if anything, you would change or add to what you have today.
       - Present any code you would like to highlight.   
 7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
 
