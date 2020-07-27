@@ -4,7 +4,6 @@ class CreateItem < ActiveRecord::Migration[6.0]
       t.string :name
       t.integer :cost
       t.string :description
-      t.integer :review_id
     end
   end
 end
