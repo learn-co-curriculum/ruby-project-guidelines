@@ -32,7 +32,7 @@ def welcome_user
      search_for
      you_want_it?
      select_or_not?
-     make_a_purchase
+     check_out?
  end
 
  #------Method lets us know if user exists or not------>
@@ -71,15 +71,28 @@ def welcome_user
 end
 def choose_your_item
    puts "Please choose the item name"
+   add_to_cart
 end
 
  #---Making purchase-->
- def make_a_purchase
+ def add_to_cart
     intem_name=choose_item
     itemchoosed = Item.all.find_by(name:intem_name)
     newuser= User.all.find_by(name:$username)
     newpurchase= Purchase.create(user_id: newuser.id, item_id: itemchoosed.id)
-    User.total(newuser)
+
+ end
+
+ def check_out?
+    puts "Do you want to check out? Y/N"
+    choose_op=choose_input
+    newuser= User.all.find_by(name:$username)
+    if (choose_op =="Y")
+        User.total(newuser)
+    else
+        choose_your_item
+        check_out?
+    end
  end
 
 #---Make/Write a Review-->
