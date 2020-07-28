@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 2020_07_27_202021) do
 
   create_table "items", force: :cascade do |t|
     t.string "name"
+    t.string "brand"
     t.integer "cost"
     t.string "description"
   end

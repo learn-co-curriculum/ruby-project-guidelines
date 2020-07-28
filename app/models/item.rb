@@ -2,10 +2,10 @@ class Item < ActiveRecord::Base
     has_many :purchases
     has_many :reviews
 
-    def self.search_by_name(com_name)
+    def self.search_by_name(brand_name)
         list=[]
         Item.all.each do |m|
-            if m.name==com_name
+            if m.brand==brand_name
                list.push(m)
             end
         end 
