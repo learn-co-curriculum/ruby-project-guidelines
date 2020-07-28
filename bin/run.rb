@@ -33,6 +33,7 @@ def welcome_user
      you_want_it?
      select_or_not?
      check_out?
+     clear_purchase_after_checkout
  end
 
  #------Method lets us know if user exists or not------>
@@ -93,6 +94,10 @@ end
         choose_your_item
         check_out?
     end
+ end
+
+ def clear_purchase_after_checkout
+    Purchase.destroy_all
  end
 
 #---Make/Write a Review-->
