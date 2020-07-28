@@ -1,5 +1,5 @@
 require_relative '../config/environment'
-
+require 'pry'
 def welcome_user
     puts "*******************************"
     puts "       Welcome To Our          "
@@ -14,10 +14,12 @@ def welcome_user
  end
 
  def item_input
+    puts "What are you looking for?"
     gets.chomp
  end
 
  def choose_input
+    puts "Are you sure this is what you need? (type yes/no)"
     gets.chomp
  end
 
@@ -101,10 +103,24 @@ end
  end
 
 #---Make/Write a Review-->
- def write_a_review
+#  def write_a_review
 
+#  end
+
+
+
+ #-----Runs our code----->
+ def run
+     welcome_user
+     username = user_input
+     item_name=item_input
+     choose_op=choose_input
+    #  create_new_user_if_not_exist
+    #  search_for
+    #  you_want_it
  end
- 
+
+
 run
 #--We can do-->
 
