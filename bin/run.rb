@@ -20,20 +20,24 @@ def welcome_user
  def choose_input
     gets.chomp
  end
+
+ def choose_item
+    gets.chomp
+ end
  
  #-----Runs our code----->
  def run
      welcome_user
-     $username = user_input
      create_new_user_if_not_exist
-     $item_name=item_input
      search_for
      you_want_it?
-     $choose_op=choose_input
+     select_or_not?
+     make_a_purchase
  end
 
  #------Method lets us know if user exists or not------>
  def create_new_user_if_not_exist
+    $username = user_input
     namelist=[]
     User.all.each do |m|
         namelist.push(m.name)
@@ -48,23 +52,34 @@ def welcome_user
 
  #---show the list of available Items--->
  def search_for
-    Item.search_by_name($item_name)  
+    item_brand=item_input
+    Item.search_by_name(item_brand)  
  end
 
  #---Choose item--->
  def you_want_it?
     puts "Is there anything you like? Y/N"
-    if $choose_op == Y
-        make_a_purchase(item2)
+ end
+ 
+ def select_or_not?
+    choose_op=choose_input
+    if (choose_op =="Y")
+        choose_your_item
     else
-        puts "Aonther search"
+        puts "Try Aonther search"
     end
+end
+def choose_your_item
+   puts "Please choose the item name"
 end
 
  #---Making purchase-->
  def make_a_purchase
-    newpurchase= Purchase.new($username .id,item2.id)
-    User.total($username )
+    intem_name=choose_item
+    itemchoosed = Item.all.find_by(name:intem_name)
+    newuser= User.all.find_by(name:$username)
+    newpurchase= Purchase.create(user_id: newuser.id, item_id: itemchoosed.id)
+    User.total(newuser)
  end
 
 #---Make/Write a Review-->

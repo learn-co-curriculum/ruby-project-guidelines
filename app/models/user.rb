@@ -15,13 +15,13 @@ end
         list=[]
         itemtotal=[]
         Purchase.all.each do |m|
-            if m.user.name==user_name
+            if m.user==user_name
                 list.push(m)
             end
         end 
         list.each do |m|
             itemtotal.push(m.item.cost) 
         end
-        puts "Hello #{user_name}, your total is $#{itemtotal.sum}."
+        puts "Hello #{user_name.name}, your total is $#{itemtotal.sum}."
     end
 end
