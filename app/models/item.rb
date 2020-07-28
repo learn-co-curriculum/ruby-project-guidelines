@@ -13,4 +13,8 @@ class Item < ActiveRecord::Base
         puts "#{m.name}-> #{m.cost}"
        end
      end
+
+     def self.suggest_item
+        
+     end 
 end
