@@ -32,11 +32,21 @@ def welcome_user
     end
     if namelist.include? $username
          puts "Welcome back. What are you looking for?"
+         show_list
     else
         newuser=User.create(name: $username)
         puts "What are you looking for?"
+        show_list
     end
  end
+
+ def show_list
+   puts "**********Inventory************"    
+   Item.all.each do|m|
+      puts "* #{m.name}-#{m.brand}- #{m.cost}-#{m.description}"
+   end
+   puts "*******************************"
+end
 
  #---show the list of available Items--->
  def search_for
@@ -51,6 +61,8 @@ def welcome_user
       choose_your_item
    else
       puts "Try Aonther search"
+      show_list
+      search_for
     end
 end
 
@@ -62,9 +74,9 @@ end
  #---Adding to cart-->
  def add_to_cart
    item_name=user_input
-   itemchoosed = Item.all.find_by(name:item_name)
+   $itemchoosed = Item.all.find_by(name:item_name)
    newuser= User.all.find_by(name:$username)
-   newcart= Cart.create(user_id: newuser.id, item_id: itemchoosed.id)
+   newcart= Cart.create(user_id: newuser.id, item_id: $itemchoosed.id)
    newtran=Cart.make_my_transaction(newcart)
  end
 
@@ -75,7 +87,11 @@ end
     newuser= User.all.find_by(name:$username)
     if (check_op =="Y")
         User.total(newuser)
-        #MyTransaction.new=(cart_id:newcart.id, total_amount: )
+        Cart.all.each do |m|
+        puts "How many stars you would like to give #{Item.find_by(id:m.item_id).name}?"
+        star_count=user_input
+        newreview=Review.create(star:star_count, user_id:newuser.id, item_id:m.item_id)
+        end
     else
         choose_your_item
         check_out?
@@ -86,8 +102,8 @@ end
     Cart.destroy_all
  end
 
-#---Make/Write a Review-->
-#  def write_a_review
-# Review.see_my_review("Yordin")
-#  end
+
+#---Extras We can Do-->
+ #Mytransaction.my_history(username)
+ #Review.see_my_review("Yordin")
 run

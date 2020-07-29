@@ -17,11 +17,6 @@ ActiveRecord::Schema.define(version: 2020_07_29_025813) do
     t.integer "item_id"
   end
 
-  create_table "inventories", force: :cascade do |t|
-    t.integer "item_id"
-    t.integer "stocks"
-  end
-
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "brand"
@@ -32,6 +27,7 @@ ActiveRecord::Schema.define(version: 2020_07_29_025813) do
   create_table "mytransactions", force: :cascade do |t|
     t.integer "item_id"
     t.integer "user_id"
+    t.integer "cart_id"
   end
 
   create_table "reviews", force: :cascade do |t|

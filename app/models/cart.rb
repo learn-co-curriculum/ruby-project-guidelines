@@ -4,6 +4,6 @@ class Cart < ActiveRecord::Base
     has_many :mytransactions
 
     def self.make_my_transaction(cartist)
-        Mytransaction.create(item_id:cartist.item.id, user_id:cartist.user.id)
+        Mytransaction.create(item_id:cartist.item.id, user_id:cartist.user.id,cart_id:cartist.id)
     end
  end

@@ -1,7 +1,6 @@
 class Item < ActiveRecord::Base
     has_many :carts
     has_many :reviews
-    has_many :inventory
 
     def self.search_by_name(brand_name)
         list=[]
