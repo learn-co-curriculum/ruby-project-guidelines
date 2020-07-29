@@ -1,25 +1,91 @@
 require_relative '../config/environment'
 
-puts "HELLO WORLD"
+def welcome_user
+    puts "*******************************"
+    puts "       Welcome To Our          "
+    puts "        PC Store App           "
+    puts "*******************************"
+ end
+ 
+ #-------Get user input-------------------->
+ def user_input
+     gets.chomp
+ end
 
-item1=Item.create(name: "Dell",cost: 800)
-item2=Item.create(name: "HP",cost: 700)
-item3=Item.create(name: "Samsung",cost: 700)
+ #-----Runs our code----->
+ def run
+     welcome_user
+     create_new_user_if_not_exist
+     search_for
+     select_or_not?
+     check_out?
+     clear_cart_after_checkout
+ end
 
-user1=User.create(name: "Yehong")
-user2=User.create(name: "Yordin")
+ #------Method lets us know if user exists or not------>
+ def create_new_user_if_not_exist
+      puts "Sign-in with your Username."
+      $username = user_input
+      namelist=[]
+   User.all.each do |m|
+      namelist.push(m.name)
+    end
+    if namelist.include? $username
+         puts "Welcome back. What are you looking for?"
+    else
+        newuser=User.create(name: $username)
+        puts "What are you looking for?"
+    end
+ end
 
-purchase1 =Purchase.create(user_id:1, item_id:1)
-purchase2 =Purchase.create(user_id:2, item_id:1)
-purchase3 =Purchase.create(user_id:1, item_id:2)
-purchase4 =Purchase.create(user_id:2, item_id:2)
+ #---show the list of available Items--->
+ def search_for
+   item_brand = user_input
+   Item.search_by_name(item_brand)  
+ end
+ 
+ def select_or_not?
+   puts "Is there anything you like? Y/N"
+   choose_op=user_input
+   if (choose_op =="Y")
+      choose_your_item
+   else
+      puts "Try Aonther search"
+    end
+end
 
-review1=Review.create(star:3,user_id:1, item_id:1)
-review2=Review.create(star:5,user_id:1, item_id:2)
-review3=Review.create(star:4,user_id:2, item_id:3)
-review4=Review.create(star:5,user_id:2, item_id:2)
+def choose_your_item
+   puts "Please choose the item name"
+   add_to_cart
+end
 
-puts purchase1.user
-purchase1.items.sum(:cost)
+ #---Adding to cart-->
+ def add_to_cart
+   item_name=user_input
+   itemchoosed = Item.all.find_by(name:item_name)
+   newuser= User.all.find_by(name:$username)
+   newcart= Cart.create(user_id: newuser.id, item_id: itemchoosed.id)
+ end
 
-    
+#---Checking out-->
+ def check_out?
+    puts "Do you want to check out? Y/N"
+    check_op=user_input
+    newuser= User.all.find_by(name:$username)
+    if (check_op =="Y")
+        User.total(newuser)
+    else
+        choose_your_item
+        check_out?
+    end
+ end
+
+ def clear_cart_after_checkout
+    Cart.destroy_all
+ end
+
+#---Make/Write a Review-->
+#  def write_a_review
+# Review.see_my_review("Yordin")
+#  end
+run
