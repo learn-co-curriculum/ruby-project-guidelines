@@ -24,6 +24,7 @@ def welcome_user
 
  #------Method lets us know if user exists or not------>
  def create_new_user_if_not_exist
+      puts "                           "
       puts "Sign-in with your Username."
       $username = user_input
       namelist=[]
@@ -32,29 +33,33 @@ def welcome_user
     end
     if namelist.include? $username
          puts "Welcome back. What are you looking for?"
+         puts "                           "
          show_list
     else
         newuser=User.create(name: $username)
         puts "What are you looking for?"
+        puts "                           "
         show_list
     end
  end
 
  def show_list
-   puts "**********Inventory************"    
+   puts "____________Inventory_____________"   
    Item.all.each do|m|
       puts "* #{m.name}-#{m.brand}- #{m.cost}-#{m.description}"
    end
-   puts "*******************************"
+   puts "__________________________________"
 end
 
  #---show the list of available Items--->
  def search_for
    item_brand = user_input
+   puts "__________________________________"
    Item.search_by_name(item_brand)  
  end
  
  def select_or_not?
+   puts "__________________________________"
    puts "Is there anything you like? Y/N"
    choose_op=user_input
    if (choose_op =="Y")
@@ -86,8 +91,10 @@ end
     check_op=user_input
     newuser= User.all.find_by(name:$username)
     if (check_op =="Y")
+        puts "__________________________________"
         User.total(newuser)
         Cart.all.each do |m|
+         puts "__________________________________"
         puts "How many stars you would like to give #{Item.find_by(id:m.item_id).name}?"
         star_count=user_input
         newreview=Review.create(star:star_count, user_id:newuser.id, item_id:m.item_id)
@@ -99,6 +106,8 @@ end
  end
 
  def clear_cart_after_checkout
+   puts "************Bye Bye************"
+   puts "                               "
     Cart.destroy_all
  end
 
