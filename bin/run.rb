@@ -65,6 +65,7 @@ end
    itemchoosed = Item.all.find_by(name:item_name)
    newuser= User.all.find_by(name:$username)
    newcart= Cart.create(user_id: newuser.id, item_id: itemchoosed.id)
+   newtran=Cart.make_my_transaction(newcart)
  end
 
 #---Checking out-->
@@ -74,6 +75,7 @@ end
     newuser= User.all.find_by(name:$username)
     if (check_op =="Y")
         User.total(newuser)
+        #MyTransaction.new=(cart_id:newcart.id, total_amount: )
     else
         choose_your_item
         check_out?
