@@ -30,8 +30,8 @@ ActiveRecord::Schema.define(version: 2020_07_29_025813) do
   end
 
   create_table "mytransactions", force: :cascade do |t|
-    t.integer "cart_id"
-    t.integer "total_amount"
+    t.integer "item_id"
+    t.integer "user_id"
   end
 
   create_table "reviews", force: :cascade do |t|
