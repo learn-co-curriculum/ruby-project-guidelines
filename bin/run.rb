@@ -62,7 +62,7 @@ end
    else
       puts "Try Aonther search"
       show_list
-      search_for
+      select_or_not?
     end
 end
 
