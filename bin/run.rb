@@ -1,4 +1,5 @@
 require_relative '../config/environment'
+require "tty-prompt"
 
 def welcome_user
     puts "*******************************"
@@ -19,6 +20,7 @@ def welcome_user
      search_for
      select_or_not?
      check_out?
+     see_your_history?
      clear_cart_after_checkout
  end
 
@@ -27,6 +29,8 @@ def welcome_user
       puts "                           "
       puts "Sign-in with your Username."
       $username = user_input
+      # $username= TTY::Prompt.new
+      # $username.ask("Sign-in with your Username.")
       namelist=[]
    User.all.each do |m|
       namelist.push(m.name)
@@ -54,6 +58,7 @@ end
  #---show the list of available Items--->
  def search_for
    item_brand = user_input
+   # item_brand =TTY::Prompt.new
    puts "__________________________________"
    Item.search_by_name(item_brand)  
  end
@@ -62,6 +67,8 @@ end
    puts "__________________________________"
    puts "Is there anything you like? Y/N"
    choose_op=user_input
+   # choose_op=TTY::Prompt.new
+   # choose_op.yes?("Is there anything you like?")
    if (choose_op =="Y")
       choose_your_item
    else
@@ -104,15 +111,39 @@ end
         check_out?
     end
  end
-
+ #---Checking out history-->
+   def see_your_history?
+      puts "Do you want to see all your review? Y/N"
+      choose_op=user_input
+      if (choose_op=="Y")
+         puts Review.see_my_review($username)
+         puts "                            "
+         puts "Do you want to see all your transaction? Y/N"
+         choose_op=user_input
+         if (choose_op=="Y")
+         puts Mytransaction.my_history($username)
+         end
+      else
+         puts "                            "
+         puts "Do you want to see all your transaction? Y/N"
+         choose_op=user_input
+         if (choose_op=="Y")
+         puts Mytransaction.my_history($username) 
+         end  
+      end  
+   end
+ #---Clear cart & End-->
  def clear_cart_after_checkout
+   puts "                               "
    puts "************Bye Bye************"
    puts "                               "
     Cart.destroy_all
  end
 
+ run
 
-#---Extras We can Do-->
- #Mytransaction.my_history(username)
- #Review.see_my_review("Yordin")
-run
+ User.destroy_all
+ Review.destroy_all
+ Mytransaction.destroy_all
+
+
