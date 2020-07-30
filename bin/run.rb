@@ -11,7 +11,6 @@ def welcome_user
  def run
      welcome_user
      create_new_user_if_not_exist
-     select_or_not?
      check_out?
      clear_cart_after_checkout
  end
@@ -53,6 +52,7 @@ def welcome_user
       end
    end
    computerlist
+   select_or_not?
  end
  
  def select_or_not?
@@ -64,7 +64,7 @@ def welcome_user
    else
       puts "Try Aonther search"
       Item.show_list
-      select_or_not?
+      search_for
     end
 end
 
