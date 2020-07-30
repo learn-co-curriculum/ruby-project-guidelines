@@ -1,7 +1,7 @@
 class Review < ActiveRecord::Base
     belongs_to :user
     belongs_to :item
-    
+        
     def self.see_my_review(user_name)
         list=[]
         Review.all.each do |m|

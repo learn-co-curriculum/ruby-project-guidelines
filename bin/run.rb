@@ -13,7 +13,6 @@ def welcome_user
      create_new_user_if_not_exist
      select_or_not?
      check_out?
-     see_your_history?
      clear_cart_after_checkout
  end
 
@@ -40,14 +39,27 @@ def welcome_user
 
  #---show the list of available Items--->
  def search_for
+   choices = %w(Dell Samsung HP) 
    prompt = TTY::Prompt.new
-   item_brand=prompt.ask("What are you looking for?")
-   Item.search_by_name(item_brand) 
+   item_brand=prompt.multi_select("What are you looking for?",choices)
+   computerlist=[]
+   item_brand.each do |m|
+      computerlist.push(Item.search_by_name(m)) 
+   end
+   $choices=[]
+   computerlist.each do |m|
+      m.each do |n|
+      $choices.push(n.name)
+      end
+   end
+   computerlist
  end
  
  def select_or_not?
+   choices = %w(Yes No) 
    prompt = TTY::Prompt.new
-   if prompt.yes?("Is there anything you like?")
+   opt=prompt.select("Is there anything you like?",choices)
+   if opt=="Yes"
       choose_your_item
    else
       puts "Try Aonther search"
@@ -57,44 +69,86 @@ def welcome_user
 end
 
 def choose_your_item
-   choices = %w(Dell-1 Dell-2 Samsung-3 Dell-3 Dell-4 Dell-5) 
    prompt=TTY::Prompt.new
-   item_name=prompt.select("Please choose the item name",choices)
-   itemchoosed = Item.all.find_by(name:item_name)
+   item_name=prompt.select("Please choose the item name",$choices)
+   $itemchoosed = Item.all.find_by(name:item_name)
    newuser= User.all.find_by(name:$username)
-   newcart= Cart.create(user_id: newuser.id, item_id: itemchoosed.id)
+   newcart= Cart.create(user_id: newuser.id, item_id: $itemchoosed.id)
    newtran=Cart.make_my_transaction(newcart)
  end
 
 #---Checking out-->
  def check_out?
-   prompt=TTY::Prompt.new
-   if prompt.yes?("Do you want to check out?")
+   choices = %w(Yes No) 
+   prompt = TTY::Prompt.new
+   opt=prompt.select("Do you want to check out?",choices)
+   if opt=="Yes"
       newuser= User.all.find_by(name:$username)
       User.total(newuser)
-      Cart.all.each do |m|
-      puts "__________________________________"
-      prompt=TTY::Prompt.new
-      star_count=prompt.ask("How many stars you would like to give #{Item.find_by(id:m.item_id).name}?")
-      newreview=Review.create(star:star_count, user_id:newuser.id, item_id:m.item_id)
-      end
+      review_or_not?
     else
         choose_your_item
         check_out?
     end
  end
+
+ def review_or_not?
+   newuser= User.all.find_by(name:$username)
+      list=[]
+      Review.all.each do |m|
+         if m.user.name==$username
+            list.push(m)
+         end
+      end
+      useritemid=[]
+      list.each do |n|
+         useritemid.push(n.item_id)
+      end
+   Cart.all.each do |m|
+      if useritemid.exclude? ($itemchoosed.id)
+         choices = %w(1 2 3 4 5) 
+         prompt=TTY::Prompt.new
+         star_count=prompt.select("How many stars you would like to give #{Item.find_by(id:$itemchoosed.id).name}?",choices)
+         newreview=Review.create(star:star_count, user_id:newuser.id, item_id:$itemchoosed.id)
+      else
+         puts "                               "
+         puts "You already reviewed this item."
+         choices = %w(Edit Delete) 
+         prompt=TTY::Prompt.new
+         answer=prompt.select("Do you want to edit or delete your review?",choices)
+            if answer =="Delete"
+               Review.delete(Review.find_by(item_id: $itemchoosed.id))
+            elsif answer =="Edit"
+               Review.delete(Review.find_by(item_id: $itemchoosed.id))
+               choices = %w(1 2 3 4 5) 
+               prompt=TTY::Prompt.new
+               star_count=prompt.select("How would you like to edit your review for #{Item.find_by(id:$itemchoosed.id).name}?",choices)
+               newreview=Review.create(star:star_count, user_id:newuser.id, item_id:$itemchoosed.id)
+            end
+      end
+   end
+   see_your_history?
+ end
+
  #---Checking out history-->
    def see_your_history?
-      prompt=TTY::Prompt.new
-      if prompt.yes?("Do you want to see all your review?")
+      choices = %w(Yes No) 
+      prompt = TTY::Prompt.new
+      opt=prompt.select("Do you want to see all your review?",choices)
+      if opt=="Yes"
+         puts "                             "
          puts Review.see_my_review($username)
-         prompt=TTY::Prompt.new
-         if prompt.yes?("Do you want to see all your transaction?")
+         choices = %w(Yes No) 
+         prompt = TTY::Prompt.new
+         opt=prompt.select("Do you want to see all your transaction?",choices)
+         if opt=="Yes"
             puts Mytransaction.my_history($username)
          end
       else
-         prompt=TTY::Prompt.new
-         if prompt.yes?("Do you want to see all your transaction?")
+      choices = %w(Yes No) 
+      prompt = TTY::Prompt.new
+      opt=prompt.select("Do you want to see all your transaction?",choices)
+      if opt=="Yes"
             puts Mytransaction.my_history($username) 
          end  
       end  
@@ -105,6 +159,9 @@ def choose_your_item
    puts "************Bye Bye************"
    puts "                               "
     Cart.destroy_all
+    User.destroy_all
+    Review.destroy_all
+    Mytransaction.destroy_all
  end
 
  run
