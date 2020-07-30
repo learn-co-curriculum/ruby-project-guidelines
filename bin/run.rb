@@ -82,8 +82,8 @@ def choose_your_item
    choices = %w(Yes No) 
    prompt = TTY::Prompt.new
    opt=prompt.select("Do you want to check out?",choices)
+   newuser= User.all.find_by(name:$username)
    if opt=="Yes"
-      newuser= User.all.find_by(name:$username)
       User.total(newuser)
       review_or_not?
     else
@@ -96,7 +96,7 @@ def choose_your_item
    newuser= User.all.find_by(name:$username)
       list=[]
       Review.all.each do |m|
-         if m.user.name==$username
+         if m.user_id==newuser.id
             list.push(m)
          end
       end
@@ -117,9 +117,9 @@ def choose_your_item
          prompt=TTY::Prompt.new
          answer=prompt.select("Do you want to edit or delete your review?",choices)
             if answer =="Delete"
-               Review.delete(Review.find_by(item_id: $itemchoosed.id))
+               Review.find_by(item_id: $itemchoosed.id).delete
             elsif answer =="Edit"
-               Review.delete(Review.find_by(item_id: $itemchoosed.id))
+               Review.find_by(item_id: $itemchoosed.id).delete
                choices = %w(1 2 3 4 5) 
                prompt=TTY::Prompt.new
                star_count=prompt.select("How would you like to edit your review for #{Item.find_by(id:$itemchoosed.id).name}?",choices)
@@ -159,9 +159,6 @@ def choose_your_item
    puts "************Bye Bye************"
    puts "                               "
     Cart.destroy_all
-    User.destroy_all
-    Review.destroy_all
-    Mytransaction.destroy_all
  end
 
  run

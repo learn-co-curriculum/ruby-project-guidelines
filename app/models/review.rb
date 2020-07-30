@@ -1,11 +1,12 @@
 class Review < ActiveRecord::Base
     belongs_to :user
     belongs_to :item
-        
+
     def self.see_my_review(user_name)
         list=[]
+        newuser= User.all.find_by(name:user_name)
         Review.all.each do |m|
-            if m.user.name==user_name
+            if m.user_id==newuser.id
                 list.push(m)
             end
         end
