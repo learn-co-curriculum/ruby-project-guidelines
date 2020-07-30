@@ -13,4 +13,12 @@ class Item < ActiveRecord::Base
         puts "#{m.name}-> #{m.cost}"
        end
      end
+
+     def self.show_list
+        puts "____________Inventory_____________"   
+        Item.all.each do|m|
+            puts "* #{m.name}-#{m.brand}- #{m.cost}-#{m.description}"
+        end
+        puts "__________________________________"
+     end
 end
