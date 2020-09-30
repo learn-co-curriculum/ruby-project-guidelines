@@ -1,5 +1,17 @@
+require "tty-prompt"
+
 def welcome
     puts "The Dinner Bell's Ringing! Let's Eat!"
+end
+
+def username_input
+    puts "Please enter a username:"
+    username = STDIN.gets.chomp.downcase
+end
+
+def find_or_create_by_name(username)
+    user = User.find_or_create_by(name: username)
+    puts "Welcome to Let's Eat #{user.name}!"
 end
 
 def get_food_order
@@ -10,13 +22,13 @@ end
 
 def last_call
     puts "Are you sure that's what you want? (y/n)" #prompts the user to make a food choice
-    options = STDIN.gets.chomp.downcase #takes a response from the user 
+    options = STDIN.gets.chomp.downcase #takes a response from the user
     if options == "y" #if they say y, yes, print message below
-        puts "Thank you for using Let's Eat!" 
-    elsif options == "n" #if they say n, no, loop back to getting the food order 
+        puts "Thank you for using Let's Eat!"
+    elsif options == "n" #if they say n, no, loop back to getting the food order
         get_food_order #take another food order
     else #if they put anything besides y or n prints message below and loops this method
        puts "Sorry, that was not a valid answer. Please press y for yes or n for no."
        last_call #loop this method
-    end  
+    end
 end
