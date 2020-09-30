@@ -8,7 +8,7 @@ class CommandLineInterface
 
     def username_input
         puts "Please enter a username:"
-        username = STDIN.gets.chomp.downcase
+        username = gets.chomp.downcase
     end
 
     def find_or_create_by_name(username)
@@ -49,7 +49,19 @@ class CommandLineInterface
     end
 
     def restaurant_menu_item_matches(menu_input)
-        matches = RestaurantMenuItem.where(menu_item_id: menu_input)
+        matches = RestaurantMenuItem.where(menu_item_id: menu_input).limit(100)
+        matches.map do |match|
+            match.restaurant_id
+        end
+    end
+
+    def user_restaurants(match)
+        restaurant_picks = Restaurant.where(id: match).limit(100)
+        restaurant_names = restaurant_picks.map do |picks|
+            picks.name
+        end
+        prompt = TTY::Prompt.new
+        prompt.select("Where do you want to go?", restaurant_names)
     end
 
 end
