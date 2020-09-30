@@ -18,5 +18,5 @@ def last_call
     else #if they put anything besides y or n prints message below and loops this method
        puts "Sorry, that was not a valid answer. Please press y for yes or n for no."
        last_call #loop this method
-    end 
+    end  
 end
