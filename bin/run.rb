@@ -7,7 +7,7 @@ new_cli.welcome
 
 username = new_cli.username_input
 
-#account = new_cli.find_or_create_by_name(username)
+account = new_cli.find_or_create_by_name(username)
 
 menu_item = new_cli.get_food_order
 

@@ -1,7 +1,7 @@
 require "tty-prompt"
 
 class CommandLineInterface
-
+    attr_accessor :user, :user_choice  
     def welcome
         puts "The Dinner Bell's Ringing! Let's Eat!"
     end
@@ -12,7 +12,7 @@ class CommandLineInterface
     end
 
     def find_or_create_by_name(username)
-        user = User.find_or_create_by(name: username)
+        @user = User.find_or_create_by(name: username)
         puts "Welcome to Let's Eat #{user.name}!"
     end
 
@@ -21,7 +21,7 @@ class CommandLineInterface
         prompt.select("What do you have a taste for?", MenuItem.all.map{|item| item.name})
     end
 
-    def last_call
+    def last_call(east)
         prompt = TTY::Prompt.new
         choice = prompt.select("Are you sure?", ["Yes","No"])
         if choice == "No" #loops the whole thing if they say no
@@ -30,12 +30,17 @@ class CommandLineInterface
             favor = restaurant_menu_item_matches(fave)
             user_restaurants(favor)
         else
+            account = @user 
+            account.update(menu_item_id: @user_choice.id)
+            rest_id = Restaurant.find_by(name: east)
+            account.update(restaurant_id: rest_id.id)
+            #binding.pry
             puts "Thank you for using Let's Eat!"
         end
     end
 
     def user_choice_id(choice)
-        user_choice = MenuItem.find_by(name: choice)
+        @user_choice = MenuItem.find_by(name: choice)
             user_choice.id
     end
 
@@ -52,8 +57,9 @@ class CommandLineInterface
             picks.name
         end
         prompt = TTY::Prompt.new
-        prompt.select("Where do you want to go?", restaurant_names)
-        last_call 
+       east = prompt.select("Where do you want to go?", restaurant_names)
+        #binding.pry
+        last_call(east) 
     end
 
 end
