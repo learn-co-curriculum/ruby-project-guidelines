@@ -1,0 +1,3 @@
+class CreateArtist < ActiveRecord::Migration[4.2]
+
+end
