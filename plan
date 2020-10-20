@@ -13,11 +13,12 @@ Passenger: name, travel balance, (mileage)
     - upgrade ticket
 
 Ticket: passenger, flight, price, class, seat, (stretch: cancellation?, booking date, mileage rewards)
+- find available seat
 - view ticket info 
 
 Flight: origin, destination, date, duration, (distance)
 - view list of passengers
-- view flight info (stretch: layovers, total time, etc)
+- view flight info (stretch: layovers, distance, etc)
 
 Stretch:
 Airline: name
