@@ -1,0 +1,30 @@
+
+
+passenger --< ticket >-- flight (>-- airline)
+
+Passenger: name, travel balance, (mileage)
+- search for flight (origin, destination, date)
+- book flight
+- add money
+- view upcoming trips
+- view completed trips 
+    Stretch:
+    - bookmark flight
+    - upgrade ticket
+
+Ticket: passenger, flight, price, class, seat, (stretch: cancellation?, booking date, mileage rewards)
+- view ticket info 
+
+Flight: origin, destination, date, duration, (distance)
+- view list of passengers
+- view flight info (stretch: layovers, total time, etc)
+
+Stretch:
+Airline: name
+- list of flights
+- total revenue on a particular day/month/year
+- total revenue from a particular flight
+
+
+
+
