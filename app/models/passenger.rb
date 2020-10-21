@@ -2,22 +2,11 @@ class Passenger < ActiveRecord::Base
     has_many :tickets
     has_many :flights, through: :tickets
 
-    # returns an array of flights whose origin, destination, and takeoff date match input parameters
-    def find_flight(origin, destination, date)
-
-        flights = Flight.all.select {|f|
-            f.origin == origin && f.destination == destination && f.departure.to_date == date.to_date
-        }
-        puts "Available flights: "
-        flights.each {|f|
-            puts "Flight ##{f.id}: Origin: #{f.origin}, Destination: #{f.destination}, Departure: #{f.departure.to_date}, Duration: #{f.duration}"
-        }
-        puts "\n"
-        display_option_menu_from_find_flight(flights)
-        
+    def self.login(username, password)
+        return Passenger.find_by(username: username, password: password)
     end
 
-    def display_option_menu_from_find_flight(flights)
+    def display_option_menu_from_find_flight()
         puts "Choose one of the following: "
         puts "  [1] Book a flight"
         puts "  [2] Search for new flights"

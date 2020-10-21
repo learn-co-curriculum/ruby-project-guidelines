@@ -11,3 +11,4 @@ tmp
 *.swp
 
 db/*.db
+db/seeds.rb

@@ -15,21 +15,20 @@ ActiveRecord::Schema.define(version: 2020_10_20_054840) do
   create_table "flights", force: :cascade do |t|
     t.string "origin"
     t.string "destination"
-    t.datetime "takeoff"
-    t.integer "duration"
+    t.datetime "departure"
+    t.float "price"
   end
 
   create_table "passengers", force: :cascade do |t|
     t.string "name"
+    t.string "username"
+    t.string "password"
     t.float "balance"
   end
 
   create_table "tickets", force: :cascade do |t|
     t.integer "passenger_id"
     t.integer "flight_id"
-    t.float "price"
-    t.string "seat_class"
-    t.string "seat_num"
   end
 
 end
