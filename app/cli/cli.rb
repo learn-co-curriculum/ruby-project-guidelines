@@ -32,10 +32,11 @@ def execute_input(input)
   when 1
     show_user_preferences()
     puts "Would you like to update your preferences? (Y/N)"
+    choice = gets.chomp.downcase
+    if choice == "y"
+      update_user_preferences()
+    end
   when 2
-    puts "Please enter a genre. Accepted genres are : Pop, Rock, Metal, and Hip-Hop/Rap."
-    genre = gets.chomp
-    puts "Please enter a city. Accepted cities are : "
     update_user_preferences()
   else
     puts "That isn't a valid selection, please enter a valid selection:"
@@ -49,15 +50,22 @@ def show_user_preferences
   else
     puts "You don't have a current genre preference."
   end
-  if @current_user.location != nil
-    puts "Your current location preference: #{@current_user.location}"
+  if @current_user.city != nil
+    puts "Your current city preference: #{@current_user.city}"
   else
-    puts "You don't have a current genre preference."
+    puts "You don't have a current city preference."
   end
 end
 
-def update_user_preferences(genre)
-  @current_user.genre 
+def update_user_preferences
+  puts "Please enter a genre. Supported genres are : Pop, Rock, Metal, and Hip-Hop/Rap."
+  genre = gets.chomp
+  puts "Please enter a city. Supported cities are : San Antonio, Austin, and Cedar Park"
+  city = gets.chomp
+
+  @current_user.genre = genre
+  @current_user.city = city
+  @current_user.save
 end
 
 def create_account(username)
