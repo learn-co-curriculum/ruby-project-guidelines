@@ -2,6 +2,7 @@ class Passenger < ActiveRecord::Base
     has_many :tickets
     has_many :flights, through: :tickets
 
+<<<<<<< HEAD
     # returns an array of flights whose origin, destination, and takeoff date match input parameters
     def find_flight(origin, destination, date)
         flights = Flight.all.select {|f|
@@ -21,6 +22,13 @@ class Passenger < ActiveRecord::Base
     end
 
     def display_option_menu_from_find_flight(flights)
+=======
+    def self.login(username, password)
+        return Passenger.find_by(username: username, password: password)
+    end
+
+    def display_option_menu_from_find_flight()
+>>>>>>> marisa
         puts "Choose one of the following: "
         puts "  [1] Book a flight"
         puts "  [2] Search for new flights"
@@ -37,7 +45,11 @@ class Passenger < ActiveRecord::Base
             new_date = gets.strip
             find_flight(new_origin, new_destination, new_date)
         elsif option == "3"
+<<<<<<< HEAD
             display_main_option_menu
+=======
+            display_option_menu
+>>>>>>> marisa
         else
             print "Invalid option. "
             display_option_menu_from_find_flight
@@ -55,15 +67,25 @@ class Passenger < ActiveRecord::Base
         ticket = Ticket.create
         ticket.passenger = self
         ticket.flight = flight
+<<<<<<< HEAD
         ticket.save
         puts "You have successfully booked a ticket from #{flight.origin.capitalize} to #{flight.destination.capitalize} for #{flight.departure.to_date}!"
         # Ticket.view_ticket_info
         # to do: subtract price from account balance
 
         display_option_menu_from_find_flight
+=======
+        puts "You have successfully booked a ticket from #{flight.origin.capitalize} to #{flight.destination.capitalize} for #{flight.departure.to_date}!"
+        # Ticket.view_ticket_info
+        # to do: subtract price from account balance
+>>>>>>> marisa
     end
 
     def add_money_to_account
 
     end
+<<<<<<< HEAD
 end
+=======
+end
+>>>>>>> marisa

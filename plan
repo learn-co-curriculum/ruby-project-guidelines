@@ -3,7 +3,6 @@
 passenger --< ticket >-- flight (>-- airline)
 
 Passenger: name, travel balance, (mileage)
-- search for flight (origin, destination, date)
 - book flight
 - add money
 - view upcoming trips
@@ -17,6 +16,7 @@ Ticket: passenger, flight, price, class, seat, (stretch: cancellation?, booking 
 - view ticket info 
 
 Flight: origin, destination, date, duration, (distance)
+- find flights (origin, destination, date)
 - view list of passengers
 - view flight info (stretch: layovers, distance, etc)
 
