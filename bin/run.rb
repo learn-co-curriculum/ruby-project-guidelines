@@ -15,6 +15,7 @@ def welcome
                 while passenger == nil
                     puts "Login failed. Try again"
                     passenger = login
+                    # TODO: make it end somehow
                 end
                 loggedin = true
             elsif answer == "2"
@@ -28,7 +29,7 @@ def welcome
         end
 
         while loggedin
-            puts "Hello #{passenger.name} Why are you here?"
+            puts "Hello #{passenger.name}. Why are you here?"
             puts "  1. View/Add Balance"
             puts "  2. Find and Book flights"
             puts "  3. Manage My Tickets"
@@ -75,13 +76,13 @@ def welcome
                     ticket = Ticket.create({passenger_id: passenger.id, flight_id: flight.id, price: chosen_searched_flight.price})
                     passenger.deduct_money_from_account(chosen_searched_flight.price)
                 else
-                    puts "No. Goodbye"
+                    puts "No. Goodbye" # TODO: 
                 end
             elsif answer == "3"
                 all_tickets = Ticket.where(:passenger_id => passenger.id)
                 num = 1
                 puts "Here are your tickets."
-                puts "Ticket #\tOrigin\tDestination\tDeparture Date"
+                puts "Ticket #\tOrigin\t\tDestination\tDeparture Date"
                 # FIXME: this can return nothing! gracefully handle that
                 all_tickets.each {|t| 
                     # Rodrigo: Add the carrier info here
