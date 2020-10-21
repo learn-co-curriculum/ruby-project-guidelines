@@ -34,31 +34,27 @@ def get_api(origin, destination, date)
     response_hash = access_api(url)
 end 
 
-def get_flight_info(origin, destination, date)
+def get_flight_info(origin, destination, departure)
     results = []
 
     origin = origin.downcase
     destination = destination.downcase
-    info_hash = get_api(origin, destination, date)
+    info_hash = get_api(origin, destination, departure)
     flights = info_hash["Quotes"].select {|f|
-        f["OutboundLeg"]["DepartureDate"].to_date == date.to_date
+        f["OutboundLeg"]["DepartureDate"].to_date == departure.to_date
     }
     
     flights.each {|f|
-        flight = Flight.create
-        flight.origin = origin
-        flight.destination = destination
-        flight.departure = f["OutboundLeg"]["DepartureDate"]
-        flight.save
+        flight = SearchedFlight.new(origin, destination, f["OutboundLeg"]["DepartureDate"], f["OutboundLeg"]["CarrierIds"][0], f["MinPrice"])
         results << flight
     }
     
     results
 end
 
-puts Flight.all
-puts Ticket.all
-puts Passenger.all
-
-binding.pry
-
+# generates a uniquely identifiable ID for each of the flight that are queried 
+# by appending the flight carrier ID, origin ID, destination ID, and the departure date.
+# def generate_id(flight)
+#     outboundleg = flight["OutboundLeg"]
+#     return outboundleg["CarrierIds"][0].to_s + outboundleg["OriginId"].to_s + outboundleg["DestinationId"].to_s + outboundleg["DepartureDate"]
+# end
