@@ -24,4 +24,32 @@ class Flight < ActiveRecord::Base
         new_flight.save
         return new_flight
     end
+
+    def list_of_passengers
+        passengers = Passenger.all.select {|p| p.flights.include?(self)}
+    
+        passenger_name = passengers.map {|p| p.name}
+        puts "Passenger Manifest: #{passenger_name}"
+    
+    end
+    
+    
+    def flight_info
+        origin = self.origin
+        destination = self.destination
+        departure = self.departure
+    
+        puts "Depart From:#{origin}"
+        puts "Arrive: #{destination}"
+        puts "Depart On: #{departure}"
+    
+    end
+
+
+
+
+
+
+
+
 end
