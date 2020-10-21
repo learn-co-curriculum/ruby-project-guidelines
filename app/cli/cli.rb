@@ -1,5 +1,8 @@
 require './app/models/user.rb'
+require './app/models/password.rb'
 require 'pry'
+
+@user_hash = {}
 
 def welcome
   puts "Hi! Welcome to the Ticket Machine!"
@@ -11,9 +14,29 @@ def login
   if valid_user?(username)
     user_is_valid(username)
   else
-    User.new(username)
-    puts "First time user? Please create a password:"
-    password = gets.chomp
+    user_hash(username)
+    create_account(username)
+  end
+end
+
+def create_account(username)
+  user = User.new(@user_hash)
+  user.save
+
+  puts "First time user? Please create a password:"
+  input = gets.chomp
+
+  password = Password.new
+end
+
+def user_hash(username = nil, password = nil)
+  if username == nil && password == nil
+    @user_hash = {
+    "username" => username,
+    "password" => password
+  }
+  else
+    @user_hash
   end
 end
 
