@@ -3,5 +3,3 @@ require_relative '../config/environment'
 
 
 welcome()
-login()
-help_menu()
