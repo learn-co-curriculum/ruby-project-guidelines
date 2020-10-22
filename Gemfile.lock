@@ -64,6 +64,7 @@ PLATFORMS
 
 DEPENDENCIES
   database_cleaner
+  pastel
   pry
   rake
   require_all

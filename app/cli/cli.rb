@@ -1,7 +1,13 @@
-require './app/models/user.rb'
 require 'pry'
 
 def welcome
   system 'clear'
-  puts "Welcome to the Event Finder!"
+  
+  font = TTY::Font.new(:standard)
+  pastel = Pastel.new
+  puts pastel.cyan(font.write("Event    Finder"))
+end
+
+def login
+  puts "Please enter a username:"
 end
