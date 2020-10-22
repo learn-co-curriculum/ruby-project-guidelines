@@ -1,25 +1,22 @@
 class CLI
   def initialize
-    # Bet.destroy_all
-    # Better.destroy_all
-    # Game.destroy_all
     @better = nil
+    @bet_amount = nil
   end
 
   def main_menu
     if @better == nil
       puts ""
-      puts "Welcome to Coinz!"
+      puts "Welcome to Coin Collector!"
       puts ""
       puts "What is your name?"
-      divider
+      2.times { divider }
       name = get_user_response
       @better = create_better(name)
     end
     divider
     puts "Hi, #{@better.username}!"
     divider
-    puts "Main Menu:"
     puts "You pick what to do next:"
     divider
     puts "1. Change username"
@@ -67,9 +64,12 @@ class CLI
   end
 
   def check_points_balance
-    puts "Your current balance is #{@better.points_balance}."
-    sleep(2)
-    return self.main_menu
+    puts "Your current coin-count is #{@better.points_balance} coins."
+    sleep(1.5)
+    puts "Enter anything to return to the main menu"
+    if get_user_response
+      return self.main_menu
+    end
   end
 
   def play_game(bet_amount = nil)
@@ -80,7 +80,6 @@ class CLI
     divider
     puts "How much would you like to bet?"
     bet_amount = get_user_response.to_i
-    # see if it's possible to create a method from this
     if bet_amount > @better.points_balance
       puts ""
       puts "Exceeded limit on bet amount. Please bet within your limit."
