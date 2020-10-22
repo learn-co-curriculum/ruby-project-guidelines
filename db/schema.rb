@@ -32,6 +32,11 @@ ActiveRecord::Schema.define(version: 2020_10_21_201831) do
   end
 
   create_table "venues", force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "state"
+    t.string "city"
+    t.integer "postal_code"
   end
 
 end
