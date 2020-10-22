@@ -6,7 +6,7 @@ def welcome
   
   font = TTY::Font.new(:standard)
   pastel = Pastel.new
-  puts pastel.cyan(font.write("Event    Finder"))
+  puts pastel.cyan(font.write("Concert    Finder"))
 end
 
 def login
@@ -47,7 +47,6 @@ end
 
 def view_preferences
   user_prefs = @current_user.attributes
-  3.times {user_prefs.shift}
 
   if user_prefs.values.uniq.include? nil
     puts "Looks like all your preferences haven't been set yet"
@@ -60,6 +59,8 @@ def view_preferences
     puts "• City: #{@current_user.city}"
     puts "• Postal Code: #{@current_user.postal_code}"
   end
+
+  help_menu()
 end
 
 def updating_preferences
@@ -81,21 +82,30 @@ def update_preferences
     menu.choice "State"
     menu.choice "City"
     menu.choice "Postal Code"
+    menu.choice "Exit"
   end
   
   case input
   when "Genre"
     update_genre()
+    update_preferences()
   when "Minimum Price"
     update_min_price()
+    update_preferences()
   when "Maximum Price"
     update_max_price()
+    update_preferences()
   when "State"
     update_state()
+    update_preferences()
   when "City"
     update_city()
+    update_preferences()
   when "Postal Code"
     update_postal_code()
+    update_preferences()
+  when "Exit"
+    help_menu()
   end
 end
 
@@ -165,6 +175,46 @@ def update_postal_code
   input = prompt.select("Which postal code do you want to see concerts in?", postals)
   @current_user.postal_code = input
   @current_user.save
+end
+
+def events_menu
+  prompt = TTY::Prompt.new
+  input = prompt.select("What can I do for you?") do |menu|
+    menu.choice "View events by my favorite genre", 1
+    menu.choice "View events by my price range", 2
+    menu.choice "View events by my state", 3
+    menu.choice "View events by my city", 4
+    menu.choice "View events by my postal code", 5
+  end
+
+  case input
+  when 1
+    events_by_genre()
+  when 2
+    events_by_price()
+  when 3
+    events_by_state()
+  when 4
+    events_by_city()
+  when 5
+    events_by_postal()
+  end
+end
+
+def events_by_genre
+  events = Event.all.select do |event|
+    event if event.genre == @current_user.genre
+  end
+
+  named_events = events.map {|event| event.name}
+  prompt = TTY::Prompt.new
+  input = prompt.select("Which event would you like to view?", named_events)
+
+  named_events.each do |event|
+    if event == input
+      
+    end
+  end
 end
 
 def valid_user?(username)
