@@ -21,6 +21,34 @@ def login
   end
 end
 
+def help_menu
+  prompt = TTY::Prompt.new
+  choice = prompt.select("What can I do for you?") do |menu|
+    menu.choice "View Preferences"
+    menu.choice "Update Preferences"
+    menu.choice "Events Menu"
+    menu.choice "Venues Menu"
+    menu.choice "Sign out"
+  end
+
+  case choice
+  when "View Preferences"
+    view_preferences()
+  when "Update Preferences"
+    update_preferences()
+  when "Events Menu"
+    events_menu()
+  when "Venues Menu"
+    venues_menu()
+  when "Sign out"
+    run()
+  end
+end
+
+def view_preferences
+  
+end
+
 def valid_user?(username)
   user = User.find_by username: username
   if user != nil
@@ -32,7 +60,8 @@ def valid_user?(username)
 end
 
 def check_password
-  password = gets.chomp
+  prompt = TTY::Prompt.new
+  password = prompt.mask
 
   if @current_user.password == password
     puts "Logged in!"
@@ -64,4 +93,6 @@ end
 def run
   welcome()
   login()
+
+  help_menu()
 end
