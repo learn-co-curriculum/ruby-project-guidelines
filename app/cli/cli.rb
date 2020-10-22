@@ -1,6 +1,8 @@
 require 'pry'
 require_relative '../../config/environment.rb'
 
+##### welcome #############################################################################################################################
+
 def welcome
   system 'clear'
   
@@ -8,6 +10,10 @@ def welcome
   pastel = Pastel.new
   puts pastel.cyan(font.write("Concert    Finder"))
 end
+
+##### end welcome #########################################################################################################################
+
+##### login ###############################################################################################################################
 
 def login
   puts "Please enter a username:"
@@ -20,6 +26,49 @@ def login
     create_account(username)
   end
 end
+
+def valid_user?(username)
+  user = User.find_by username: username
+  if user != nil
+    @current_user = user
+    true
+  else
+    false
+  end
+end
+
+def check_password
+  prompt = TTY::Prompt.new
+  password = prompt.mask
+
+  if @current_user.password == password
+    puts "Logged in!"
+  elsif password.downcase == "exit"
+    run()
+  else
+    puts "Looks like that doesn't match, try again!"
+    check_password()
+  end
+end
+
+def create_account(username)
+  puts "First time user? (Y/N)"
+  input = gets.chomp.downcase
+  if input == "y"  
+    puts "Create an account! Please enter a password:"
+    password = gets.chomp
+
+    @current_user = User.create(username: username, password: password)
+    @current_user.save
+    puts "You have created an account!"
+  else
+    run()
+  end
+end
+
+##### end login ###########################################################################################################################
+
+##### help menu ###########################################################################################################################
 
 def help_menu
   prompt = TTY::Prompt.new
@@ -44,6 +93,10 @@ def help_menu
     exit
   end
 end
+
+##### end help menu #######################################################################################################################
+
+##### preferences #########################################################################################################################
 
 def view_preferences
   user_prefs = @current_user.attributes
@@ -177,6 +230,10 @@ def update_postal_code
   @current_user.save
 end
 
+##### end preferences #####################################################################################################################
+
+##### event menu ##########################################################################################################################
+
 def events_menu
   prompt = TTY::Prompt.new
   input = prompt.select("What can I do for you?") do |menu|
@@ -256,7 +313,6 @@ end
 def events_by_postal
   venues = Venue.all.select do |venue|
     venue if venue.postal_code == @current_user.postal_code
-    binding.pry
   end
 
   venue_ids = venues.map {|venue| venue.venue_id}
@@ -264,8 +320,6 @@ def events_by_postal
   events = Event.all.select do |event|
     event if venue_ids.include?(event.venue_id)
   end
-
-  binding.pry
 
   print_events(events)
 end
@@ -280,51 +334,84 @@ def print_events(events)
     if event.name == input
       puts "Name: #{pastel.cyan(event.name)}, Date: #{pastel.cyan(event.date)}, Price: #{pastel.cyan(event.price)}, Genre: #{pastel.cyan(event.genre)}"
       puts "URL: #{pastel.blue(event.url)}"
+      break
     end
   end
 end
 
-def valid_user?(username)
-  user = User.find_by username: username
-  if user != nil
-    @current_user = user
-    true
-  else
-    false
-  end
-end
+##### end event menu ######################################################################################################################
 
-def check_password
+##### venue menu ##########################################################################################################################
+
+def venues_menu
   prompt = TTY::Prompt.new
-  password = prompt.mask
+  input = prompt.select("What can I do for you?") do |menu|
+    menu.choice "View all venues in my state", 1
+    menu.choice "View all venues near my city", 2
+    menu.choice "View all venues near my postal code", 3
+    menu.choice "Go back", 4
+  end
 
-  if @current_user.password == password
-    puts "Logged in!"
-  elsif password.downcase == "exit"
-    run()
-  else
-    puts "Looks like that doesn't match, try again!"
-    check_password()
+  case input
+  when 1 
+    state_venues()
+    venues_menu()
+  when 2
+    city_venues()
+    venues_menu()
+  when 3
+    postal_venues()
+    venues_menu()
+  when 4
+    help_menu()
   end
 end
 
-def create_account(username)
-  puts "First time user? (Y/N)"
-  input = gets.chomp.downcase
-  if input == "y"  
-    puts "Create an account! Please enter a password:"
-    password = gets.chomp
+def state_venues
+  venues = Venue.all.select do |venue|
+    venue if venue.state == @current_user.state
+  end
 
-    @current_user = User.create(username: username, password: password)
-    @current_user.save
-    puts "You have created an account!"
-  else
-    run()
+  print_venues(venues)
+end
+
+def city_venues
+  venues = Venue.all.select do |venue|
+    venue if venue.city == @current_user.city
+  end
+
+  print_venues(venues)
+end
+
+def postal_venues
+  venues = Venue.all.select do |venue|
+    venue if venue.postal_code == @current_user.postal_code
+  end
+
+  print_venues(venues)
+end
+
+def print_venues(venues)
+  named_venues = venues.map {|venue| venue.name}
+  prompt = TTY::Prompt.new
+  named_venues.uniq!
+
+  input = prompt.select("Which venue would you like to view?", named_venues)
+  pastel = Pastel.new
+
+  venues.each do |venue|
+    if venue.name == input
+      puts "Name: #{pastel.cyan(venue.name)}, State: #{pastel.cyan(venue.state)}, City: #{pastel.cyan(venue.city)}, Postal: #{pastel.cyan(venue.postal_code)}"
+      puts "URL: #{pastel.blue(venue.url)}"
+      break
+    end
   end
 end
 
+##### end venue menu ######################################################################################################################
 
-# runs all methods
+##### runs all methods ####################################################################################################################
+
 def run
   welcome()
   login()
