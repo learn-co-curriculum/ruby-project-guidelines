@@ -22,8 +22,9 @@ def login
 end
 
 def valid_user?(username)
-  if User.find_by username: username != nil
-    @current_user = User.find_by username: username
+  user = User.find_by username: username
+  if user != nil
+    @current_user = user
     true
   else
     false
@@ -51,8 +52,8 @@ def create_account(username)
     password = gets.chomp
 
     @current_user = User.create(username: username, password: password)
-    puts "You have created an account!"
     @current_user.save
+    puts "You have created an account!"
   else
     run()
   end
