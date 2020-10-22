@@ -185,19 +185,27 @@ def events_menu
     menu.choice "View events by my state", 3
     menu.choice "View events by my city", 4
     menu.choice "View events by my postal code", 5
+    menu.choice "Go Back", 6
   end
 
   case input
   when 1
     events_by_genre()
+    events_menu()
   when 2
     events_by_price()
+    events_menu()
   when 3
     events_by_state()
+    events_menu()
   when 4
     events_by_city()
+    events_menu()
   when 5
     events_by_postal()
+    events_menu()
+  when 6
+    help_menu()
   end
 end
 
@@ -206,13 +214,72 @@ def events_by_genre
     event if event.genre == @current_user.genre
   end
 
+  print_events(events)
+end
+
+def events_by_price
+  events = Event.all.select do |event|
+    event if (@current_user.min_price..@current_user.max_price).include? event.price
+  end
+
+  print_events(events)
+end
+
+def events_by_state
+  venues = Venue.all.select do |venue|
+    venue if venue.state == @current_user.state
+  end
+
+  venue_ids = venues.map {|venue| venue.venue_id}
+
+  events = Event.all.select do |event|
+    event if venue_ids.include?(event.venue_id)
+  end
+
+  print_events(events)
+end
+
+def events_by_city
+  venues = Venue.all.select do |venue|
+    venue if venue.city == @current_user.city
+  end
+
+  venue_ids = venues.map {|venue| venue.venue_id}
+
+  events = Event.all.select do |event|
+    event if venue_ids.include?(event.venue_id)
+  end
+
+  print_events(events)
+end
+
+def events_by_postal
+  venues = Venue.all.select do |venue|
+    venue if venue.postal_code == @current_user.postal_code
+    binding.pry
+  end
+
+  venue_ids = venues.map {|venue| venue.venue_id}
+
+  events = Event.all.select do |event|
+    event if venue_ids.include?(event.venue_id)
+  end
+
+  binding.pry
+
+  print_events(events)
+end
+
+def print_events(events)
   named_events = events.map {|event| event.name}
   prompt = TTY::Prompt.new
   input = prompt.select("Which event would you like to view?", named_events)
+  pastel = Pastel.new
 
-  named_events.each do |event|
-    if event == input
-      
+  events.each do |event|
+    if event.name == input
+      puts "Name: #{pastel.cyan(event.name)}, Date: #{pastel.cyan(event.date)}, Price: #{pastel.cyan(event.price)}, Genre: #{pastel.cyan(event.genre)}"
+      puts "URL: #{pastel.blue(event.url)}"
     end
   end
 end

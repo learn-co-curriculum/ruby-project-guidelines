@@ -10,19 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_22_181639) do
+ActiveRecord::Schema.define(version: 2020_10_22_224757) do
 
   create_table "events", force: :cascade do |t|
     t.integer "user_id"
-    t.integer "venue_id"
     t.string "name"
     t.string "url"
     t.datetime "date"
     t.integer "price"
     t.boolean "family_friendly"
     t.string "genre"
+    t.string "venue_id"
     t.index ["user_id"], name: "index_events_on_user_id"
-    t.index ["venue_id"], name: "index_events_on_venue_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -33,7 +32,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_181639) do
     t.float "min_price"
     t.float "max_price"
     t.string "state"
-    t.string "postal_code"
+    t.integer "postal_code"
   end
 
   create_table "venues", force: :cascade do |t|
@@ -42,6 +41,7 @@ ActiveRecord::Schema.define(version: 2020_10_22_181639) do
     t.string "state"
     t.string "city"
     t.integer "postal_code"
+    t.string "venue_id"
   end
 
 end
