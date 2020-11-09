@@ -1,5 +1,3 @@
-require_relative '../config/environment'
+require_relative "../config/environment"
 
-
-
-puts "HELLO WORLD"
+CLI.new.main_menu
