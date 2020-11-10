@@ -2,11 +2,7 @@ require "tty-prompt"
 
 class App
     
-    def run 
-        welcome
-    end
-    
-    def welcome
+    def run
         show_intro_fish_tank
         get_name
         
@@ -21,6 +17,7 @@ class App
             menu.choice "Create Tank"
             menu.choice "Update Tank"
             menu.choice "See your Tank"
+            menu.choice "Add additional owner to the Tank"
             menu.choice "Delete Tank"
         end
 
@@ -30,6 +27,8 @@ class App
             update_tank
         elsif my_selection == "See your Tank"
             see_your_tank
+        elsif my_selection == "Add additional owner to the Tank"
+            add_owner_to_tank
         elsif my_selection == "Delete Tank"
                 delete_tank
         
@@ -44,15 +43,17 @@ class App
     def get_name
         puts "What is your name?"
         user_input = get_user_input
-        Owner.new(user_input)
+        new_owner = Owner.new(name: user_input)
+        new_owner.save
     end
 
     def create_tank
         puts "What would you like your tank to be named?"
         tank_name = get_user_input
         puts "How many fish would you like to keep? (Max = 10)"
-        fish_limit = get_user_input
-        Tank.new(tank_name, fish_limit)
+        tank_limit = get_user_input
+        new_tank = Tank.new(name: tank_name, fish_limit: tank_limit)
+        new_tank.save
         main_menu
     end
 
@@ -67,12 +68,15 @@ class App
         my_selection = prompt.select("What would you like to do? Add or remove fish?") do |menu|
             menu.choice "Add Fish"
             menu.choice "Remove Fish"
+            menu.choice "Back - Main Menu"
         end
 
         if my_selection == "Add Fish"
             add_fish
         elsif my_selection == "Remove Fish"
             remove_fish
+        elsif my_selection == "Back - Main Menu"
+            main_menu
         end
     end
 
@@ -80,72 +84,92 @@ class App
     def add_fish
         puts "What would you like to name your fish?"
         fish_name = get_user_input
-        puts "What color is the fish?"
-        fish_color = get_user_input
         prompt = TTY::Prompt.new
-        my_selection = prompt.select("What size is the fish?") do |menu|
-            menu.choice "Small"
-            menu.choice "Medium"
-            menu.choice "Large"
+        my_selection = prompt.select("What color is the fish?") do |menu|
+            menu.choice "Gold"
+            menu.choice "Orange"
+            menu.choice "Blue"
         end
         fish_size = my_selection
-        Fish.new(fish_name, fish_color, fish_size)
+        #Fish.new(name: fish_name, color: fish_color, tank_id: ## ) Need fish ID
         update_tank
     end
 
     def remove_fish
         puts "What fish would you like to remove?"
         fish_name = get_user_input
+        Fish.all.find do |fish|
+            fish == fish_name
+            Fish.all.delete(fish)
+        end
+        update_tank
     end
 
 ####### END OF FISH ADD/REMOVE FEATURES #
 
     def see_your_tank
+        display_full_tank
+    end
+
+    def add_owner_to_tank
     end
 
     def delete_tank
     end
 
+    
+    
+    
+    
+    
+    ################################## VISUAL IMAGES ##################################
+    
+    def show_intro_fish_tank
+        puts"                                                                           "
+        puts"      ___ ___ ___ ___          WELCOME TO RUBY TANK                ((      "
+        puts"     |___|___|___|___|                                           (())      "
+        puts"       |:_:_:_:_:_|     ><>                                     ))         "
+        puts"       |_:_,--.:_:|                           <><            (///   )      "
+        puts"       |:_:|__|_:_|         ><>          _                  ) ))   ((      "
+        puts"    _  |_   _  :_:|   _   _   _         (_)                ((((   /))`     "
+        puts"   | |_| |_| |   _|  | |_| |_| |          o                 )))) (( (      "
+        puts"    |_:_:_:_:/|_|_|_| :_:_:_:_/          .         <><       ((   ))))     "
+        puts"     |_,-._:_:_:_:_:_:_:_.-,_|        o                        )) ((//     "
+        puts"     |:|_|:_:_:,---,:_:_:|_|:|         o                      ,-.  )/      "
+        puts"     |_:_:_:_,'     `,_:_:_:_|           _ o               ,;'))((         "
+        puts"     |:_:_:_/  _ | _   _:_:_:|          (_O                   ((  ))       "
+        puts"_____|_:_:_|  (o)-(o)  |_:_:_|--'`-.     ,--.                (((('/        "
+        puts" ', ;|:_:_:| -( .-. )- |:_:_:| ', ; `--._|oo|,---.~           ``))         "
+        puts".  ` |_:_:_|   (`-')   |_:_:_|.  ` .  `  |()|.__( ) .,-----' `-(((         "
+        puts" ', ;|:_:_:|    `-'    |:_:_:| ', ; ', ; `--'|   \ ', ; ', ; ',')).,--     "
+        puts"  .  `  ` .  ` .  ` .  ` .  ` .  ` .  ` .    .  ` .  ` .  ` .  ` .  `      "
+        puts" ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ', ;    "
+    end
+
     def display_empty_tank
-    puts "|^^^^^^^^^^^^^^^^|"
-    puts "|                |"
-    puts "|________________|"
+    puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|"
+    puts "|                                                     |"
+    puts "|                                                     |"
+    puts "|                                             _\\/_    |"
+    puts "|                                              /o\\    |"
+    puts "|                                               |     |"  
+    puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|"
+    puts "|_____________________________________________________|"
     end
     
     def display_full_tank
-    puts "|^^^^^^^^^^^^^^^^|"
-    puts "| ><>       <><  |"
-    puts "|________________|"
-
+    puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|"
+    puts "|    ><>                  <><                         |"
+    puts "|                                    <><              |"
+    puts "|            ><>                              _\\/_    |"
+    puts "|                                              /o\\    |"
+    puts "|                         <><                   |     |"  
+    puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|"
+    puts "|_____________________________________________________|"
+    
     end
 
 
-
-
-
-    ################################## VISUAL IMAGES ##################################
-
-    def show_intro_fish_tank
-    puts"                                                                           "
-    puts"      ___ ___ ___ ___          WELCOME TO RUBY TANK                ((      "
-    puts"     |___|___|___|___|                                           (())      "
-    puts"       |:_:_:_:_:_|     ><>                                     ))         "
-    puts"       |_:_,--.:_:|                           <><            (///   )      "
-    puts"       |:_:|__|_:_|         ><>          _                  ) ))   ((      "
-    puts"    _  |_   _  :_:|   _   _   _         (_)                ((((   /))`     "
-    puts"   | |_| |_| |   _|  | |_| |_| |          o                 )))) (( (      "
-    puts"    |_:_:_:_:/|_|_|_| :_:_:_:_/          .         <><       ((   ))))     "
-    puts"     |_,-._:_:_:_:_:_:_:_.-,_|        o                        )) ((//     "
-    puts"     |:|_|:_:_:,---,:_:_:|_|:|         o                      ,-.  )/      "
-    puts"     |_:_:_:_,'     `,_:_:_:_|           _ o               ,;'))((         "
-    puts"     |:_:_:_/  _ | _   _:_:_:|          (_O                   ((  ))       "
-    puts"_____|_:_:_|  (o)-(o)  |_:_:_|--'`-.     ,--.                (((('/        "
-    puts" ', ;|:_:_:| -( .-. )- |:_:_:| ', ; `--._|oo|,---.~           ``))         "
-    puts".  ` |_:_:_|   (`-')   |_:_:_|.  ` .  `  |()|.__( ) .,-----' `-(((         "
-    puts" ', ;|:_:_:|    `-'    |:_:_:| ', ; ', ; `--'|   \ ', ; ', ; ',')).,--     "
-    puts"  .  `  ` .  ` .  ` .  ` .  ` .  ` .  ` .    .  ` .  ` .  ` .  ` .  `      "
-    puts" ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ', ;    "
-    end
 end
 
 
