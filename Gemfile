@@ -7,4 +7,5 @@ gem "pry"
 gem "require_all"
 gem 'colorize'
 gem "tty"
-gem 'rake'
+
+
