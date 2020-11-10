@@ -14,8 +14,7 @@ ActiveRecord::Schema.define(version: 4) do
 
   create_table "fish", force: :cascade do |t|
     t.string "name"
-    t.string "type"
-    t.string "size"
+    t.string "color"
     t.integer "tank_id"
   end
 

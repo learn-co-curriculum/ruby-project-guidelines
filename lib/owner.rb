@@ -1,18 +1,6 @@
+class Owner < ActiveRecord::Base
+ has_many :tank_owner_ids
+ has_many :tanks, through: :tank_owner_ids
 
-class Owner
-
-    attr_reader :name
-
-    @@all = []
-
-    def initialize(name)
-        @name = name
-
-        @@all << self
-    end
-
-    def self.all
-        @@all
-    end
-
+ 
 end
