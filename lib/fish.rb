@@ -8,6 +8,8 @@ class Fish
         @name = name
         @type = type
         @size = size 
+
+        @@all << self
     end
 
     def self.all

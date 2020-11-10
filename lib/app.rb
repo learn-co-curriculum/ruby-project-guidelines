@@ -7,8 +7,7 @@ class App
     end
     
     def welcome
-        puts "WELCOME TO RUBY TANK"
-        
+        show_intro_fish_tank
         get_name
         
         main_menu
@@ -54,10 +53,15 @@ class App
         puts "How many fish would you like to keep? (Max = 10)"
         fish_limit = get_user_input
         Tank.new(tank_name, fish_limit)
+        main_menu
     end
 
     def update_tank
-        display_empty_tank
+        if Fish.all.count == 0 
+            display_empty_tank
+        else
+            display_full_tank
+        end
 
         prompt = TTY::Prompt.new
         my_selection = prompt.select("What would you like to do? Add or remove fish?") do |menu|
@@ -72,6 +76,7 @@ class App
         end
     end
 
+####### FISH ADD/REMOVE FEATURES #
     def add_fish
         puts "What would you like to name your fish?"
         fish_name = get_user_input
@@ -84,11 +89,16 @@ class App
             menu.choice "Large"
         end
         fish_size = my_selection
-
+        Fish.new(fish_name, fish_color, fish_size)
+        update_tank
     end
 
     def remove_fish
+        puts "What fish would you like to remove?"
+        fish_name = get_user_input
     end
+
+####### END OF FISH ADD/REMOVE FEATURES #
 
     def see_your_tank
     end
@@ -103,5 +113,45 @@ class App
     end
     
     def display_full_tank
+    puts "|^^^^^^^^^^^^^^^^|"
+    puts "| ><>       <><  |"
+    puts "|________________|"
+
+    end
+
+
+
+
+
+    ################################## VISUAL IMAGES ##################################
+
+    def show_intro_fish_tank
+    puts"                                                                           "
+    puts"      ___ ___ ___ ___          WELCOME TO RUBY TANK                ((      "
+    puts"     |___|___|___|___|                                           (())      "
+    puts"       |:_:_:_:_:_|     ><>                                     ))         "
+    puts"       |_:_,--.:_:|                           <><            (///   )      "
+    puts"       |:_:|__|_:_|         ><>          _                  ) ))   ((      "
+    puts"    _  |_   _  :_:|   _   _   _         (_)                ((((   /))`     "
+    puts"   | |_| |_| |   _|  | |_| |_| |          o                 )))) (( (      "
+    puts"    |_:_:_:_:/|_|_|_| :_:_:_:_/          .         <><       ((   ))))     "
+    puts"     |_,-._:_:_:_:_:_:_:_.-,_|        o                        )) ((//     "
+    puts"     |:|_|:_:_:,---,:_:_:|_|:|         o                      ,-.  )/      "
+    puts"     |_:_:_:_,'     `,_:_:_:_|           _ o               ,;'))((         "
+    puts"     |:_:_:_/  _ | _   _:_:_:|          (_O                   ((  ))       "
+    puts"_____|_:_:_|  (o)-(o)  |_:_:_|--'`-.     ,--.                (((('/        "
+    puts" ', ;|:_:_:| -( .-. )- |:_:_:| ', ; `--._|oo|,---.~           ``))         "
+    puts".  ` |_:_:_|   (`-')   |_:_:_|.  ` .  `  |()|.__( ) .,-----' `-(((         "
+    puts" ', ;|:_:_:|    `-'    |:_:_:| ', ; ', ; `--'|   \ ', ; ', ; ',')).,--     "
+    puts"  .  `  ` .  ` .  ` .  ` .  ` .  ` .  ` .    .  ` .  ` .  ` .  ` .  `      "
+    puts" ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ', ;    "
     end
 end
+
+
+
+
+
+
+
+
