@@ -4,7 +4,10 @@ class App
     
     def run
         show_intro_fish_tank
-        get_name
+
+        sleep(3,)
+        
+        setup_owner
         
         main_menu
         
@@ -19,6 +22,7 @@ class App
             menu.choice "See your Tank"
             menu.choice "Add additional owner to the Tank"
             menu.choice "Delete Tank"
+            menu.choice "Exit"
         end
 
         if my_selection == "Create Tank"
@@ -31,6 +35,8 @@ class App
             add_owner_to_tank
         elsif my_selection == "Delete Tank"
                 delete_tank
+        elsif my_selection == "Exit"
+            nil
         
         end
             
@@ -40,12 +46,50 @@ class App
         gets.chomp
     end
 
-    def get_name
-        puts "What is your name?"
-        user_input = get_user_input
-        new_owner = Owner.new(name: user_input)
-        new_owner.save
+################# OWNER LOGIN ####################
+
+    def setup_owner
+        system "clear"
+        prompt = TTY::Prompt.new
+        user_input = prompt.select("What's your owner status?") do |menu|
+        menu.choice "New Owner"
+        menu.choice "Existing Owner"
+        end
+          if user_input == "New Owner"
+          create_new_owner
+        else
+          find_existing_owner
+        end
     end
+
+      def create_new_owner
+        puts "Please enter your name:"
+        owner_name = gets.chomp
+        if Owner.find_by(name: owner_name)
+        system "clear"
+          puts "Sorry, that name is already taken."
+          create_new_owner
+        else
+          current_user = Owner.new(name: owner_name)
+          puts "New user created! Welcome, #{current_user.name}!"
+        end
+        current_user
+      end
+
+      def find_existing_owner
+        puts "Please enter your name:"
+        owner_name = gets.chomp
+        current_user = Owner.find_by(Owner.name == owner_name)
+        if Owner.all.map { |user| user.name }.include?(owner_name)
+        system "clear"
+          puts "Welcome back, #{current_user.name}!"
+        else
+          puts "Username not found"
+          find_existing_owner
+        end
+        current_user
+      end
+################################################################################    
 
     def create_tank
         puts "What would you like your tank to be named?"
@@ -53,7 +97,7 @@ class App
         puts "How many fish would you like to keep? (Max = 10)"
         tank_limit = get_user_input
         new_tank = Tank.new(name: tank_name, fish_limit: tank_limit)
-        new_tank.save
+        #new_tank.save
         main_menu
     end
 
@@ -81,6 +125,7 @@ class App
     end
 
 ####### FISH ADD/REMOVE FEATURES #
+
     def add_fish
         puts "What would you like to name your fish?"
         fish_name = get_user_input
