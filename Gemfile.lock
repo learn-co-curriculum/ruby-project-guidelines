@@ -34,7 +34,10 @@ GEM
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
+<<<<<<< HEAD
     rake (13.0.1)
+=======
+>>>>>>> 49a8165d12d0bb36d578fcef22223680ff476dff
     require_all (3.0.0)
     rouge (3.25.0)
     ruby2_keywords (0.0.2)
@@ -150,7 +153,6 @@ PLATFORMS
 DEPENDENCIES
   colorize
   pry
-  rake
   require_all
   sinatra-activerecord
   sqlite3
