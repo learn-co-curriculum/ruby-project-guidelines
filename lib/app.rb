@@ -2,6 +2,7 @@ require "tty-prompt"
 require 'pry'
 class App
     
+    attr_accessor :current_user
     def run
         show_intro_fish_tank
         
@@ -69,17 +70,17 @@ class App
           puts "Sorry, that name is already taken."
           create_new_owner
         else
-          current_user = Owner.create(name: owner_name)
+          @current_user = Owner.create(name: owner_name)
           puts "New user created! Welcome, #{current_user.name.capitalize}!"
         end
         current_user
-        binding.pry
+   
       end
 
       def find_existing_owner
         puts "Please enter your name:"
         owner_name = gets.chomp
-        current_user = Owner.find_by(name: owner_name)
+        @current_user = Owner.find_by(name: owner_name)
         if Owner.all.map { |user| user.name }.include?(owner_name)
         system "clear"
           puts "Welcome back, #{current_user.name.capitalize}!"
@@ -96,10 +97,10 @@ class App
         tank_name = get_user_input
         puts "How many fish would you like to keep? (Max = 10)"
         tank_limit = get_user_input
-        new_tank = Tank.new(name: tank_name, fish_limit: tank_limit)
-        #new_tank.save
-        binding.pry
-        new_tank
+        new_tank = Tank.create(name: tank_name, fish_limit: tank_limit)
+        TankOwnerId.new(owner_id: current_user.id  ,tank_id: new_tank.id)
+        puts "Congratulations! Your new tank #{tank_name} has been created"
+        sleep(1,)
         main_menu
     end
 
@@ -162,6 +163,13 @@ class App
     end
 
     def delete_tank
+        puts "What is the name of the tank you would like to delete?"
+        tank = get_user_input
+        needed_tank = Tank.find_by(name: tank)
+        needed_tank.destory
+        puts "Your tank has been deleted succesfully."
+        sleep(1,)
+        main_menu
     end
 
     
