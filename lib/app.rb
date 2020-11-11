@@ -1,12 +1,11 @@
 require "tty-prompt"
-
+require 'pry'
 class App
     
     def run
         show_intro_fish_tank
-
-        sleep(3,)
         
+        sleep(3,)
         setup_owner
         
         main_menu
@@ -70,8 +69,8 @@ class App
           puts "Sorry, that name is already taken."
           create_new_owner
         else
-          current_user = Owner.new(name: owner_name)
-          puts "New user created! Welcome, #{current_user.name}!"
+          current_user = Owner.create(name: owner_name)
+          puts "New user created! Welcome, #{current_user.name.capitalize}!"
         end
         current_user
       end
@@ -79,10 +78,10 @@ class App
       def find_existing_owner
         puts "Please enter your name:"
         owner_name = gets.chomp
-        current_user = Owner.find_by(Owner.name == owner_name)
+        current_user = Owner.find_by(name: owner_name)
         if Owner.all.map { |user| user.name }.include?(owner_name)
         system "clear"
-          puts "Welcome back, #{current_user.name}!"
+          puts "Welcome back, #{current_user.name.capitalize}!"
         else
           puts "Username not found"
           find_existing_owner
