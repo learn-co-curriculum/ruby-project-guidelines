@@ -7,5 +7,7 @@ gem "pry"
 gem "require_all"
 gem 'colorize'
 gem "tty"
+gem 'rainbow'
+gem "tty-prompt"
 
 

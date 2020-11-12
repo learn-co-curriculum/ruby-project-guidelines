@@ -34,6 +34,7 @@ GEM
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
+    rainbow (3.0.0)
     require_all (3.0.0)
     rouge (3.25.0)
     ruby2_keywords (0.0.2)
@@ -149,10 +150,12 @@ PLATFORMS
 DEPENDENCIES
   colorize
   pry
+  rainbow
   require_all
   sinatra-activerecord
   sqlite3
   tty
+  tty-prompt
 
 BUNDLED WITH
    1.16.1
