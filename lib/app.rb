@@ -3,20 +3,17 @@ require 'pry'
 class App
 
     attr_accessor :current_user
-    
+    attr_reader :fish
     def run
+        pid = fork{exec 'afplay', "lib/Large_bubble_sound.mp3"}
         show_intro_fish_tank
-        
         sleep(3,)
         setup_owner
-        
         main_menu
-        
     end
-    
+
     def main_menu
         prompt = TTY::Prompt.new
-
         my_selection = prompt.select("What would you like to do?") do |menu|
             menu.choice "Create Tank"
             menu.choice "Update Tank"
@@ -25,7 +22,6 @@ class App
             menu.choice "Delete Tank"
             menu.choice "Exit"
         end
-
         if my_selection == "Create Tank"
             create_tank
         elsif my_selection == "Update Tank"
@@ -38,9 +34,7 @@ class App
                 delete_tank
         elsif my_selection == "Exit"
             nil
-        
         end
-            
     end
 
     def get_user_input
@@ -48,7 +42,6 @@ class App
     end
 
 ################# OWNER LOGIN ####################
-
     def setup_owner
         system "clear"
         prompt = TTY::Prompt.new
@@ -62,7 +55,6 @@ class App
           find_existing_owner
         end
     end
-
       def create_new_owner
         puts "Please enter your name:"
         owner_name = gets.chomp
@@ -76,7 +68,6 @@ class App
         end
         current_user
       end
-
       def find_existing_owner
         puts "Please enter your name:"
         owner_name = gets.chomp
@@ -90,7 +81,7 @@ class App
         end
         current_user
       end
-################################################################################    
+################################################################################
 
     def create_tank
         puts "What would you like your tank to be named?"
@@ -105,19 +96,14 @@ class App
     end
 
     def update_tank
-        if Fish.all.count == 0 
-            display_empty_tank
-        else
-            display_full_tank
-        end
-
+        display_tank_update_selection
+        display_my_fish_tank
         prompt = TTY::Prompt.new
         my_selection = prompt.select("What would you like to do? Add or remove fish?") do |menu|
             menu.choice "Add Fish"
             menu.choice "Remove Fish"
             menu.choice "Back - Main Menu"
         end
-
         if my_selection == "Add Fish"
             add_fish
         elsif my_selection == "Remove Fish"
@@ -127,7 +113,7 @@ class App
         end
     end
 
-####### FISH ADD/REMOVE FEATURES #
+##################### FISH ADD/REMOVE FEATURES ################################################
 
     def add_fish
         puts "What would you like to name your fish?"
@@ -138,43 +124,156 @@ class App
             menu.choice "Orange"
             menu.choice "Blue"
         end
-        fish_size = my_selection
-        #Fish.new(name: fish_name, color: fish_color, tank_id: ## ) Need fish ID
+        fish_color = my_selection
+        my_tank = Tank.find_by(name: @my_selection)
+        Fish.create(name: fish_name, color: fish_color, tank_id: my_tank.id)
+        display_my_fish_tank
+        sleep(2,)
         update_tank
     end
 
     def remove_fish
         puts "What fish would you like to remove?"
-        fish_name = get_user_input
-        Fish.all.find do |fish|
-            fish == fish_name
-            Fish.all.delete(fish)
-        end
+        prompt = TTY::Prompt.new
+        deleted_fish = prompt.select("Which fish would you like to remove?", (display_my_fish_names))
+
+        my_tank = Tank.find_by(name: @my_selection)
+            my_fish = my_tank.fish.find_by(name: deleted_fish)
+
+            my_fish.destroy
+            puts "Your fish has been successfully removed!"
+            sleep(2,)
         update_tank
     end
 
-####### END OF FISH ADD/REMOVE FEATURES #
+##################### END OF FISH ADD/REMOVE FEATURES ########################################
 
     def see_your_tank
-        display_full_tank
+        display_tank_view_selection
+        display_my_fish_tank
+        prompt = TTY::Prompt.new
+        go_back = prompt.select("Select Main Menu to go back") do |menu|
+            menu.choice "Main Menu"
+        end
+        if go_back == "Main Menu"
+            main_menu
+        end
     end
 
     def add_owner_to_tank
+            # DIPLAY ALL CURRENT OWNER TANKS
+            my_tanks = current_user.tanks.map do |tank|
+                tank.name
+            end
+            if my_tanks.count == 0
+                puts "You have no tanks to add owners to, please go back and create a tank first!"
+                sleep(2,)
+                main_menu
+            else
+            prompt = TTY::Prompt.new
+            add_owner_to = prompt.select("Which tank would you like to add an owner to", (my_tanks))
+            end
+            #SELECT TANK THAT WE WANT TO ADD OWNER TO
+            my_tank = Tank.find_by(name: add_owner_to)
+            #ASK WHAT OWNER TO ADD
+            puts "Please type the name of the owner you would like to add"
+            additonal_owner = get_user_input
+            #DOES THAT OWNER EXIST
+            new_owner = Owner.find_by(name: additonal_owner)
+            if Owner.find_by(name: additonal_owner) && !TankOwnerId.find_by(owner_id: new_owner.id, tank_id: my_tank.id)
+               TankOwnerId.create(owner_id: new_owner.id , tank_id: my_tank.id)
+               puts "New owner, #{new_owner.name} has been added to #{my_tank.name}"
+               sleep(2,) 
+               main_menu
+            else
+                puts "Sorry that owner was not found or that relationship already exists. Please try again."
+                sleep(2,)
+                main_menu
+            end
     end
 
     def delete_tank
         puts "What is the name of the tank that you would like to delete?"
         tank = get_user_input
-        needed_tank = Tank.find_by(name: tank)
+        if Tank.find_by(name: tank)
+            needed_tank = Tank.find_by(name: tank)
+        else
+            puts "Sorry, that tank was not found. Please try again."
+            sleep(2,)
+            delete_tank
+        end
         needed_tank.destroy
         puts "Your tank has been deleted successfully."
         sleep(1,)
         main_menu
     end
 
-    
-    
-    
+###################################### DISPLAY SECTION #########################################
+
+    def display_tank_update_selection
+        my_tanks = current_user.tanks.map do |tank|
+            tank.name
+        end
+        if my_tanks.count == 0
+            puts "You have no tanks to update, please go back and create a tank first!"
+            sleep(2,)
+            main_menu
+        else
+        prompt = TTY::Prompt.new
+        @my_selection = prompt.select("Which tank would you like to update?", (my_tanks))
+        end
+    end
+
+    def display_my_fish_tank
+        my_tank = Tank.find_by(name: @my_selection)
+    if my_tank.fish.count == 0
+        display_empty_tank
+    elsif my_tank.fish.count == 1
+        display_tank_one
+    elsif my_tank.fish.count == 2
+        display_tank_two
+    elsif my_tank.fish.count == 3
+        display_tank_three
+    elsif my_tank.fish.count == 4
+        display_tank_four
+    elsif my_tank.fish.count == 5
+        display_tank_five
+    elsif my_tank.fish.count == 6
+        display_tank_six
+    elsif my_tank.fish.count == 7
+        display_tank_seven
+    elsif my_tank.fish.count == 8
+        display_tank_eight
+    elsif my_tank.fish.count == 9
+        display_tank_nine
+    elsif my_tank.fish.count == 10
+        display_full_tank
+    end
+end
+   
+    def display_my_fish_names
+        my_tank = Tank.find_by(name: @my_selection)
+        my_fish = my_tank.fish
+        my_fish.map do |fish|
+            fish.name
+        end
+    end
+
+    def display_tank_view_selection
+        my_tanks = current_user.tanks.map do |tank|
+            tank.name
+        end
+        if my_tanks.count == 0
+            puts "You have no tanks to view, please go back and create a tank first!"
+            sleep(2,)
+            main_menu
+        else
+        prompt = TTY::Prompt.new
+        @my_selection = prompt.select("Which tank would you like to view", (my_tanks))
+        end
+    end
+
+    ############################### DISPLAY SECTION END #########################################
     
     
     ################################## VISUAL IMAGES ##################################

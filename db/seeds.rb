@@ -7,6 +7,7 @@ bart = Owner.create(name: "bart")
 dom = Owner.create(name: "dom")
 max = Owner.create(name: "max")
 derick = Owner.create(name: "derick")
+bob = Owner.create(name: "bob")
 
 tank1 = Tank.create(name: "tank1", fish_limit: 5)
 tank2 = Tank.create(name: "tank2", fish_limit: 5)
