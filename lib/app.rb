@@ -2,8 +2,10 @@ require "tty-prompt"
 require 'pry'
 class App
 
+
     attr_accessor :current_user
     attr_reader :fish
+
 
     def run
         pid = fork{exec 'afplay', "lib/Large_bubble_sound.mp3"}
@@ -223,6 +225,7 @@ class App
     end
 
     def delete_tank
+
         prompt = TTY::Prompt.new
         selected_tank = prompt.select("What is the name of the tank that you would like to delete?", (display_my_tanks))
         deleted_tank = Tank.find_by(name: selected_tank)
