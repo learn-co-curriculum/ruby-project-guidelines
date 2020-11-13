@@ -13,10 +13,8 @@
 ActiveRecord::Schema.define(version: 2020_11_12_161556) do
 
   create_table "compatabilities", force: :cascade do |t|
-    t.string "allergies"
-    t.string "energy_level"
-    t.string "life_style"
-    t.integer "weight"
+    t.integer "user_id"
+    t.integer "dog_id"
   end
 
   create_table "dogs", force: :cascade do |t|
@@ -24,14 +22,14 @@ ActiveRecord::Schema.define(version: 2020_11_12_161556) do
     t.string "breed"
     t.string "energy_level"
     t.integer "age"
-    t.string "hypoaller"
+    t.boolean "hypoaller"
     t.string "sex"
     t.integer "weight"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "allergy"
+    t.boolean "allergy"
     t.string "location"
     t.string "life_style"
   end

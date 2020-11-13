@@ -1,27 +1,40 @@
 require "pry"
 class Dog < ActiveRecord::Base 
-    has_many :compatability 
-    has_many :user, through: :compatability 
+    has_many :compatabilities
+    has_many :users, through: :compatabilities 
 end 
 
+def self.find_hypo_dog(hypoaller)
+    self.all.select do |dogs|
+        dogs.hypoaller == hypoaller
+    end
 
-#### Attributes of Dog instances 
-        ## weight 
-        ## breed
-        ## energy level
-        ##age
-        ##hypoallergenic == true this will be shoveled into an array of dogs that are COMPATABLE with user that have allergies.
-        ## if non-hypoallergenic == false. All dogs are COMPATaBLE 
 
-       
-        # ##def non_allergic(dog)
-        #     non_allergy = []
-        #     hypo_a = Dog.all.select do |dog|
-        #         dog.hypoallergenic == true 
-           
-        #     hypo_a << non_allergy
-            
-        #     end 
-        #     else 
-            
-        #     #end 
+
+
+
+
+
+end 
+    # def hypo_dogs
+    #     array_of_hypo_dogs = []
+        
+    #     hypo_k9 = Dog.all.select do |dog|
+    #         dog.hypoaller == true 
+    #         end 
+        
+    #         hypo_k9 << array_of_hypo_dogs
+         
+    # end 
+    
+    # def allergy
+    #     if allergy_input == true 
+    #         hypo_dogs 
+    #     elsif Dog.all 
+        
+    #     end 
+    # end 
+
+
+
+      

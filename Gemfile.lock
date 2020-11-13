@@ -20,6 +20,8 @@ GEM
     minitest (5.14.2)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    pastel (0.8.0)
+      tty-color (~> 0.5)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -39,18 +41,34 @@ GEM
     sqlite3 (1.4.2)
     thread_safe (0.3.6)
     tilt (2.0.10)
+    tty-color (0.6.0)
+    tty-cursor (0.7.1)
+    tty-font (0.5.0)
+    tty-prompt (0.22.0)
+      pastel (~> 0.8)
+      tty-reader (~> 0.8)
+    tty-reader (0.8.0)
+      tty-cursor (~> 0.7)
+      tty-screen (~> 0.8)
+      wisper (~> 2.0)
+    tty-screen (0.8.1)
     tzinfo (1.2.8)
       thread_safe (~> 0.1)
+    wisper (2.0.1)
     zeitwerk (2.4.1)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  pastel
   pry
   require_all
   sinatra-activerecord
   sqlite3
+  tty-cursor
+  tty-font
+  tty-prompt
 
 BUNDLED WITH
    1.17.3
