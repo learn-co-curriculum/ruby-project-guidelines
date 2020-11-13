@@ -12,13 +12,13 @@
 
 ActiveRecord::Schema.define(version: 3) do
 
-  create_table "playlist", force: :cascade do |t|
-    t.string "playlist_name"
-  end
-
   create_table "playlist_songs", force: :cascade do |t|
     t.integer "playlist_id"
     t.integer "song_id"
+  end
+
+  create_table "playlists", force: :cascade do |t|
+    t.string "playlist_name"
   end
 
   create_table "songs", force: :cascade do |t|
