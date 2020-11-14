@@ -8,8 +8,9 @@ require "tty-prompt"
 #     prompt = TTY::Prompt.new
 #     prompt.select("WHAT'S YOUR MOOD?", %w(Happy Chill Sad))
 # end
+CLI.new.welcome
+#CLI.new.greet
 
-CLI.new.greet
 
 # def user_option
 #     option = gets

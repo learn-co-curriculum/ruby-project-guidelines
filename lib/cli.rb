@@ -3,13 +3,35 @@ require 'rainbow'
 
 class CLI 
 
-    attr_reader :playlist
+    attr_reader :playlist, :user_mood
+
+
+   def welcome 
+    system ("clear")
+
+puts render_ascii_art
+
+   puts "WELCOME TO LOFI MOOD APP"
+
+
+   greet
+
+   end
+
+   def render_ascii_art
+    File.readlines("lib/welcome.txt") do |line|
+      puts line
+    end
+  end
+
 
     def greet
+
+
         prompt = TTY::Prompt.new
-        option = prompt.select("WHAT'S YOUR MOOD?".magenta, %w(Happy Chill Sad))
+        @user_mood = prompt.select("WHAT'S YOUR MOOD?".magenta, %w(Happy Chill Sad))
         
-        user_option(option)
+        user_option(@user_mood)
 
         #save playlist
         #view random song 
@@ -62,14 +84,16 @@ class CLI
             if save_playlist == "YES"
                 prompt = TTY::Prompt.new
                 user_response = prompt.ask("WHAT DO YOU WANT TO CALL YOUR PLAYLIST?")
-                new_playlist_instance = Playlist.create(playlist_name: user_response)
-                @playlist = song_list.each do |song|
-                    PlaylistSong.create(playlist_id: new_playlist_instance.id, song_id: song.id)
+                @playlist = Playlist.create(playlist_name: user_response)
+                song_list.each do |song|
+                    PlaylistSong.create(playlist_id: @playlist.id, song_id: song.id)
                 end
+                system ("clear")
                 puts "PLAYLIST #{user_response} SAVED".red
                 playlist_options
                 
             else 
+                system ("clear")
                 CLI.new.greet 
             end
         end
@@ -78,33 +102,41 @@ class CLI
             
             
             prompt = TTY::Prompt.new
-        other_functions = prompt.select("WHAT DO YOU WANT TO DO WITH YOUR PLAYLIST?".magenta, %w(Add\ A\ Song Generate\ New\ Playlist))
+        other_functions = prompt.select("WHAT DO YOU WANT TO DO WITH YOUR PLAYLIST?".magenta, %w(Add\ A\ Song Generate\ New\ Playlist Exit))
 
         if other_functions == "Add A Song"
-            binding.pry
-            Song.all.select do |new_song|
-                new_added_song = new_song.where(mood: "Happy").sample(1) 
-                @playlist << new_added_song
-
-                if new_added_song == new_song.where(mood: "Chill").sample(1)
-                    @playlist << new_added_song
+            new_added_song = Song.where(mood: @user_mood).sample(1)
+                
+                eleven_song_playlist = @playlist.songs << new_added_song
+            
+                puts "NEW SONG HAS BEEN ADDED".red
+                eleven_song_playlist.each do |song|
+                    puts "#{song.song_name}, #{song.url.blue}"
                 end
-            end
-            #itterates through Song.all and grabs new song and inserts into current playlist
+                playlist_options
+    
+    
+            #itterates through Song.all 
+            #grabs a random song and inserts into current playlist
             #new song added prompt
             #displays new playlist 
             #back to functions prompt 
 
         elsif other_functions == "Generate New Playlist"
             Playlist.last.destroy
+            system ("clear")
             CLI.new.greet
 
-        end
+        elsif other_functions == "Exit"
+            exit
 
+        end
 
     
 
     end
+    #EXIT METHOD#
+
 end
 
 
