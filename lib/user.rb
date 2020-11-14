@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
     has_many :compatabilities
     has_many :dogs, through: :compatabilities 
 
-end 
+ 
 
 #class Person 
 # attr_accessor :name, :life_style, :allergy, :location
@@ -27,10 +27,11 @@ end
             # all dogs are avaialble/compatable 
 
 
-#     @location = location 
-            #if house all dogs available 
-            # if apartment dogs weight < 30lbs/ low to couch potato energy dogs. 
-
+    def user_location(location) 
+        self.all.select do |user|
+            user.location == location 
+        end 
+    end 
 
 #     @@all << self 
 
@@ -40,7 +41,7 @@ end
         
     
     
-
+end
 #     ##def life_style
 #         ##if user_life_style choices are ;
 #         [#active 
