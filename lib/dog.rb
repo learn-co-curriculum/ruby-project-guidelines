@@ -4,15 +4,16 @@ class Dog < ActiveRecord::Base
     has_many :users, through: :compatabilities 
  
 
-    def self.find_hypo_dog(hypoaller)
-         #hypo_dog_array = []
-
-    #     #hypo_aller_dog = 
-         self.all.select do |dog|
-             dog.hypoaller == hypoaller
-         end
-        
-     end 
+    def self.hypo_dog(hypoaller)
+        self.all.select do |pooch|
+            pooch.hypoaller == hypoaller
+        end
+    end
+    
+    def self.all_dog
+        all_dogs = []
+        all_dogs << Dog.all
+    end
 
 end 
    

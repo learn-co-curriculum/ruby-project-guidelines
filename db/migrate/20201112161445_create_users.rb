@@ -3,9 +3,11 @@ class CreateUsers < ActiveRecord::Migration[6.0]
     create_table :users do |t|
   
       t.string :name 
-      t.boolean :allergy 
+      t.string :allergy 
       t.string :location 
-      t.string :life_style 
+      t.string :life_style
+      
+      t.timestamps 
     end 
   end
 end

@@ -15,6 +15,8 @@ ActiveRecord::Schema.define(version: 2020_11_12_161556) do
   create_table "compatabilities", force: :cascade do |t|
     t.integer "user_id"
     t.integer "dog_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "dogs", force: :cascade do |t|
@@ -22,16 +24,20 @@ ActiveRecord::Schema.define(version: 2020_11_12_161556) do
     t.string "breed"
     t.string "energy_level"
     t.integer "age"
-    t.boolean "hypoaller"
+    t.string "hypoaller"
     t.string "sex"
     t.integer "weight"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.boolean "allergy"
+    t.string "allergy"
     t.string "location"
     t.string "life_style"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
 end

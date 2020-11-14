@@ -7,6 +7,7 @@ class CreateCompatabilities < ActiveRecord::Migration[6.0]
       # t.string :energy_level 
       # t.string :life_style 
       # t.integer :weight 
+      t.timestamps 
     end 
   end
 end

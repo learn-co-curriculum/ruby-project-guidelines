@@ -6,9 +6,11 @@ class CreateDogs < ActiveRecord::Migration[6.0]
       t.string :breed
       t.string :energy_level 
       t.integer :age 
-      t.boolean :hypoaller 
+      t.string :hypoaller 
       t.string :sex 
       t.integer :weight 
+
+      t.timestamps 
     end  
   end
 end
