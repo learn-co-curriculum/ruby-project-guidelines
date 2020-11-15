@@ -35,7 +35,10 @@ class App
         elsif my_selection == "Delete Tank"
                 delete_tank
         elsif my_selection == "Exit"
-            return
+            puts "Thank you for playing, see you next time!"
+            sleep(2,)
+            system "clear"
+            exit
         end
     end
 
@@ -43,7 +46,7 @@ class App
         gets.chomp
     end
 
-################# OWNER LOGIN ####################
+###################################### OWNER LOGIN ###########################################
 
     def setup_owner
         system "clear"
@@ -61,7 +64,7 @@ class App
 
       def create_new_owner
         puts "Please enter your name:"
-        owner_name = gets.chomp
+        owner_name = gets.chomp.downcase
         if Owner.find_by(name: owner_name)
         system "clear"
           puts "Sorry, that name is already taken."
@@ -74,7 +77,7 @@ class App
 
       def find_existing_owner
         puts "Please enter your name:"
-        owner_name = gets.chomp
+        owner_name = gets.chomp.downcase
         @current_user = Owner.find_by(name: owner_name)
         if Owner.all.map { |user| user.name }.include?(owner_name)
         system "clear"
@@ -84,21 +87,28 @@ class App
           find_existing_owner
         end
       end
-################################################################################
+###################################### OWNER LOGIN END ##########################################
 
     def create_tank
-        puts "What would you like your tank to be named?"
-        tank_name = get_user_input
-        puts "How many fish would you like to keep? (Max = 10)"
-        tank_limit = get_user_input.to_i
-        if tank_limit > 10 
+            system "clear"
+            display_main_menu_title
+            puts "What would you like your tank to be named?"
+            tank_name = get_user_input
+            puts "How many fish would you like to keep? (Max = 10)"
+            tank_limit = get_user_input.to_i
+        if Tank.find_by(name: tank_name)
+            puts "Sorry, that tank name is already in use. Please choose a different name!"
+            sleep(2,)
+            system "clear"
+            create_tank
+        elsif tank_limit > 10 
             puts "Sorry, the tank is not big enough for more than 10 fish!"
             sleep(2,)
             system "clear"
             create_tank
         else
-        new_tank = Tank.create(name: tank_name, fish_limit: tank_limit)
-        TankOwnerId.create(owner_id: current_user.id , tank_id: new_tank.id)
+            new_tank = Tank.create(name: tank_name, fish_limit: tank_limit)
+            TankOwnerId.create(owner_id: current_user.id , tank_id: new_tank.id)
         end
         puts "Congratulations! Your new tank #{tank_name} has been created."
         sleep(2,)
@@ -175,7 +185,7 @@ class App
         main_menu
     end
 
-##################### END OF FISH ADD/REMOVE FEATURES ########################################
+################################# END OF FISH ADD/REMOVE FEATURES ########################################
 
     def see_your_tank
         display_tank_view_selection
@@ -208,12 +218,12 @@ class App
             my_tank = Tank.find_by(name: add_owner_to)
             #ASK WHAT OWNER TO ADD
             puts "Please type the name of the owner you would like to add"
-            additonal_owner = get_user_input
+            additonal_owner = get_user_input.downcase
             #DOES THAT OWNER EXIST, IF YES THEN RUN METHOD IF NO = ELSE. 
             new_owner = Owner.find_by(name: additonal_owner)
             if Owner.find_by(name: additonal_owner) && !TankOwnerId.find_by(owner_id: new_owner.id, tank_id: my_tank.id)
                TankOwnerId.create(owner_id: new_owner.id , tank_id: my_tank.id)
-               puts "New owner, #{new_owner.name} has been added to #{my_tank.name}"
+               puts "New owner, #{new_owner.name.capitalize} has been added to #{my_tank.name}"
                sleep(2,) 
                main_menu
             else
@@ -332,7 +342,7 @@ end
 
     ############################### DISPLAY SECTION END #########################################
     
-    ############################### SOUND EFFECTS #####################################
+    ################################## SOUND EFFECTS ############################################
 
     def bubble_sound
         pid = fork{exec 'afplay', "lib/Large_bubble_sound.mp3"}
@@ -349,153 +359,57 @@ end
     def water_splash
         pid = fork{exec 'afplay', "lib/water_splash.mp3"}
     end
-    ############################### SOUND EFFECTS END #####################################
+    ############################### SOUND EFFECTS END ##########################################
 
-    ################################## VISUAL IMAGES ##################################
+    ################################# VISUAL IMAGES ############################################
     
     def show_intro_fish_tank
         display_title_intro
-        puts"                                                                           ".blue
-        puts"      ___ ___ ___ ___                                              ((      ".blue
-        puts"     |___|___|___|___|                                           (())      ".blue
-        puts"       |:_:_:_:_:_|    ".blue + "><>".red + "                                      ))         ".blue
-        puts"       |_:_,--.:_:|                          ".blue + "<><".red + "             (///   )      ".blue
-        puts"       |:_:|__|_:_|          ".blue + "><>".red + "         _                  ) ))   ((      ".blue
-        puts"    _  |_   _  :_:|   _   _   _         (_)                ((((   /))`     ".blue
-        puts"   | |_| |_| |   _|  | |_| |_| |          o                 )))) (( (      ".blue
-        puts"    |_:_:_:_:/|_|_|_| :_:_:_:_/          .        ".blue + "<><".red + "        ((   ))))     ".blue
-        puts"     |_,-._:_:_:_:_:_:_:_.-,_|        o                        )) ((//     ".blue
-        puts"     |:|_|:_:_:,---,:_:_:|_|:|         o                      ,-.  )/      ".blue
-        puts"     |_:_:_:_,'     `,_:_:_:_|           _ o               ,;'))((         ".blue
-        puts"     |:_:_:_/  _ | _   _:_:_:|          (_O                   ((  ))       ".blue
-        puts"_____|_:_:_|  (o)-(o)  |_:_:_|--'`-.     ,--.                (((('/        ".blue
-        puts" ', ;|:_:_:| -( .-. )- |:_:_:| ', ; `--._|oo|,---.~           ``))         ".blue
-        puts".  ` |_:_:_|   (`-')   |_:_:_|.  ` .  `  |()|.__( ) .,-----' `-(((         ".blue
-        puts" ', ;|:_:_:|    `-'    |:_:_:| ', ; ', ; `--'|   \ ', ; ', ; ',')).,--     ".blue
-        puts"  .  `  ` .  ` .  ` .  ` .  ` .  ` .  ` .    .  ` .  ` .  ` .  ` .  `      ".yellow
-        puts" ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ; ', ', ;    ".yellow
+        Visual.show_intro_fish_tank
     end
    
     def display_empty_tank
-    puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-    puts "|                                                     |".blue
-    puts "|                                                     |".blue
-    puts "|                                             _\\/_    |".blue
-    puts "|                                              /o\\    |".blue
-    puts "|                                               |     |".blue
-    puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-    puts "|_____________________________________________________|".yellow
+        Visual.display_empty_tank
     end
     
     def display_full_tank
-    puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|" .blue
-    puts "|    ><>                  <><                  <><    |" .blue
-    puts "|                          ><>          <><           |" .blue
-    puts "|            ><>                              _\\/_    |".blue
-    puts "|   <><                                ><>     /o\\    |".blue
-    puts "|                         <><                   |  <><|" .blue
-    puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|" .yellow
-    puts "|_____________________________________________________|" .yellow
-     
+        Visual.display_full_tank
     end
 
     def display_tank_one
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|                                                     |".blue
-        puts "|                                                     |".blue
-        puts "|                                             _\\/_    |".blue
-        puts "|                          ><>                 /o\\    |".blue
-        puts "|                                               |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_one
     end
 
     def display_tank_two
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|                                                     |".blue
-        puts "|                                                     |".blue
-        puts "|      ><>                                    _\\/_    |".blue
-        puts "|                                              /o\\    |".blue
-        puts "|                         <><                   |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_two
     end
 
     def display_tank_three
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|                                                     |".blue
-        puts "|                              <><                    |".blue
-        puts "|         ><>                                 _\\/_    |".blue
-        puts "|                                              /o\\    |".blue
-        puts "|                       <><                     |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_three
     end
 
     def display_tank_four
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|      <><                        <><                 |".blue
-        puts "|                                                     |".blue
-        puts "|                        ><>                  _\\/_    |".blue
-        puts "|                                              /o\\    |".blue
-        puts "|             ><>                               |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_four
     end
 
     def display_tank_five
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|      <><                        <><                 |".blue
-        puts "|                ><>                                  |".blue
-        puts "|                        ><>                  _\\/_    |".blue
-        puts "|                                              /o\\    |".blue
-        puts "|             ><>                               |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_five
     end
 
     def display_tank_six
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|                                        <><          |".blue
-        puts "|  ><>                                                |".blue
-        puts "|          ><>                 <><            _\\/_    |".blue
-        puts "|                       <><                    /o\\    |".blue
-        puts "|                  ><>                          |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_six
     end
 
     def display_tank_seven
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|        ><>                         <><              |".blue
-        puts "|                          <><                        |".blue
-        puts "|        <><                                  _\\/_    |".blue
-        puts "|               ><>                  <><       /o\\    |".blue
-        puts "|   ><>                                         |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_seven
     end
 
     def display_tank_eight
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|                          ><>                 <><    |".blue
-        puts "|         ><>                           ><>           |".blue
-        puts "|                            ><>              _\\/_    |".blue
-        puts "|          <><                         ><>     /o\\    |".blue
-        puts "|                    <><                        |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_eight
     end
 
     def display_tank_nine
-        puts "|^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^|".blue
-        puts "|         ><>             <><        ><>              |".blue
-        puts "|              <><                                    |".blue
-        puts "|                       ><>                   _\\/_    |".blue
-        puts "|     <><                           <><        /o\\    |".blue
-        puts "|                        ><>            <><     |     |"  .blue
-        puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yellow
+        Visual.display_tank_nine
     end
     
 end
