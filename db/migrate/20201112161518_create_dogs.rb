@@ -9,7 +9,7 @@ class CreateDogs < ActiveRecord::Migration[6.0]
       t.string :hypoaller 
       t.string :sex 
       t.integer :weight 
-
+      t.text    :bio 
       t.timestamps 
     end  
   end

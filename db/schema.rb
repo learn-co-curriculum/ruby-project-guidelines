@@ -10,34 +10,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_12_161556) do
-
-  create_table "compatabilities", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "dog_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "dogs", force: :cascade do |t|
-    t.string "name"
-    t.string "breed"
-    t.string "energy_level"
-    t.integer "age"
-    t.string "hypoaller"
-    t.string "sex"
-    t.integer "weight"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "allergy"
-    t.string "location"
-    t.string "life_style"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end

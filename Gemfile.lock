@@ -28,6 +28,7 @@ GEM
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
+    rainbow (3.0.0)
     require_all (3.0.0)
     ruby2_keywords (0.0.2)
     sinatra (2.1.0)
@@ -63,6 +64,7 @@ PLATFORMS
 DEPENDENCIES
   pastel
   pry
+  rainbow
   require_all
   sinatra-activerecord
   sqlite3

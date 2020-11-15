@@ -12,7 +12,7 @@ end
 shelter_name
 puts "Hello and Welcome to Second Chance Shelter!"
 puts "Please enter your name:"
-username = gets.chomp.downcase
+username = gets.chomp
 system "clear"
 puts "
                                           ```````
@@ -51,13 +51,24 @@ puts "
             -syyyyyyyyo.                                           `/syyyyyyo`
              .-/+oso+-`                                              `.-:/:-`                    "
 puts "Hello #{username}! We will be asking you some questions in hopes to better match you with your new forever furry friend!"
-sleep(2,)
+sleep(3,)
+
+
+
 puts "Do you have any allergies? yes or no"
+user_input = get.chomp.downcase 
+sleep(3,)
+
+puts "What is your activity level? Please pick from the following: Active, Moderate, Couch Potato"
+life_style_answer = gets.chomp 
+
+
+
 def aller_dogs
     user_input = gets.chomp.downcase
         
     if user_input == "no"
-        Dog.all.select do |dog|
+        all_dogs = Dog.all.select do |dog|
             Dog.all 
             puts "Name: #{dog.name}, Breed: #{dog.breed}"
         end
@@ -71,8 +82,3 @@ def aller_dogs
     end
 end
 aller_dogs  
-     # Dog.all.select do |dog|
-    #         Dog.all.hypoaller == "yes"
-    #    puts "Name: #{dog.name}, Breed: #{dog.breed}" 
-    #     end
-        

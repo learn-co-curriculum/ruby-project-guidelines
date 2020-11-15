@@ -4,8 +4,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
   
       t.string :name 
       t.string :allergy 
-      t.string :location 
-      t.string :life_style
+      
       
       t.timestamps 
     end 
