@@ -1,12 +1,7 @@
-require "tty-prompt"
-require 'pry'
-
 class App
-
 
     attr_accessor :current_user
     attr_reader :fish
-
 
     def run
         bubble_sound
@@ -19,7 +14,6 @@ class App
     def main_menu
         system "clear"
         display_main_menu_title
-        puts 
         prompt = TTY::Prompt.new
         my_selection = prompt.select("What would you like to do?") do |menu|
             menu.choice "Create Tank"
@@ -41,7 +35,7 @@ class App
         elsif my_selection == "Delete Tank"
                 delete_tank
         elsif my_selection == "Exit"
-            nil
+            return
         end
     end
 
@@ -128,7 +122,6 @@ class App
         elsif my_selection == "Back - Main Menu"
             main_menu
         end
-
     end
 
 ##################### FISH ADD/REMOVE FEATURES ################################################
@@ -178,6 +171,7 @@ class App
             flush_sound
             puts "Your fish has been successfully removed :("
             sleep(4.4,)
+
         main_menu
     end
 
@@ -215,7 +209,7 @@ class App
             #ASK WHAT OWNER TO ADD
             puts "Please type the name of the owner you would like to add"
             additonal_owner = get_user_input
-            #DOES THAT OWNER EXIST
+            #DOES THAT OWNER EXIST, IF YES THEN RUN METHOD IF NO = ELSE. 
             new_owner = Owner.find_by(name: additonal_owner)
             if Owner.find_by(name: additonal_owner) && !TankOwnerId.find_by(owner_id: new_owner.id, tank_id: my_tank.id)
                TankOwnerId.create(owner_id: new_owner.id , tank_id: my_tank.id)
@@ -230,7 +224,6 @@ class App
     end
 
     def delete_tank
-
         prompt = TTY::Prompt.new
         selected_tank = prompt.select("What is the name of the tank that you would like to delete?", (display_my_tanks))
         deleted_tank = Tank.find_by(name: selected_tank)
@@ -263,7 +256,7 @@ class App
         my_tank = Tank.find_by(name: @my_selection)
         tank_owners = my_tank.owners
         tank_owners.collect do |owner|
-            owner.name
+            owner.name.capitalize
         end
     end
 
@@ -356,20 +349,21 @@ end
     def water_splash
         pid = fork{exec 'afplay', "lib/water_splash.mp3"}
     end
+    ############################### SOUND EFFECTS END #####################################
 
     ################################## VISUAL IMAGES ##################################
     
     def show_intro_fish_tank
         display_title_intro
-        puts"                      WELCOME TO RUBY TANK                                 ".red
+        puts"                                                                           ".blue
         puts"      ___ ___ ___ ___                                              ((      ".blue
         puts"     |___|___|___|___|                                           (())      ".blue
-        puts"       |:_:_:_:_:_|     ><>                                     ))         ".blue
-        puts"       |_:_,--.:_:|                           <><            (///   )      ".blue
-        puts"       |:_:|__|_:_|         ><>          _                  ) ))   ((      ".blue
+        puts"       |:_:_:_:_:_|    ".blue + "><>".red + "                                      ))         ".blue
+        puts"       |_:_,--.:_:|                          ".blue + "<><".red + "             (///   )      ".blue
+        puts"       |:_:|__|_:_|          ".blue + "><>".red + "         _                  ) ))   ((      ".blue
         puts"    _  |_   _  :_:|   _   _   _         (_)                ((((   /))`     ".blue
         puts"   | |_| |_| |   _|  | |_| |_| |          o                 )))) (( (      ".blue
-        puts"    |_:_:_:_:/|_|_|_| :_:_:_:_/          .         <><       ((   ))))     ".blue
+        puts"    |_:_:_:_:/|_|_|_| :_:_:_:_/          .        ".blue + "<><".red + "        ((   ))))     ".blue
         puts"     |_,-._:_:_:_:_:_:_:_.-,_|        o                        )) ((//     ".blue
         puts"     |:|_|:_:_:,---,:_:_:|_|:|         o                      ,-.  )/      ".blue
         puts"     |_:_:_:_,'     `,_:_:_:_|           _ o               ,;'))((         ".blue
@@ -413,7 +407,7 @@ end
         puts "|                          ><>                 /o\\    |".blue
         puts "|                                               |     |"  .blue
         puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
-        puts "|_____________________________________________________|".yello
+        puts "|_____________________________________________________|".yellow
     end
 
     def display_tank_two
@@ -503,9 +497,7 @@ end
         puts "|,,,,......,,,,...,,..,.,..,,..,,..,,,,,,,..,.,.|..,.,|".yellow
         puts "|_____________________________________________________|".yellow
     end
-
-
-
+    
 end
 
 

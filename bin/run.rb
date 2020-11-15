@@ -1,5 +1,5 @@
 require_relative '../config/environment'
 
 App.new.run
-
-puts "Goodbye!"
+system "clear"
+puts "Thank you for playing, see you next time!"
