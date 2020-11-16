@@ -9,18 +9,7 @@ class Dog < ActiveRecord::Base
             pooch.hypoaller == hypoaller
         end
     end
-    
-    def self.all_dog
-        all_dogs = []
-        all_dogs << Dog.all
-    end
 
-    def call_bio(selected_dog)
-        target_dog = Dog.all.find do |dog| 
-            dog.name == selected_dog 
-        end 
-        target_dog.bio 
-    end 
 
 
 end 
