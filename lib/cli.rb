@@ -4,7 +4,6 @@ def run
     system "clear"
     hypo_or_not
     call_dog_bio
-    outcome
 end
 def shelter_name 
     font = TTY::Font.new("doom")
@@ -101,10 +100,8 @@ def call_dog_bio
             sleep(3,)
     puts "Bio: #{selected_dog.bio}"  
     sleep(5,)
-    puts "Name: #{selected_dog.name}, Breed: #{selected_dog.breed}, Age: #{selected_dog.age}, Weight: #{selected_dog.weight}"
-    sleep(2,)
-    puts "Energy Level: #{selected_dog.energy_level}" 
-
+    puts "Name: #{selected_dog.name}, Breed: #{selected_dog.breed}, Age: #{selected_dog.age}, Weight: #{selected_dog.weight} \n Energy Level: #{selected_dog.energy_level}" 
+    outcome 
  end 
 
 
@@ -117,7 +114,6 @@ def outcome
     when "Yes, I want to Adopt!"
         yay_adopted
     when "I want to keept searching"
-        system "clear"
         hypo_or_not
         call_dog_bio
     when "I think I want a cat instead"
