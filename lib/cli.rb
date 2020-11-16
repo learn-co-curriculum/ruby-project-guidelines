@@ -28,7 +28,7 @@ def hypo_or_not
     user_input = gets.chomp.downcase.strip 
     case user_input
     when "yes"
-        puts "Heres a list of hypoallergenic dogs we have in our shelter!"
+        puts "Here's a list of hypoallergenic dogs we have in our shelter!"
         sleep(2,)
         hypo_dogs
     when "no"
@@ -108,7 +108,7 @@ def call_dog_bio
 
 def outcome
     prompt = TTY::Prompt.new
-    choices = ["Yes, I want to Adopt!", "I want to keept searching", "I think I want a cat instead"]
+    choices = ["Yes, I want to Adopt!", "I want to keep searching", "I think I want a cat instead"]
     user_choice = prompt.select("Is it a match?", choices)
     case user_choice
     when "Yes, I want to Adopt!"
