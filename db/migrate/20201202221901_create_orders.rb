@@ -4,7 +4,11 @@ class CreateOrders < ActiveRecord::Migration[5.2]
       t.integer :user_id
       t.integer :food_id
       t.integer :quantity
-      t.integer :price
+      t.integer :total
+
       t.timestamp 
+
+    end 
+    
   end
 end
