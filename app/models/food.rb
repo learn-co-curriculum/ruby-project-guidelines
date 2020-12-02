@@ -1,4 +1,4 @@
 class Food < ActiveRecord::Base
-    belongs_to: customer
-    belongs_to: order
+    has_many :orders
+    has_many :customers, through: :orders
 end 
