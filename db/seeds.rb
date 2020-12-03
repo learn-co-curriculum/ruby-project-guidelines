@@ -17,18 +17,18 @@ puts "Customer"
 end
 
 
-c1 = Customer.new(name:'Dan', password:'123')
-c2 = Customer.new(name:'Tee', password:'321')
-c3 = Customer.new(name:'Bob', password:'111')
+Customer.create(name:'Dan', password:'123')
+Customer.create(name:'Tee', password:'321')
+Customer.create(name:'Bob', password:'111')
 
-f1 = Food.new(name: 'Methi', category: 'Spice', price: 10)
-f2 = Food.new(name: 'Rosemary', category: 'Spice', price: 10)
-f3 = Food.new(name: 'Parsnip', category: 'Vegetables', price: 10)
+Food.create(name: 'Methi', category: 'Spice', price: 10)
+Food.create(name: 'Rosemary', category: 'Spice', price: 10)
+Food.create(name: 'Parsnip', category: 'Vegetables', price: 10)
 
 
-or1 = Order.new(customer_id: c1, food_id: f1, quantity: 2, total: 20)
-or2 = Order.new(customer_id: c2, food_id: f2, quantity: 2, total: 20)
-or3 = Order.new(customer_id: c3, food_id: f3, quantity: 2, total: 20)
+Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2, total: 20)
+Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2, total: 20)
+Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2, total: 20)
 
 
 
@@ -76,7 +76,7 @@ puts "Food"
 # end
 
 # #Custome(name: "Dan")
-# #Food.new(name: "Apple", price: 1 )
+# #Food.create(name: "Apple", price: 1 )
 # Order.create(customer_id: 180, food_id: 831, quantity:10)
 # #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
 
