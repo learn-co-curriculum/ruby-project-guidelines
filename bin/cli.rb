@@ -9,7 +9,9 @@ class CLI
         @prompt = TTY::Prompt.new
         @font = TTY::Font.new
         @pastel = Pastel.new
+        opener
         puts @pastel.cyan(@font.write("                                   Shopping        Cart !!"))
+        opener
         prompt = TTY::Prompt.new
         choices = ['🔹Login' ,'🔹Signup', '🔹Exit'] # '🔹Update Name Info', '🔹Delete Account'
         choice = prompt.select("\n                                                      🔹Welcome to Shopping Cart, please make a selection🔹\n", choices) # do not use multi_select it leaves an octogon symble 
@@ -39,8 +41,7 @@ class CLI
         # go to shopping method - TBD
     end
 
-    def login
-        attempts = 0
+    def login(attempts = 0)
         while attempts <= 3 do
             login_choices = ["Forgot User Name or Password?", "Exit"]
             puts "Enter user name"
@@ -53,7 +54,7 @@ class CLI
             else
                 puts "Invalid User Name or Password"
                 attempts += 1
-                login 
+                login(attempts)
             end
         end
     end
@@ -114,4 +115,4 @@ end
 
 shopping_cart = CLI.new()
 # shopping_cart.main_menu
-shopping_cart.login
+shopping_cart.login(attempts = 0)
