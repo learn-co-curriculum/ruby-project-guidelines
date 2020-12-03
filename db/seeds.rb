@@ -25,6 +25,11 @@ puts "Food"
 
 end
 
+
+#Faker::Food.vegetables
+#Faker::Food.spice
+#Faker::Food.fruits
+
 60.times do 
     Order.create(
         customer_id: Customer.all.sample.id,

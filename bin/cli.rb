@@ -21,9 +21,7 @@ class CLI
         elsif choice == '🔹Signup'
             signup
         elsif choice == '🔹Exit'
-            puts "**********"
-            puts "Good Bye!"
-            puts "**********"
+            exit
         end
 
 
@@ -31,11 +29,31 @@ class CLI
 
 
     def login
-
+        
+        shopping
     end
 
+    def profile
+    end
+
+
+    def shopping
+        choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+    end
+
+
+
+
     def signup
-        
+        login
+
+        shopping
+    end
+
+    def exit
+        puts "**********"
+        puts "Good Bye!"
+        puts "**********"
     end
 
 
