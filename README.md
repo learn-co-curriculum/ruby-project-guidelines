@@ -50,10 +50,119 @@ Projects need to be approved prior to launching into them, so take some time to 
       - Present any code you would like to highlight.   
 7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
 
+
+
+
+
+
+### Option One - Data Analytics Project
+1. Access a Sqlite3 Database using ActiveRecord.
+
+2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
+User >--- Ticket ---< Event ---< Venue ---< City
+
+User has_many Tickets
+User has_many Events through Tickets
+Ticket belongs to one user
+Ticket belongs to one event
+Event has_one venue
+Event has_one City through Venue
+Event has many tickets
+Event has many users through tickets
+Venue has many events
+Venue belongs to one city
+
+3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
+Ticket master API
+API Key: QATrioQ3vEzlLyBebumHRHuNBfT39vrZ
+API call format: https://app.ticketmaster.com/{package}/{version}/{resource}.json?apikey=**{API key}
+  -package: discovery?
+  -version: v2? 
+  -resources: event, attraction, classification, venue...
+
+4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
+I want to see all events in time frame in certain city
+I want to see what types of events are happening within a time frame 
+I want to see whats happening within a price range
+I want to see a record of the events I've been too
+I want to see upcoming events in a similar genres to ones I've attended be
+I want to see if the event I had a ticket for has been cancelled
+I want to see when my favorite band is coming to my city
+
+5. You should provide a CLI to display the return values of your interesting methods.  
+?
+
+6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+
+
+User CLI options
+  -User starts by entering location
+    -takes a string of city and checks if valid in database
+      -if no, puts out "City not found"
+      -if yes, store city in args hash, start next method for date
+
+      0. search by attraction name.
+      1. search by date MM/DD/YYYY
+            0-9 reserved for results
+            -if 0-9 puts event details with y to buy and n to go back 
+            F. filter option menu which puts out which keys to input for another filter
+                  D. to enter a date into the search and filter results by it
+                  P. to enter a price into the search and filter results by it
+                  G. to enter and filter by genre
+      2.search by price
+            0-9 reserved for results
+            F. filter option menu which puts out which keys to input for another filter
+                  D. to enter a date into the search and filter results by it
+                  P. to enter a price into the search and filter results by it
+                  G. to enter and filter by genre
+      3. search by genre
+            0-9 reserved for results
+            F. filter option menu which puts out which keys to input for another filter
+                  D. to enter a date into the search and filter results by it
+                  P. to enter a price into the search and filter results by it
+                  G. to enter and filter by genre
+
+      -date input is string
+        -check if valid, if not return to last page with puts error message
+        -if valid, 
+
+
+    -Entering B goes back to previous page
+    -See all Events available by date 
+    -see all Events available by price range
+    -user sees list of events, can select one with 0-9 input
+      -sees event, venue, price, then Y/N to purchase ticket
+        -Y takes them back to main page
+        -N goes back one level
+    -purchase ticket for event
+  -See events they have tickets for
+    -see events they have tickets for by date
+    -See events they have that are not cancelled
+
+
+
+User class
+  -instance variables: name
+
+Ticket class
+  -instance variables: user_id, event_id
+
+Event
+  -Location
+  -price range
+  -attraction name
+  -genre
+
+
+
+
 ---
 ### Common Questions:
 - How do I turn off my SQL logger?
 ```ruby
 # in config/environment.rb add this line:
 ActiveRecord::Base.logger = nil
+
+
+
 ```
