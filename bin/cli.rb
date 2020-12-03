@@ -32,11 +32,11 @@ class CLI
         user_password = STDIN.noecho(&:gets).chomp
         if !Customer.exists?(name: user_name)
             Customer.create(name: user_name , password: user_password)
+            puts "yay"
         else
             puts "Oops! This user name is already taken!"
             self.signup
         end
-
         # accept user_name & password -> update the table with new user if user name is unique else retry
         # go to shopping method - TBD
     end
@@ -52,35 +52,24 @@ class CLI
             user_password = STDIN.noecho(&:gets).chomp
             if Customer.exists?(name: user_name, password: user_password)
                 shopping
+                return
             else
                 puts "Invalid User Name or Password"
                 attempts += 1
-                login 
+                login(attempts)
             end
         end
+    end
 
         # After 3 attempts - prints max login attempts over.
         # Forgot password
         # gets user_name & password -> check if password matches user_name in table else 1. Error Msg 2. Exit 3. Re-login 4. Reset Password -> Signup
         # shopping
-    end
+
 
     def shopping
-        prompt = TTY::Prompt.new
-        choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
-        choice = prompt.select(choices)
-        
-        if choice == '🔹View Profile'
-            view_profile
-        elsif choice == '🔹View Cart'
-            view_cart
-        elsif choice == '🔹Get To Shopping'
-            go_to_shopping
-        elsif choice == '🔹Checkout'
-            checkout
-        elsif choice == '🔹Exit'
-            exit
-        end
+        puts "yay"
+        #choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
     end
 
 
@@ -136,3 +125,11 @@ end
 
 
 
+    def opener 
+        puts "\n 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 \n "
+    end
+end
+
+shopping_cart = CLI.new()
+# shopping_cart.main_menu
+shopping_cart.login(attempts = 0)
