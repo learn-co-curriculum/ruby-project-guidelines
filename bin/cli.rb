@@ -40,7 +40,8 @@ class CLI
     end
 
     def shopping
-        #choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+        prompt = TTY::Prompt.new
+        choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
     end
 
     def profile
