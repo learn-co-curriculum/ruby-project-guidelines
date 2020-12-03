@@ -28,14 +28,14 @@ puts "Food"
 
 end
 
-# 60.times do 
-#     Order.create(
-#         customer_id: Customer.all.map{|cus| cus.id}.sample,
-#         food_id: Food.all.map{|fo| fo.id}.sample,
-#         quantity: rand(1..20),
-#         total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
-#     )
-# end
+60.times do 
+    Order.create(
+        customer_id: Customer.all.sample.id,
+        food_id: Food.all.sample.id,
+        quantity: rand(1..20),
+        #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
+    )
+end
 
 #Custome(name: "Dan")
 #Food.new(name: "Apple", price: 1 )
