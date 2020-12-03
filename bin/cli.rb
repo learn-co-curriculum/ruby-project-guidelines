@@ -25,7 +25,7 @@ class CLI
         end
     end
 
-    def self.signup
+    def signup
         puts "Enter user name"
         user_name = gets.chomp
         puts "Enter password"
