@@ -13,6 +13,10 @@ def search_by_city
     city = gets
     info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
     load_event_details(info)
+    #event_details(info)
+
+
+
 end
 
 def events_count
@@ -24,10 +28,10 @@ def event_details(info)
     events = []
     i = 1
     info["_embedded"]["events"].each do |event|
-        events << "#{i}. #{event["name"]} - #{event["dates"]["start"]["localDate"]} - #{event["_embedded"]["venues"][0]["name"]} - #{event["classifications"][0]["subGenre"]["name"]}"
+        events << "#{i}. #{event["name"]} - #{event["dates"]["start"]["localDate"]} - #{event["_embedded"]["venues"][0]["name"]} - #{event["classifications"][0]["subGenre"]["name"]} - #{event["dates"]["status"]["code"]}"
         i+=1
     end
-    events
+    puts events
 end
 
 def load_event_details(info)   
@@ -38,6 +42,7 @@ def load_event_details(info)
         new_event.date = event["dates"]["start"]["localDate"]
         new_event.venue = event["_embedded"]["venues"][0]["name"]
         new_event.genre = event["classifications"][0]["subGenre"]["name"]
+        new_event.event_status = event["dates"]["status"]["code"]
         events << new_event
     end
     save_new_events(events)
@@ -48,8 +53,12 @@ def save_new_events(events)
         if !Event.all.select {|e|e.attraction_name == event.attraction_name && e.date == event.date}
             event.save
         end
+        display_events(events)
     end
 end
 
+def display_events(events)
+    puts events.map {|e| "#{e.name} - #{e.date} - #{e.event_status}"
+end 
 
 search_by_city
