@@ -27,27 +27,51 @@ class CLI
 
     end
 
+    
+    def signup
 
-    def login
-        
+        #create user_name & password -> update the table
         shopping
     end
 
-    def profile
+    def login
+        #gets user_name & password -> check if password matches user_name in table else 1. Error Msg 2. Exit 3. Re-login 4. Reset Password -> Signup
+        shopping
     end
-
 
     def shopping
         choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
     end
 
+    def profile
+        #reset user_name & password
+        go_back 
+    end
 
+    def go_back
+        -> if else
+    end
 
+    def go_to_shopping
+        # # choose from aisles choices = [fruits, vegetables, spices, meats, delete items] 
+        # # select foods from aisle and display prices and emojis 
+        # # added to cart -> optional to add quantity
+        # # at the end of aisles, go back to aisle choices
+        # go_back
+        # cart = []
+    end
 
-    def signup
-        login
+    def view_cart(cart)
+        cart = []
+        total = calculates total
+        checkout
+        go_back
+    end
 
-        shopping
+    def checkout
+        show receipt
+        exit
+        go_back
     end
 
     def exit
