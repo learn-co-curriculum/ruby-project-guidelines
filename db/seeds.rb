@@ -77,7 +77,7 @@ puts "Food"
 # end
 
 # #Custome(name: "Dan")
-# #Food.new(name: "Apple", price: 1 )
+# #Food.create(name: "Apple", price: 1 )
 # Order.create(customer_id: 180, food_id: 831, quantity:10)
 # #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
 

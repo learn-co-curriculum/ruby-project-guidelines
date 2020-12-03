@@ -9,9 +9,7 @@ class CLI
         @prompt = TTY::Prompt.new
         @font = TTY::Font.new
         @pastel = Pastel.new
-        opener
         puts @pastel.cyan(@font.write("                                   Shopping        Cart !!"))
-        opener
         prompt = TTY::Prompt.new
         choices = ['🔹Login' ,'🔹Signup', '🔹Exit'] # '🔹Update Name Info', '🔹Delete Account'
         choice = prompt.select("\n                                                      🔹Welcome to Shopping Cart, please make a selection🔹\n", choices) # do not use multi_select it leaves an octogon symble 
@@ -25,18 +23,18 @@ class CLI
         end
     end
 
-    def self.signup
+    def signup
         puts "Enter user name"
         user_name = gets.chomp
         puts "Enter password"
         user_password = STDIN.noecho(&:gets).chomp
         if !Customer.exists?(name: user_name)
             Customer.create(name: user_name , password: user_password)
+            puts "yay"
         else
             puts "Oops! This user name is already taken!"
             self.signup
         end
-
         # accept user_name & password -> update the table with new user if user name is unique else retry
         # go to shopping method - TBD
     end
@@ -52,18 +50,20 @@ class CLI
             user_password = STDIN.noecho(&:gets).chomp
             if Customer.exists?(name: user_name, password: user_password)
                 shopping
+                return
             else
                 puts "Invalid User Name or Password"
                 attempts += 1
                 login 
             end
         end
+    end
 
         # After 3 attempts - prints max login attempts over.
         # Forgot password
         # gets user_name & password -> check if password matches user_name in table else 1. Error Msg 2. Exit 3. Re-login 4. Reset Password -> Signup
         # shopping
-    end
+
 
     def shopping
         prompt = TTY::Prompt.new
