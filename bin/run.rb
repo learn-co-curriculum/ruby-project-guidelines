@@ -6,12 +6,9 @@ info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?c
 def search_by_city
     puts "enter a city"
     city = gets
-    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-    load_event_details(info)
-    #event_details(info)
-
-
-
+    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&radius=50&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+    #load_event_details(info)
+    event_details(info)
 end
 
 def events_count
@@ -59,8 +56,31 @@ def save_user(name, city)
 end
 
 def display_events(events)
-    puts events.map {|e| "#{e.name} - #{e.date} - #{e.event_status}"
+    puts events.map {|e| "#{e.name} - #{e.date} - #{e.event_status}"}
 end 
 
+def start_program
+    display_top_level_options
+    input = gets
+    if input == 1
+        #display results by zip code
+    elsif input == 2
+        #display results by artist name
+    elsif input == 3
+        #display results by genre
+    end
+end
 
-search_by_city
+
+def display_top_level_options
+    puts "Welcome to EventFinder"
+    puts "Please enter your zip code:"
+
+    user_zip =STDIN.gets.chomp
+
+    puts "1. Search by event name or artist name"
+    puts "2. Search by genre"
+    puts "3. Search by date"
+end
+m1 = Menu.new
+m1.start_program
