@@ -5,7 +5,6 @@ class CreateOrders < ActiveRecord::Migration[5.2]
       t.integer :food_id
       t.integer :quantity
       t.integer :total
-
       t.timestamp 
 
     end 
