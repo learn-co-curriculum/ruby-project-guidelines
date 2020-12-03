@@ -26,39 +26,38 @@ f2 = Food.new(name: 'Rosemary', category: 'Spice', price: 10)
 f3 = Food.new(name: 'Parsnip', category: 'Vegetables', price: 10)
 
 
-or1 = (customer_id: c1, food_id: f1, quantity: 2, total:)
-
-
-
+or1 = Order.new(customer_id: c1, food_id: f1, quantity: 2, total: 20)
+or2 = Order.new(customer_id: c2, food_id: f2, quantity: 2, total: 20)
+or3 = Order.new(customer_id: c3, food_id: f3, quantity: 2, total: 20)
 
 
 
 
 puts "Food"
 
-30.times do 
-    Food.create(
-        name: Faker::Food.fruits,
-        price: rand(20..180),
-        category: "Fruits" 
-    )
-end
+# 30.times do 
+#     Food.create(
+#         name: Faker::Food.fruits,
+#         price: rand(20..180),
+#         category: "Fruits" 
+#     )
+# end
 
-30.times do 
-    Food.create(
-        name: Faker::Food.vegetables,
-        price: rand(20..180),
-        category: "Vegetables" 
-    )
-end
+# 30.times do 
+#     Food.create(
+#         name: Faker::Food.vegetables,
+#         price: rand(20..180),
+#         category: "Vegetables" 
+#     )
+# end
 
-30.times do 
-    Food.create(
-        name: Faker::Food.spice,
-        price: rand(20..180),
-        category: "Spice" 
-    )
-end
+# 30.times do 
+#     Food.create(
+#         name: Faker::Food.spice,
+#         price: rand(20..180),
+#         category: "Spice" 
+#     )
+# end
 
 
 
@@ -67,19 +66,19 @@ end
 #Faker::Food.spice
 #Faker::Food.fruits
 
-60.times do 
-    Order.create(
-        customer_id: Customer.all.sample.id,
-        food_id: Food.all.sample.id,
-        quantity: rand(1..20),
-        #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
-    )
-end
+# 60.times do 
+#     Order.create(
+#         customer_id: Customer.all.sample.id,
+#         food_id: Food.all.sample.id,
+#         quantity: rand(1..20),
+#         #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
+#     )
+# end
 
-#Custome(name: "Dan")
-#Food.new(name: "Apple", price: 1 )
-Order.create(customer_id: 180, food_id: 831, quantity:10)
-#total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
+# #Custome(name: "Dan")
+# #Food.new(name: "Apple", price: 1 )
+# Order.create(customer_id: 180, food_id: 831, quantity:10)
+# #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
 
 
 
