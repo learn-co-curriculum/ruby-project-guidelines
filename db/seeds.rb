@@ -11,19 +11,56 @@ puts "Customer"
 
 20.times do 
     Customer.create(
-        name: Faker::Name.name
+        name: Faker::Name.name,
+        password: Faker::Barcode.ean 
     )
 end
+
+
+c1 = Customer.new(name:'Dan', password:'123')
+c2 = Customer.new(name:'Tee', password:'321')
+c3 = Customer.new(name:'Bob', password:'111')
+
+f1 = Food.new(name: 'Methi', category: 'Spice', price: 10)
+f2 = Food.new(name: 'Rosemary', category: 'Spice', price: 10)
+f3 = Food.new(name: 'Parsnip', category: 'Vegetables', price: 10)
+
+
+or1 = (customer_id: c1, food_id: f1, quantity: 2, total:)
+
+
+
+
+
+
 
 puts "Food"
 
-100.times do 
+30.times do 
     Food.create(
-        name: Faker::Food.ingredient,
-        price: rand(20..180)
+        name: Faker::Food.fruits,
+        price: rand(20..180),
+        category: "Fruits" 
     )
-
 end
+
+30.times do 
+    Food.create(
+        name: Faker::Food.vegetables,
+        price: rand(20..180),
+        category: "Vegetables" 
+    )
+end
+
+30.times do 
+    Food.create(
+        name: Faker::Food.spice,
+        price: rand(20..180),
+        category: "Spice" 
+    )
+end
+
+
 
 
 #Faker::Food.vegetables
