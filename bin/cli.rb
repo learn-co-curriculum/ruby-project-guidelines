@@ -1,9 +1,9 @@
+require 'io/console'
+
 class CLI
 
     attr_reader :prompt, :font
     attr_accessor :customer
-
-
 
     def main_menu
         @prompt = TTY::Prompt.new
@@ -23,20 +23,43 @@ class CLI
         elsif choice == '🔹Exit'
             exit
         end
-
-
     end
 
-    
-    def signup
-
-        #create user_name & password -> update the table
-        shopping
+    def self.signup
+        puts "Enter user name"
+        user_name = gets.chomp
+        puts "Enter password"
+        user_password = STDIN.noecho(&:gets).chomp
+        if !Customer.exists?(name: user_name)
+            Customer.create(name: user_name , password: user_password)
+        else
+            puts "Oops! This user name is already taken!"
+            self.signup
+        # accept user_name & password -> update the table with new user if user name is unique else retry
+        # go to shopping method - TBD
     end
 
     def login
-        #gets user_name & password -> check if password matches user_name in table else 1. Error Msg 2. Exit 3. Re-login 4. Reset Password -> Signup
-        shopping
+        attempts = 0
+        while attempts <= 3 do
+            login_choices = ["Forgot User Name or Password?", "Exit"]
+            puts "Enter user name"
+            user_name = gets.chomp
+            puts "Enter password"
+            user_password = STDIN.noecho(&:gets).chomp
+            if Customer.exists?(name: user_name, password: user_password)
+                shopping
+            else
+                puts "Invalid User Name or Password"
+                attempts += 1
+                login 
+            end
+        end
+
+        # After 3 attempts - prints max login attempts over.
+        # Forgot password
+        # gets user_name & password -> check if password matches user_name in table else 1. Error Msg 2. Exit 3. Re-login 4. Reset Password -> Signup
+        # shopping
     end
 
     def shopping
@@ -45,8 +68,8 @@ class CLI
     end
 
     def profile
-        #reset user_name & password
-        go_back 
+        # #reset user_name & password
+        # go_back 
     end
 
     def go_back
@@ -63,16 +86,16 @@ class CLI
     end
 
     def view_cart(cart)
-        cart = []
-        total = calculates total
-        checkout
-        go_back
+        # cart = []
+        # total = calculates total
+        # checkout
+        # go_back
     end
 
     def checkout
-        show receipt
-        exit
-        go_back
+        # show receipt
+        # exit
+        # go_back
     end
 
     def exit
@@ -90,7 +113,7 @@ class CLI
         puts "\n 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 \n "
     end
 
-
+end
 
 
 
