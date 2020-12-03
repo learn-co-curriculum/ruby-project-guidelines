@@ -31,20 +31,25 @@ def event_details(info)
 end
 
 def load_event_details(info)   
-    events
+    events = []
     info["_embedded"]["events"].each do |event|        
         new_event = Event.new
         new_event.attraction_name = event["name"]
         new_event.date = event["dates"]["start"]["localDate"]
         new_event.venue = event["_embedded"]["venues"][0]["name"]
         new_event.genre = event["classifications"][0]["subGenre"]["name"]
-        event << new_event
+        events << new_event
     end
-    events
+    save_new_events(events)
 end
 
-def save_new_events
-
+def save_new_events(events)
+    events.each do |event|
+        if !Event.all.select {|e|e.attraction_name == event.attraction_name && e.date == event.date}
+            event.save
+        end
+    end
 end
+
 
 search_by_city
