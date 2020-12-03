@@ -1,11 +1,6 @@
 require_relative '../config/environment'
 
 info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=Seattle&size=1&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-# puts info["_embedded"]["events"][0]["name"]
-# puts info["_embedded"]["events"][0]["classifications"][0]["subGenre"]["name"]
-# puts info["_embedded"]["events"][0]["dates"]["start"]["localDate"]
-# puts info["_embedded"]["events"][0]["_embedded"]["venues"][0]["name"]
-# puts info["_embedded"]["events"][0]["dates"]["status"]["code"]
 
 
 def search_by_city
@@ -53,12 +48,19 @@ def save_new_events(events)
         if !Event.all.select {|e|e.attraction_name == event.attraction_name && e.date == event.date}
             event.save
         end
+        
+        Event.order(date: :asc)
         display_events(events)
     end
+end
+
+def save_user(name, city)
+    User.create(name: name, city: city)
 end
 
 def display_events(events)
     puts events.map {|e| "#{e.name} - #{e.date} - #{e.event_status}"
 end 
+
 
 search_by_city
