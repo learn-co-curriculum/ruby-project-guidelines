@@ -35,9 +35,12 @@ class CLI
         else
             puts "Oops! This user name is already taken!"
             self.signup
+        end
+
         # accept user_name & password -> update the table with new user if user name is unique else retry
         # go to shopping method - TBD
     end
+
 
     def login
         attempts = 0
@@ -65,7 +68,22 @@ class CLI
     def shopping
         prompt = TTY::Prompt.new
         choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+        choice = prompt.select(choices)
+        
+        if choice == '🔹View Profile'
+            view_profile
+        elsif choice == '🔹View Cart'
+            view_cart
+        elsif choice == '🔹Get To Shopping'
+            go_to_shopping
+        elsif choice == '🔹Checkout'
+            checkout
+        elsif choice == '🔹Exit'
+            exit
+        end
     end
+
+
 
     def profile
         # #reset user_name & password
@@ -106,17 +124,15 @@ class CLI
 
 
 
-
-
-
     def opener 
         puts "\n 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 \n "
     end
 
+    
 end
 
 
 
 
 
-end
+
