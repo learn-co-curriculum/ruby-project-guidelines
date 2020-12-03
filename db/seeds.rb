@@ -25,6 +25,29 @@ puts "Food"
 
 end
 
-Order.create(customer_id: 180, food_id: 801, quantity:10)
-Order.create(customer_id: 1, food_id: 802, quantity:8)
+60.times do 
+    Order.create(
+        customer_id: Customer.all.sample.id,
+        food_id: Food.all.sample.id,
+        quantity: rand(1..20),
+        #total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
+    )
+end
+
+#Custome(name: "Dan")
+#Food.new(name: "Apple", price: 1 )
+Order.create(customer_id: 180, food_id: 831, quantity:10)
+#total: Food.all.map{|foo| foo.price if foo.id == self.food_id} * self.quantity
+
+
+
+
+
+
+
+
+# c1 = Customer.create(name:'Dan')
+
+# f1 = Food.create(name:'pie',price: 2)
+
 
