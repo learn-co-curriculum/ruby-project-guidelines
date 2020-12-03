@@ -62,8 +62,8 @@ class CLI
         # shopping
     end
 
-    # def shopping
-    #     choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+    def shopping
+        #choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
     end
 
     def profile
@@ -72,7 +72,7 @@ class CLI
     end
 
     def go_back
-        # -> if else
+        #-> if else
     end
 
     def go_to_shopping
