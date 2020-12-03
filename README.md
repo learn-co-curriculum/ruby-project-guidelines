@@ -122,9 +122,7 @@ User CLI options
                   P. to enter a price into the search and filter results by it
                   G. to enter and filter by genre
 
-      -date input is string
-        -check if valid, if not return to last page with puts error message
-        -if valid, 
+     
 
 
     -Entering B goes back to previous page

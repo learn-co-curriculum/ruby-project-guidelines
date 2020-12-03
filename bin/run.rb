@@ -7,16 +7,17 @@ info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?c
 # puts info["_embedded"]["events"][0]["_embedded"]["venues"][0]["name"]
 # puts info["_embedded"]["events"][0]["dates"]["status"]["code"]
 
+
 def search_by_city
     puts "enter a city"
     city = gets
-    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&size=10&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
     puts event_details(info)
 end
 
-def cancelled_events_count
-    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-    info["_embedded"]["events"].select {|e|e["dates"]["status"]["code"] = "offsale"}.size
+def events_count
+    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?country=usa&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+    info["_embedded"]["events"].count 
 end
 
 def event_details(info)
@@ -29,4 +30,4 @@ def event_details(info)
     events
 end
 
-#search_by_city
+search_by_city
