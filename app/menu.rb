@@ -62,7 +62,7 @@ class Menu
 
     def save_new_events(events)
         events.each do |event|
-            if !Event.all.select {|e|e.attraction_name == event.attraction_name && e.date == event.date}
+            if Event.all.select {|e|e.attraction_name == event.attraction_name && e.date == event.date}.empty?
                 event.save
             end           
             Event.order(date: :asc)
