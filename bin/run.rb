@@ -86,4 +86,5 @@ def display_top_level_options
 end
 
 
-search_by_city_and_state
+m1 = Menu.new
+m1.start_program
