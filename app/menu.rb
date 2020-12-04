@@ -73,11 +73,8 @@ class Menu
         puts "1. Search by event name or artist name"
         puts "2. Search by genre"
         puts "3. Search by date"
-
         puts "4. See My Tickets"
-
         puts "Press 's' to return to start"
-
         puts "Press 'x' to exit the program"
         user_input = STDIN.gets.chomp
         if user_input == "1"
@@ -85,6 +82,8 @@ class Menu
         elsif user_input == "2"
             #display_results_by_date
         elsif user_input == "3"
+            #
+        elsif user_input == "4"
             #
         elsif user_input == "s"
             back_to_start
@@ -100,7 +99,12 @@ class Menu
         puts "Please enter the event or artist you would like to see:"
         user_input = STDIN.gets.chomp
         events = Event.all.select {|event|event.attraction_name.split.any?(user_input)}
+        if events.empty?
+            no_results_found
+            begin_search
+        else
         display_events(events)
+        end
     end
 
     def display_events(events)
@@ -109,16 +113,22 @@ class Menu
             puts "#{i}. #{e.attraction_name} - #{e.date} - #{e.venue}" 
             i = i+1
         end
+    end
+    
+    def no_results_found
+        puts "No results found. Please try again"
+    end
+
+    def back_to_start
+        Menu.new.start_program 
     end 
+    
+    def end_program
+        puts "goodbye!"
+        exit 
+    end 
+
 
 end
 
-def back_to_start
-    Menu.new.start_program 
-end 
-
-def end_program
-    puts "goodbye!"
-    exit 
-end 
 
