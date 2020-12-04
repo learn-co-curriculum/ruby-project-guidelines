@@ -7,7 +7,7 @@ class Menu
 
     def start_program
         puts "Welcome to EventFinder!"
-        self.user = create_user(get_user_name, get_user_city)# add ,get_user_state the end later
+        self.user = find_or_create_user_by(get_user_name, get_user_city, get_user_state)# add ,get_user_state the end later
         pull_data_by_city_and_state(self.user.city)#add ,self.user.state
         puts "Thank you, #{user.name}"
 
@@ -52,8 +52,8 @@ class Menu
     end
 
 
-    def create_user(name, city) #add state later
-        User.create(name: name, city: city)
+    def find_or_create_user_by(name, city, state) 
+        User.find_or_create_by(name: name, city: city, state: state)
     end
 
     def pull_data_by_city_and_state(city) #add state later
