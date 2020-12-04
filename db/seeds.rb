@@ -2,6 +2,7 @@ require 'faker'
 
 #key = KA7HJvpLeeJHtp4Y2SkcGVzOmw9AAmJ1
 #https://app.ticketmaster.com/discovery/v2/venues.json?apikey=KA7HJvpLeeJHtp4Y2SkcGVzOmw9AAmJ1
+# if you want keyword searchability, add &keyword=#{interpolated_passed_here} to the end of apikey in the url
 
 Artist.destroy_all
 ShowDate.destroy_all
