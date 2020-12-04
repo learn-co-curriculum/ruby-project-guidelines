@@ -8,8 +8,8 @@ class Menu
 
     def start_program
         puts "Welcome to EventFinder!"
-        self.user = create_user(get_user_name, get_user_city, get_user_state)# add ,get_user_state the end later
-        pull_data_by_city_and_state(self.user.city, self.user.state)#add ,self.user.state
+        self.user = create_user(get_user_name, get_user_city, get_user_state)
+        pull_data_by_city_and_state(self.user.city, self.user.state)
         puts "Thank you, #{user.name}"
 
         begin_search
@@ -40,6 +40,7 @@ class Menu
 
     def pull_data_by_city_and_state(city, state)
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+        load_event_details(info)
     end
   
     def find_or_create_user_by(name, city, state) 
@@ -84,13 +85,13 @@ class Menu
         elsif user_input == "3"
             #
         elsif user_input == "4"
-            #
+            display_user_tickets
         elsif user_input == "s"
             back_to_start
         elsif user_input == "x"
             end_program
         else
-            puts "Invalid entry, please try another option"
+            invalid_selection
             begin_search
         end
     end
@@ -108,15 +109,48 @@ class Menu
     end
 
     def display_events(events)
+        puts "Here are the events available:"
         i = 1
         events.each do |e| 
             puts "#{i}. #{e.attraction_name} - #{e.date} - #{e.venue}" 
             i = i+1
         end
+        buy_ticket(events)
     end
+
+    def buy_ticket(events)
+        puts "Would you like to buy a ticket for an event? Enter the number of the event, or x to go back"
+        input = STDIN.gets.chomp
+        begin_search if input == "x"
+        choice = events[input.to_i-1]
+        if choice
+            puts "#{choice.attraction_name} - #{choice.date} - #{choice.venue}"
+            puts "Confirm you would like to buy a ticket for this event. Y or N."
+            y_n_input = STDIN.gets.chomp
+            if y_n_input == "y"
+                Ticket.create(user_id: self.user.id, event_id: choice.id)
+                puts "Congratulations, #{self.user.name}. Enjoy #{choice.attraction_name} on #{choice.date}, at #{choice.venue}"
+                begin_search
+            elsif y_n_input == "n"
+                begin_search
+            else
+                invalid_selection
+                display_events(events)
+            end
+        else
+            invalid_selection
+            display_events(events)
+        end
+    end
+
+    
     
     def no_results_found
         puts "No results found. Please try again"
+    end
+
+    def invalid_selection
+        puts "Not a valid selection. Please try again."
     end
 
     def back_to_start
