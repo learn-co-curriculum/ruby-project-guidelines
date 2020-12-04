@@ -3,12 +3,14 @@ require_relative '../config/environment'
 info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=Seattle&size=1&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
 
 
-def search_by_city
-    puts "enter a city"
-    city = gets
-    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&radius=50&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-    #load_event_details(info)
-    event_details(info)
+def search_by_city_and_state
+    puts "enter your location in format: city, state abbreviation"
+    location = gets
+    city = location.split(", ")[0]
+    state = location.split(", ")[1]
+    info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+    load_event_details(info)
+    event_details(info)        
 end
 
 def events_count
@@ -51,8 +53,8 @@ def save_new_events(events)
     end
 end
 
-def save_user(name, city)
-    User.create(name: name, city: city)
+def save_user(name, city, state)
+    User.create(name: name, city: city, state: state)
 end
 
 def display_events(events)
