@@ -142,9 +142,6 @@ User CLI options
     -See events they have that are not cancelled
 
 
-Smaller to-do's
-  -remove case sensitive restriction on string search
-  -log back in with the find_or_create_by
 
 
 

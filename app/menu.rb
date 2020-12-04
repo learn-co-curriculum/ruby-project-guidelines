@@ -40,7 +40,7 @@ class Menu
     end
   
     def get_user
-        puts "Enter 1 to Log in, or 2 to Create a new account"
+        puts "Enter 1 to Log in, or 2 to Create a new account, or x to exit the application"
         input = STDIN.gets.chomp
         if input == "1" 
             user = find_user_by(user_name = get_user_name)
@@ -50,6 +50,8 @@ class Menu
             end
         elsif input == "2"
             user = create_user_by(get_user_name, get_user_city, get_user_state)
+        elsif input == "x"
+            end_program 
         else
             invalid_selection
             start_program
@@ -267,6 +269,7 @@ def classification_tester(info)
 end 
 
 def error_message
+    self.user.delete
     puts
     puts "No events found in your city :(" #can make this a more generic message if we want to use this error method elsewhere
     puts  
