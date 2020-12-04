@@ -49,7 +49,7 @@ def save_new_events(events)
         end
         
         Event.order(date: :asc)
-        display_events(events)
+        #display_events(events)
     end
 end
 
@@ -84,5 +84,6 @@ def display_top_level_options
     puts "2. Search by genre"
     puts "3. Search by date"
 end
-m1 = Menu.new
-m1.start_program
+
+
+search_by_city_and_state
