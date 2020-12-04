@@ -90,16 +90,19 @@ class Menu
         puts "1. Search by event name or artist name"
         puts "2. Search by genre"
         puts "3. Search by date"
+        puts "Press 's' to return to start"
         puts "Press 'x' to exit the program"
         user_input = STDIN.gets.chomp
         if user_input == "1"
             display_results_by_attraction_name
         elsif user_input == "2"
             #
-        elseif user_input == "3"
+        elsif user_input == "3"
             #
-        elseif user_input == "x"
-            exit
+        elsif user_input == "s"
+            back_to_start
+        elsif user_input == "x"
+            end_program
         else
             puts "Invalid entry, please try another option"
             begin_search
@@ -115,4 +118,13 @@ class Menu
     end
 
 end
+
+def back_to_start
+    Menu.new.start_program 
+end 
+
+def end_program
+    puts "goodbye!"
+    exit 
+end 
 
