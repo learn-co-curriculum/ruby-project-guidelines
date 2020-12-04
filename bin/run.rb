@@ -4,4 +4,4 @@ require_relative '../bin/cli.rb'
 #puts "HELLO WORLD"
 
 cli = CLI.new
-cli.main_menu
+cli.main_menu()

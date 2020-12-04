@@ -16,6 +16,8 @@ class CLI
         puts @pastel.cyan(@font.write("                                   Shopping        Cart !!"))
         opener
         prompt = TTY::Prompt.new
+        hearts = "\u2665"
+        puts hearts.encode('utf-8')
         choices = ['🔹Login' ,'🔹Signup', '🔹Exit'] # '🔹Update Name Info', '🔹Delete Account'
         choice = prompt.select("\n                                                      🔹Welcome to Shopping Cart, please make a selection🔹\n", choices) # do not use multi_select it leaves an octogon symble 
 
@@ -37,9 +39,6 @@ class CLI
         user_password = STDIN.noecho(&:gets).chomp
         if !Customer.exists?(name: user_name)
             Customer.create(name: user_name , password: user_password)
-            if tried_user_names.include? user_name
-                puts "You already tried this user name!"
-            end
         else
             puts "Oops! This user name is already taken!"
             @prompt = TTY::Prompt.new
@@ -62,9 +61,6 @@ class CLI
 
     def login(attempts=0)
         attempts = 0
-        while attempts <= 3 do
-            #login_choices = ["Forgot User Name or Password?", "Exit"]
-    def login(attempts)
         system 'clear'
         if attempts < 3
             login_choices = ["Forgot User Name or Password?", "Exit"]
@@ -103,18 +99,11 @@ class CLI
 
 
     def shopping
-        prompt = TTY::Prompt.new
-        choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
-        choice = prompt.select(choices)
-        
-        if choice == '🔹View Profile'
-            view_profile
-        puts 'yay'
         @prompt = TTY::Prompt.new
         prompt = TTY::Prompt.new
         choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
         system 'clear'
-        choice = prompt.select("\n                                                                           🔹Welcome Back!!🔹 \n", choices)
+        choice = prompt.select("\n ? \n",choices)
         if choice == '🔹View Profile'
             profile
         elsif choice == '🔹View Cart'
@@ -127,7 +116,7 @@ class CLI
             exit
         end
 
-        puts "yay"
+        # puts "yay"
         #choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
     end
 
@@ -151,7 +140,7 @@ class CLI
             user_name = gets.chomp
             puts "Enter your password"
             user_password = STDIN.noecho(&:gets).chomp
-            Customer.exists?(name: user_name, password: user_password):
+            Customer.exists?(name: user_name, password: user_password)
                 User.destroy_all(name: user_name)
                 puts "Account Deleted. We hope to see you again soon!"
                 exit
@@ -217,18 +206,5 @@ class CLI
     end
 end
 
-# shopping_cart = CLI.new()
-# # shopping_cart.main_menu
-# shopping_cart.login(attempts = 0)
 
-shopping_cart = CLI.new()
-# shopping_cart.main_menu
-shopping_cart.login(attempts = 0)
-    # shopping_cart = CLI.new()
-    # # shopping_cart.main_menu
-    # shopping_cart.signup #(attempts = 0)
 
-end
-# shopping_cart = CLI.new()
-# # shopping_cart.main_menu
-# shopping_cart.login(attempts = 0)
