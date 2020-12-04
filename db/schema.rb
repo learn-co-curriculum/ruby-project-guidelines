@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_000105) do
+ActiveRecord::Schema.define(version: 2020_12_04_184104) do
 
   create_table "events", force: :cascade do |t|
     t.string "attraction_name"
@@ -20,6 +20,8 @@ ActiveRecord::Schema.define(version: 2020_12_04_000105) do
     t.float "price_min"
     t.float "price_max"
     t.string "event_status"
+    t.string "event_city"
+    t.string "event_type"
   end
 
   create_table "tickets", force: :cascade do |t|

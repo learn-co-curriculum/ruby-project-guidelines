@@ -40,6 +40,11 @@ class Menu
 
     def pull_data_by_city_and_state(city, state)
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+        if  info["page"]["totalElements"] == 0 
+            error_message
+        else  
+        load_event_details(info)
+        end 
     end
   
     def find_or_create_user_by(name, city, state) 
@@ -53,7 +58,9 @@ class Menu
             new_event.attraction_name = event["name"]
             new_event.date = event["dates"]["start"]["localDate"]
             new_event.venue = event["_embedded"]["venues"][0]["name"]
-            new_event.genre = event["classifications"][0]["subGenre"]["name"]
+            new_event.genre = event["classifications"][0]["genre"]["name"] #changed subGenre to genre here
+            new_event.event_city = event["_embedded"]["venues"][0]["city"]["name"]
+            new_event.event_type = event["classifications"][0]["segment"]["name"] 
             #new_event.event_status = event["dates"]["status"]["code"]
             events << new_event
         end
@@ -80,7 +87,7 @@ class Menu
         if user_input == "1"
             display_results_by_attraction_name
         elsif user_input == "2"
-            #display_results_by_date
+            #display_results_by_genre
         elsif user_input == "3"
             #
         elsif user_input == "4"
@@ -124,11 +131,84 @@ class Menu
     end 
     
     def end_program
-        puts "goodbye!"
+        puts "Goodbye!"
         exit 
     end 
 
 
 end
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#tester method only. to use, add call to method within normal run sequence
+def classification_tester(info)
+    info["_embedded"]["events"].each do |event|
+        puts "#{event["_embedded"]["venues"][0]["city"]["name"]} - #{event["classifications"][0]["genre"]["name"]} - #{event["classifications"][0]["segment"]["name"]}"
+    end 
+end 
+
+def error_message
+    puts
+    puts "No events found in your city :(" #can make this a more generic message if we want to use this error method elsewhere
+    puts  
+    puts "Press 's' to return to start"
+    puts "Press 'x' to exit the program"        
+    user_input = STDIN.gets.chomp
+    if user_input == "s"
+        back_to_start
+    elsif user_input == "x"
+        end_program
+    else
+        puts "Invalid entry, please try another option"
+    end 
+end 
 
