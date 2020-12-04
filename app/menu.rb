@@ -221,6 +221,7 @@ class Menu
 
     
     
+    
     def get_results_by_event_type
         events = Event.all.select {|event|event.event_city.split.any?(user.city.capitalize) || event.event_city.split.any?(user.city)}  
         if events.empty?
