@@ -128,7 +128,7 @@ class Menu
             puts "Confirm you would like to buy a ticket for this event. Y or N."
             y_n_input = STDIN.gets.chomp
             if y_n_input == "y"
-                Ticket.create(user_id: self.user.id, event_id: choice.id)
+                self.user.buy_ticket(choice)
                 puts "Congratulations, #{self.user.name}. Enjoy #{choice.attraction_name} on #{choice.date}, at #{choice.venue}"
                 begin_search
             elsif y_n_input == "n"
@@ -143,7 +143,19 @@ class Menu
         end
     end
 
-    
+    def display_user_tickets
+        puts "Here are the events #{self.user.name} has a ticket for:"
+        user_events = self.user.tickets.map {|t|t.event}
+        if !user_events.empty?
+            user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
+            press_any_key_to_go_back
+            begin_search
+        else
+            puts "You have no tickets at this time"
+            press_any_key_to_go_back
+            begin_search
+        end
+    end
     
     def no_results_found
         puts "No results found. Please try again"
@@ -151,6 +163,13 @@ class Menu
 
     def invalid_selection
         puts "Not a valid selection. Please try again."
+    end
+
+    def press_any_key_to_go_back
+        puts "Press Enter to continue."
+        input = gets
+        if input
+        end
     end
 
     def back_to_start

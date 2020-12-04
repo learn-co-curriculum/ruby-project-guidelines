@@ -143,19 +143,9 @@ User CLI options
     -See events they have that are not cancelled
 
 
-
-User class
-  -instance variables: name
-
-Ticket class
-  -instance variables: user_id, event_id
-
-Event
-  -Location
-  -price range
-  -attraction name
-  -genre
-
+Smaller to-do's
+  -remove case sensitive restriction on string search
+  -log back in with the find_or_create_by
 
 
 
