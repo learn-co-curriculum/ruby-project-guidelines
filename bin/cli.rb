@@ -1,5 +1,6 @@
 require 'io/console'
 require 'tty-prompt'
+# require 'pry'
 
 class CLI
 
@@ -7,6 +8,7 @@ class CLI
     attr_accessor :customer
 
     def main_menu
+        system 'clear'
         @prompt = TTY::Prompt.new
         @font = TTY::Font.new
         @pastel = Pastel.new
@@ -18,7 +20,8 @@ class CLI
         choice = prompt.select("\n                                                      🔹Welcome to Shopping Cart, please make a selection🔹\n", choices) # do not use multi_select it leaves an octogon symble 
 
         if choice == '🔹Login'
-            login
+            attempts = 0
+            login(attempts)
         elsif choice == '🔹Signup'
             signup
         elsif choice == '🔹Exit'
@@ -27,16 +30,30 @@ class CLI
     end
 
     def signup
+        system 'clear'
         puts "Enter user name"
         user_name = gets.chomp
         puts "Enter password"
         user_password = STDIN.noecho(&:gets).chomp
         if !Customer.exists?(name: user_name)
             Customer.create(name: user_name , password: user_password)
-            puts "yay"
+            if tried_user_names.include? user_name
+                puts "You already tried this user name!"
+            end
         else
             puts "Oops! This user name is already taken!"
-            self.signup
+            @prompt = TTY::Prompt.new
+            prompt = TTY::Prompt.new
+            choices = ['🔹Sign-Up With Different User Name' , '🔹Login','🔹Exit'] 
+            choice = prompt.select("\n ? \n",choices)
+            if choice == '🔹Login'
+                attempts = 0
+                login(attempts)
+            elsif choice == '🔹Sign-Up With Different User Name'
+                signup
+            else choice == '🔹Exit'
+                exit
+            end
         end
         # accept user_name & password -> update the table with new user if user name is unique else retry
         # go to shopping method - TBD
@@ -47,6 +64,10 @@ class CLI
         attempts = 0
         while attempts <= 3 do
             #login_choices = ["Forgot User Name or Password?", "Exit"]
+    def login(attempts)
+        system 'clear'
+        if attempts < 3
+            login_choices = ["Forgot User Name or Password?", "Exit"]
             puts "Enter user name"
             user_name = gets.chomp
             puts "Enter password"
@@ -57,12 +78,25 @@ class CLI
             else
                 puts "Invalid User Name or Password"
                 attempts += 1
-                login(attempts)
+                @prompt = TTY::Prompt.new
+                prompt = TTY::Prompt.new
+                choices = ['🔹Re-Login' ,'🔹Forgot User Name/Password', '🔹Exit'] 
+                choice = prompt.select("\n ? \n",choices)
+                if choice == '🔹Re-Login'
+                    login(attempts)
+                elsif choice == '🔹Forgot User Name/Password'
+                    puts "Sign-Up"
+                    signup
+                elsif choice == '🔹Exit'
+                    exit
+                end
             end
+        else
+            puts "Maximum number of login attempts exceeded. Try again later!"
         end
     end
 
-        # After 3 attempts - prints max login attempts over.
+        # After 3 attempts - prints max login attempts over -> Advanced -> Do a timestamp-based entry
         # Forgot password
         # gets user_name & password -> check if password matches user_name in table else 1. Error Msg 2. Exit 3. Re-login 4. Reset Password -> Signup
         # shopping
@@ -107,9 +141,39 @@ class CLI
 
 
     def profile
+        system 'clear'
+        @prompt = TTY::Prompt.new
+        prompt = TTY::Prompt.new
+        choices = ['🔹Reset User Name' ,'🔹Reset Password', '🔹Delete Account', '🔹Exit'] 
+        choice = prompt.select("\n ? \n",choices)
+        if choice == '🔹Reset User Name'
+            puts "Enter new user name"
+            user_name = gets.chomp
+            Customer.update_attribute(name, user_name)
+        elsif choice == '🔹Reset Password'
+            puts "Enter new password"
+            user_password = STDIN.noecho(&:gets).chomp
+            Customer.update_attribute(password, user_password)
+        elsif choice == '🔹Delete Account'
+            puts "Enter your user name"
+            user_name = gets.chomp
+            puts "Enter your password"
+            user_password = STDIN.noecho(&:gets).chomp
+            Customer.exists?(name: user_name, password: user_password):
+                User.destroy_all(name: user_name)
+                puts "Account Deleted. We hope to see you again soon!"
+                exit
+        else choice == '🔹Exit'
+            exit
+        end
         # #reset user_name & password
+<<<<<<< HEAD
         # delete account
         # go_back 
+=======
+        # go_back
+        # delete account
+>>>>>>> 57fedbb23024b86457d237ff4d25409b5c174ec2
     end
 
     def go_back
@@ -176,6 +240,7 @@ class CLI
     end
 end
 
+<<<<<<< HEAD
 shopping_cart = CLI.new()
 # shopping_cart.main_menu
 shopping_cart.login(attempts = 0)
@@ -187,3 +252,8 @@ shopping_cart.login(attempts = 0)
 
 end
 >>>>>>> Dan
+=======
+# shopping_cart = CLI.new()
+# # shopping_cart.main_menu
+# shopping_cart.login(attempts = 0)
+>>>>>>> 57fedbb23024b86457d237ff4d25409b5c174ec2
