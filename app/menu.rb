@@ -22,7 +22,7 @@ class Menu
 
     def get_user_city
         puts "Please enter your City"
-        STDIN.gets.chomp
+        STDIN.gets.chomp.capitalize
     end
 
     def get_user_state
@@ -96,7 +96,8 @@ class Menu
         puts "1. Search by event name or artist name"
         puts "2. Search by genre"
         puts "3. Search by date"
-        puts "4. See My Tickets"
+        puts "4. See all events in my city"
+        puts "5. See My Tickets"
         puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
         user_input = STDIN.gets.chomp
@@ -107,6 +108,8 @@ class Menu
         elsif user_input == "3"
             #display_results_by_date
         elsif user_input == "4"
+            display_results_in_users_city    
+        elsif user_input == "5"
             display_user_tickets
         elsif user_input == "s"
             back_to_start
@@ -116,6 +119,10 @@ class Menu
             invalid_selection
             begin_search
         end
+    end
+
+    def events_by_user_city
+        Event.all.select {|e|e.event_city == self.user.city} 
     end
 
     def display_results_by_attraction_name
@@ -132,6 +139,10 @@ class Menu
         else
         display_events(events.uniq)
         end
+    end
+
+    def display_results_in_users_city 
+        display_events(events_by_user_city)
     end
 
     def display_events(events)
