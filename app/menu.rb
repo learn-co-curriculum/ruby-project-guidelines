@@ -40,14 +40,11 @@ class Menu
 
     def pull_data_by_city_and_state(city, state)
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-
+    end
+  
     def find_or_create_user_by(name, city, state) 
         User.find_or_create_by(name: name, city: city, state: state)
     end
-
-        load_event_details(info)
-    end
-
 
     def load_event_details(info)   
         events = []
