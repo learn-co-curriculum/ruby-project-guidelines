@@ -93,7 +93,6 @@ I want to see the events I have tickets to
 Feature branches to build:
   -add city column and sub genre to events table in database and add the hash route in #load_event_details(info)
   -buy ticket method taking arguement of an array of events.
-  -get api query to not crash app when nil value returned
   -search by date option
   -see all genre options in my city, and pick one to see all events in that genre (1. Musicals, 2. NFL, 3. Country)
   -method to call when search has no results
