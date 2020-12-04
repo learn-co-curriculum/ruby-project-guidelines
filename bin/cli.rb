@@ -1,4 +1,5 @@
 require 'io/console'
+require 'tty-prompt'
 
 class CLI
 
@@ -42,10 +43,10 @@ class CLI
     end
 
 
-    def login
+    def login(attempts=0)
         attempts = 0
         while attempts <= 3 do
-            login_choices = ["Forgot User Name or Password?", "Exit"]
+            #login_choices = ["Forgot User Name or Password?", "Exit"]
             puts "Enter user name"
             user_name = gets.chomp
             puts "Enter password"
@@ -68,14 +69,29 @@ class CLI
 
 
     def shopping
-        puts "yay"
-        #choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+        puts 'yay'
+        @prompt = TTY::Prompt.new
+        prompt = TTY::Prompt.new
+        choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+        system 'clear'
+        choice = prompt.select("\n                                                                           🔹Welcome Back!!🔹 \n", choices)
+        if choice == '🔹View Profile'
+            profile
+        elsif choice == '🔹View Cart'
+            view_cart
+        elsif choice == '🔹Get To Shopping'
+            go_to_shopping
+        elsif choice == '🔹Checkout'
+            checkout
+        elsif choice == '🔹Exit'
+            exit
+        end
     end
-
 
 
     def profile
         # #reset user_name & password
+        # delete account
         # go_back 
     end
 
@@ -90,9 +106,16 @@ class CLI
         # # at the end of aisles, go back to aisle choices
         # go_back
         # cart = []
+        shopping
     end
 
     def view_cart(cart)
+        customer.food.each{|food|
+            puts "Fruits #{}"
+            puts "Vegetables #{}"
+            puts "Spices #{}"
+
+        }
         # cart = []
         # total = calculates total
         # checkout
@@ -101,6 +124,7 @@ class CLI
 
     def checkout
         # show receipt
+        #update cart/remove stuff if need be
         # exit
         # go_back
     end
@@ -118,18 +142,17 @@ class CLI
     end
 
     
+
+
+    # def opener 
+    #     puts "\n 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 \n "
+    # end
+
+
+
+
+    # shopping_cart = CLI.new()
+    # # shopping_cart.main_menu
+    # shopping_cart.signup #(attempts = 0)
+
 end
-
-
-
-
-
-
-    def opener 
-        puts "\n 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 \n "
-    end
-end
-
-shopping_cart = CLI.new()
-# shopping_cart.main_menu
-shopping_cart.login(attempts = 0)
