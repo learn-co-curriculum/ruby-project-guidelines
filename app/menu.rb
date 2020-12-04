@@ -75,8 +75,8 @@ class Menu
         puts "2. Search by genre"
         puts "3. Search by date"
         puts "4. See My Tickets"
-        puts "Press 's' to return to start"
-        puts "Press 'x' to exit the program"
+        puts "Press 's' to log out of the app"
+        puts "Press 'x' to exit the app"
         user_input = STDIN.gets.chomp
         if user_input == "1"
             display_results_by_attraction_name
@@ -98,8 +98,8 @@ class Menu
 
     def display_results_by_attraction_name
         puts "Please enter the event or artist you would like to see:"
-        user_input = STDIN.gets.chomp
-        events = Event.all.select {|event|event.attraction_name.split.any?(user_input)}
+        user_input = STDIN.gets.chomp.downcase
+        events = Event.all.select {|event|event.attraction_name.split.any?(user_input.capitalize) || event.attraction_name.split.any?(user_input)}
         if events.empty?
             no_results_found
             begin_search
