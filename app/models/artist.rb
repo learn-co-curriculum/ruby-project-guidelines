@@ -3,9 +3,16 @@ class Artist < ActiveRecord::Base
     has_many :venues, through: :show_dates 
     
     #THIS CREATE METHOD WORKS(KEEP)
-    # def self.find_or_create_me(username)
-    #     username = self.find_or_create_by(name:username)
-    # end 
+    def self.find_or_create_me(username)
+        username = self.find_or_create_by(name:username)
+    end 
+
+    def all_my_venues
+        ShowDate.all.map do |show_instance| 
+            show_instance.venue
+        end 
+    end 
+
 
     # def create_date_for_artist
     #     ShowDate.find_or_create_by(date: datetime) 

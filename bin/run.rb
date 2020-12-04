@@ -1,11 +1,11 @@
-require_relative '../config/cli_commands'
+#require_relative '../config/cli_commands'
 require_relative '../config/environment'
 
 user_selection = "main menu" 
 
 puts `clear`
 puts "Welcome to our Artist App Tracker!"
-
+artist = nil
 while true do
     case user_selection
     when "main menu" 
@@ -14,8 +14,11 @@ while true do
         list_all_cities
         user_selection = "main menu" 
     when "create account"
-        create_account
-        #user_selection = "Welcome #{user_input}"
+        artist = create_account
+        user_selection = "Welcome!"
+    when "Welcome!"
+        create_a_show
+        #user_selection = "something"
     when "exit" 
         break 
     else 
