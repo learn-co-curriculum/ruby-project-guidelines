@@ -8,7 +8,7 @@ class Menu
 
     def start_program
         puts "Welcome to EventFinder!"
-        self.user = create_user(get_user_name, get_user_city, get_user_state)
+        self.user = get_user
         pull_data_by_city_and_state(self.user.city, self.user.state)
         puts "Thank you, #{user.name}"
 
@@ -16,27 +16,19 @@ class Menu
     end
 
     def get_user_name
-        puts "Please enter your name"
-        user_name = STDIN.gets.chomp
-        user_name
+        puts "Please enter your full name"
+        STDIN.gets.chomp
     end
 
     def get_user_city
         puts "Please enter your City"
-        user_city = STDIN.gets.chomp
-        user_city
+        STDIN.gets.chomp
     end
 
     def get_user_state
         puts "Please enter your State (ex. WA, CA, NY)"
-        user_state = STDIN.gets.chomp
-        user_state
+        STDIN.gets.chomp
     end
-
-    def create_user(name, city, state)
-        User.create(name: name, city: city, state: state)
-    end
-
 
     def pull_data_by_city_and_state(city, state)
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
@@ -47,8 +39,32 @@ class Menu
         end 
     end
   
-    def find_or_create_user_by(name, city, state) 
-        User.find_or_create_by(name: name, city: city, state: state)
+    def get_user
+        puts "Enter 1 to Log in, or 2 to Create a new account, or x to exit the application"
+        input = STDIN.gets.chomp
+        if input == "1" 
+            user = find_user_by(user_name = get_user_name)
+            if !user
+                puts "Account information not found. Would you like to make an account? Y / N "
+                STDIN.gets.chomp == "y" ? user = create_user_by(user_name, get_user_city, get_user_state) : back_to_start
+            end
+        elsif input == "2"
+            user = create_user_by(get_user_name, get_user_city, get_user_state)
+        elsif input == "x"
+            end_program 
+        else
+            invalid_selection
+            start_program
+        end
+        user
+    end
+
+    def find_user_by(name) 
+        User.find_by(name: name)
+    end
+
+    def create_user_by(name, city, state) 
+        User.create(name: name, city: city, state: state)
     end
 
     def load_event_details(info)   
@@ -89,7 +105,7 @@ class Menu
         elsif user_input == "2"
             get_results_by_event_type
         elsif user_input == "3"
-            #
+            #display_results_by_date
         elsif user_input == "4"
             display_user_tickets
         elsif user_input == "s"
@@ -104,13 +120,17 @@ class Menu
 
     def display_results_by_attraction_name
         puts "Please enter the event or artist you would like to see:"
-        user_input = STDIN.gets.chomp.downcase
-        events = Event.all.select {|event|event.attraction_name.split.any?(user_input.capitalize) || event.attraction_name.split.any?(user_input)}
+        user_input = STDIN.gets.chomp.downcase.split(" ")
+        events = []
+        user_input.each do |word|
+            found_events = Event.all.select {|event|event.attraction_name.split.any?(word.capitalize) || event.attraction_name.split.any?(word)}.uniq
+            found_events.each {|e| events << e} 
+        end
         if events.empty?
             no_results_found
             begin_search
         else
-        display_events(events)
+        display_events(events.uniq)
         end
     end
 
@@ -151,7 +171,6 @@ class Menu
 
     def display_user_tickets
         puts "Here are the events #{self.user.name} has a ticket for:"
-       binding.pry
         user_events = self.user.tickets.map {|t|t.event}
         if !user_events.empty?
             user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
@@ -357,6 +376,7 @@ def classification_tester(info)
 end 
 
 def error_message
+    self.user.delete
     puts
     puts "No events found in your city :(" #can make this a more generic message if we want to use this error method elsewhere
     puts  
