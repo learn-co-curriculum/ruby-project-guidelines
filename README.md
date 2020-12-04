@@ -81,16 +81,22 @@ API call format: https://app.ticketmaster.com/{package}/{version}/{resource}.jso
   -resources: event, attraction, classification, venue...
 
 4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-I want to see all events in time frame in certain city
-I want to see what types of events are happening within a time frame 
-I want to see whats happening within a price range
-I want to see a record of the events I've been too
-I want to see upcoming events in a similar genres to ones I've attended be
+I want to see all events in my city
+I want to see events near me on a certain day
+I want to see if a certain artist or event is happening near me
+I want to see what events are happening near me sorted by genre
+I want to buy a ticket to an event
 I want to see if the event I had a ticket for has been cancelled
-I want to see when my favorite band is coming to my city
+I want to see the events I have tickets to
 
 5. You should provide a CLI to display the return values of your interesting methods.  
-?
+Feature branches to build:
+  -add city column and sub genre to events table in database and add the hash route in #load_event_details(info)
+  -buy ticket method taking arguement of an array of events.
+  -get api query to not crash app when nil value returned
+  -search by date option
+  -see all genre options in my city, and pick one to see all events in that genre (1. Musicals, 2. NFL, 3. Country)
+  -method to call when search has no results
 
 6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
 
