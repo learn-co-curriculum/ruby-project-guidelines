@@ -37,8 +37,14 @@ class Menu
         User.create(name: name, city: city, state: state)
     end
 
+
     def pull_data_by_city_and_state(city, state)
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+
+    def find_or_create_user_by(name, city, state) 
+        User.find_or_create_by(name: name, city: city, state: state)
+    end
+
         load_event_details(info)
     end
 
@@ -70,19 +76,23 @@ class Menu
         puts "1. Search by event name or artist name"
         puts "2. Search by genre"
         puts "3. Search by date"
+
         puts "4. See My Tickets"
+
+        puts "Press 's' to return to start"
+
         puts "Press 'x' to exit the program"
         user_input = STDIN.gets.chomp
         if user_input == "1"
             display_results_by_attraction_name
         elsif user_input == "2"
             #display_results_by_date
-        elseif user_input == "3"
-            #display_results_by_genre
-        elseif user_input == "4"
-            #displey_user_tickets
-        elseif user_input == "x"
-            exit
+        elsif user_input == "3"
+            #
+        elsif user_input == "s"
+            back_to_start
+        elsif user_input == "x"
+            end_program
         else
             puts "Invalid entry, please try another option"
             begin_search
@@ -105,4 +115,13 @@ class Menu
     end 
 
 end
+
+def back_to_start
+    Menu.new.start_program 
+end 
+
+def end_program
+    puts "goodbye!"
+    exit 
+end 
 
