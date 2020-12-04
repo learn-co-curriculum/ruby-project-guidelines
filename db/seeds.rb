@@ -21,14 +21,15 @@ Customer.create(name:'Dan', password:'123')
 Customer.create(name:'Tee', password:'321')
 Customer.create(name:'Bob', password:'111')
 
-Food.create(name: 'Methi', category: 'Spice', price: 10)
-Food.create(name: 'Rosemary', category: 'Spice', price: 10)
-Food.create(name: 'Parsnip', category: 'Vegetables', price: 10)
+Food.create(name: 'Methi', category: 'Spices', price: 3)
+Food.create(name: 'Rosemary', category: 'Spices', price: 1)
+Food.create(name: 'Parsnip', category: 'Vegetables', price: 4)
+Food.create(name: 'Apple', category: "Fruits", price: 2)
 
 
-Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2, total: 20)
-Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2, total: 20)
-Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2, total: 20)
+Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2)
+Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2)
+Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2)
 
 
 
