@@ -35,6 +35,7 @@ Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, q
 
 puts "Food"
 
+
 # 30.times do 
 #     Food.create(
 #         name: Faker::Food.fruits,
