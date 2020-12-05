@@ -88,7 +88,6 @@ class Menu
             if Event.all.select {|e|e.attraction_name == event.attraction_name && e.date == event.date}.empty?
                 event.save
             end           
-            Event.order(date: :asc)
         end
     end
 
@@ -148,6 +147,7 @@ class Menu
     def display_events(events)
         puts "Here are the events available:"
         i = 1
+        events = events.sort_by(&:date)
         events.each do |e| 
             puts "#{i}. #{e.attraction_name} - #{e.date} - #{e.venue}" 
             i = i+1
@@ -182,7 +182,7 @@ class Menu
 
     def display_user_tickets
         puts "Here are the events #{self.user.name} has a ticket for:"
-        user_events = self.user.tickets.map {|t|t.event}
+        user_events = self.user.tickets.all.map {|t|t.event}
         if !user_events.empty?
             user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
             press_any_key_to_go_back
