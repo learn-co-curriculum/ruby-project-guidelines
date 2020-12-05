@@ -5,4 +5,8 @@ class Venue < ActiveRecord::Base
     def self.get_cities
         self.all.map{|venue_instance| venue_instance.city}.uniq
     end 
+
+    def update_my_venue
+        
+    end 
 end

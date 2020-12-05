@@ -7,39 +7,14 @@ class Artist < ActiveRecord::Base
         username = self.find_or_create_by(name:username)
     end 
 
+
+    #THIS METHOD WORKS(KEEP) 
     def all_my_venues
-        ShowDate.all.map do |show_instance| 
-            show_instance.venue
-        end 
+       all_shows = ShowDate.all.select{|show_instance| show_instance.artist == self}
+       all_shows.map{|show_instance| show_instance.venue.name} #maybe put .uniq on the end
     end 
+    
 
-
-    # def create_date_for_artist
-    #     ShowDate.find_or_create_by(date: datetime) 
-    #     binding.pry
-    # end 
-
-        #helper function to get primary key ID
-    # def self.all_venue_id
-    #     artist_id_array = ShowDate.ids 
-    # end 
-
-    # def self.show_venue_name(username)
-    #     artist_venue = [] 
-    #     ShowDate.all.select do |info| 
-    #         #binding.pry
-    #         if info.artist.name == username 
-    #             return info.venue.name
-    #         else
-    #             return "please create an account"
-    #         end 
-    #     end 
-    # end
-
-    # def delete_myself(username)
-    #     if username == self 
-    #         self
-    # end 
 
 end
 

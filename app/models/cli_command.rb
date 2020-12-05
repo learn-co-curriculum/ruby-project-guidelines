@@ -25,8 +25,8 @@ end
 def create_a_show
     puts "Where would you like to play?"
     user_input = gets.chomp
-    new_show = ShowDate.create
-    puts "Your date is"
+    # new_show = ShowDate.create(Time.now, 
+    # #puts "Your date is"
     return new_show
 end
 
