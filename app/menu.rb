@@ -105,7 +105,7 @@ class Menu
         elsif user_input == "2"
             get_results_by_event_type
         elsif user_input == "3"
-            #display_results_by_date
+            display_results_by_date
         elsif user_input == "4"
             display_results_in_users_city    
         elsif user_input == "5"
@@ -120,8 +120,8 @@ class Menu
         end
     end
 
-    def events_by_user_city
-        Event.all.select {|e|e.event_city == self.user.city} 
+    def filter_events_by_user_city(events=nil)
+        events == nil ? Event.all.select {|e|e.event_city == self.user.city} : events.select {|e|e.event_city == self.user.city} 
     end
 
     def display_results_by_attraction_name
@@ -141,7 +141,16 @@ class Menu
     end
 
     def display_results_in_users_city 
-        display_events(events_by_user_city)
+        display_events(filter_events_by_user_city)
+    end
+
+    def display_results_by_date
+        puts "Please enter a date: MM/DD/YYYY"
+        date = STDIN.gets.chomp.split("/")
+        date_formatted =  "#{date[2]}-#{date[0]}-#{date[1]}"
+        events = Event.all.select {|e|e.date == date_formatted}
+        events = filter_events_by_user_city(events)
+        display_events(events)
     end
 
     def display_events(events)
