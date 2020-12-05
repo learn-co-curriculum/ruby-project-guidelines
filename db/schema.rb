@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2020_12_03_175042) do
   end
 
   create_table "show_dates", force: :cascade do |t|
-    t.datetime "date"
+    t.string "date"
     t.integer "venue_id"
     t.integer "artist_id"
   end

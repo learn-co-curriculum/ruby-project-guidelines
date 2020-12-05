@@ -1,28 +1,32 @@
 #require_relative '../config/cli_commands'
 require_relative '../config/environment'
 
-user_selection = "main menu" 
+#ALL VENUE INSTANCES HAVE TO BE PRELOADED AND THEY ARE STATIC
 
-puts `clear`
+puts `clear` 
 puts "Welcome to our Artist App Tracker!"
-artist = nil
-while true do
-    case user_selection
-    when "main menu" 
-        user_selection = main_menu
-    when "list cities"
+print "please enter username: "
+artist_name = gets.chomp
+artist = Artist.find_or_create_by(name: artist_name)
+
+input = "begin" 
+while input != "exit" do
+    print "What would you like to do(type 'menu' for menu: "
+    input = gets.chomp
+    case input 
+    when "menu" 
+        main_menu
+    when "list Venue cities"
         list_all_cities
-        user_selection = "main menu" 
-    when "create account"
-        artist = create_account
-        user_selection = "Welcome!"
-    when "Welcome!"
-        create_a_show
-        #user_selection = "something"
-    when "exit" 
-        break 
+    when "create a show"
+        create_a_show(artist)
+    #when "update a show"
+        #call some update method
+    #when "delete a show"
+        #call some delete method
+    when "exit"
+        break
     else 
-        ask_for_new_input
-        user_selection = "main menu"
+       puts "This is an unknown command, please try again."
     end 
 end 
