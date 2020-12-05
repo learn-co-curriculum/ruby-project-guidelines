@@ -132,12 +132,7 @@ class Menu
             found_events = Event.all.select {|event|event.attraction_name.split.any?(word.capitalize) || event.attraction_name.split.any?(word)}.uniq
             found_events.each {|e| events << e} 
         end
-        if events.empty?
-            no_results_found
-            begin_search
-        else
-        display_events(events.uniq)
-        end
+        events.empty? ? no_results_found : display_events(events.uniq)
     end
 
     def display_results_in_users_city 
@@ -150,7 +145,7 @@ class Menu
         date_formatted =  "#{date[2]}-#{date[0]}-#{date[1]}"
         events = Event.all.select {|e|e.date == date_formatted}
         events = filter_events_by_user_city(events)
-        display_events(events)
+        events.empty? ? no_results_found : display_events(events)
     end
 
     def display_events(events)
@@ -191,7 +186,7 @@ class Menu
 
     def display_user_tickets
         puts "Here are the events #{self.user.name} has a ticket for:"
-        user_events = self.user.tickets.all.map {|t|t.event}
+        user_events = self.user.tickets.all.map {|t|t.event}.sort_by(&:date)
         if !user_events.empty?
             user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
             press_any_key_to_go_back
@@ -205,6 +200,7 @@ class Menu
     
     def no_results_found
         puts "No results found. Please try again"
+        begin_search
     end
 
     def invalid_selection
