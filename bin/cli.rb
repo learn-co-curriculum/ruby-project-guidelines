@@ -1,6 +1,8 @@
 require 'io/console'
 require 'tty-prompt'
-# require 'pry'
+require 'colorize'
+require 'lolize'
+require "tty-table"
 
 class CLI
 
@@ -17,7 +19,7 @@ class CLI
         prompt = TTY::Prompt.new
         hearts = "\u2665"
         puts hearts.encode('utf-8')
-        choices = ['🔹Login' ,'🔹Signup', '🔹Exit'] # '🔹Update Name Info', '🔹Delete Account'
+        choices = ['🔹Login' ,'🔹Signup'.blue.bold, '🔹Exit'.red.bold] # '🔹Update Name Info', '🔹Delete Account'
         choice = prompt.select("\n                                                      🔹Welcome to Shopping Cart, please make a selection🔹\n", choices) # do not use multi_select it leaves an octogon symble 
 
         if choice == '🔹Login'
@@ -163,12 +165,12 @@ class CLI
     def go_to_shopping(cart = [])
         system 'clear'
         prompt = TTY::Prompt.new
-        choices = ['🔹Fruits', '🔹Vegetables', '🔹Spices','🔹View Cart', '🔹Exit']
+        choices = ['🔹Fruits', '🔹Vegetables', '🔹Spices','🔹View Cart', '🔹Checkout', '🔹Exit']
         choice = prompt.select("\n                                                                    Select an Aisle! \n", choices)
         if choice == '🔹Fruits'
             prompt = TTY::Prompt.new
             fruit_choices = Food.where(category: "Fruits").map{|fruit| fruit.name}
-            prompt.multi_select("Use Space Bar |____| to select fruits", fruit_choices)
+            prompt.multi_select("Use Space Bar |____| to select/unselect Fruits, and hit Enter when done.", fruit_choices)
             cart << fruit_choices 
             #puts "fruit added"
             go_to_shopping(cart.flatten)
@@ -176,7 +178,7 @@ class CLI
         elsif choice == '🔹Vegetables'
             prompt = TTY::Prompt.new
             vegetable_choices = Food.where(category: "Vegetables").map{|veg| veg.name}
-            prompt.multi_select("Use Space Bar |____| to select Vegetables", vegetable_choices)
+            prompt.multi_select("Use Space Bar |____| to select/unselect Vegetables, and hit Enter when done.", vegetable_choices)
             cart << vegetable_choices
             #puts "Veg added"
             go_to_shopping(cart.flatten)
@@ -184,7 +186,7 @@ class CLI
         elsif choice == '🔹Spices'
             prompt = TTY::Prompt.new
             spice_choices = Food.where(category: "Spices").map{|spice| spice.name}
-            prompt.multi_select("Use Space Bar |____| to select Spices", spice_choices)
+            prompt.multi_select("Use Space Bar |____| to select/unselect Spices, and hit Enter when done.", spice_choices)
             puts "Spice has been added to your cart"
             cart << spice_choices
             #puts "Spice has been added to your cart"
@@ -193,6 +195,8 @@ class CLI
         elsif choice == '🔹View Cart'
             #puts "Cart is #{cart}"
             view_cart(cart.flatten)
+        elsif choice == '🔹Checkout'
+            checkout(cart)
         elsif choice == '🔹Exit' and cart.length == 0
             exit
         end
@@ -212,7 +216,8 @@ class CLI
             puts "Your cart is empty"
             go_to_shopping
         else
-            puts "Cart is #{cart}"
+            puts "Your cart has #{cart} inside."
+            go_to_shopping
         end
 
     end
@@ -225,7 +230,17 @@ class CLI
 
 
     def checkout(cart)
-        puts "Receipt"
+        prompt = TTY::Prompt.new
+        choices = ['🔹Remove & Add', '🔹View Receipt', '🔹Exit']
+        choice = prompt.select('\n \n', choices)
+        if choice == '🔹Remove & Add'
+            remove_and_add(cart)
+        elsif choice == '🔹View Receipt'
+            view_receipt(cart)
+        elsif choice == '🔹Exit'
+            exit
+        end
+
         # customer.food.each{|food|
         #     puts "Fruits #{}"
         #     puts "Vegetables #{}"
@@ -238,6 +253,33 @@ class CLI
         # exit
         # go_back
     end
+
+    def remove_and_add(cart=[])
+        #trash = []
+        puts 'YOU ARE NOW REMOVING ITEMS FROM A CART'
+        prompt = TTY::Prompt.new
+        choices = cart
+        choice = prompt.multi_select('\n \n', choices)
+        #cart.delete(choice)
+        choice.select{|deleted_item| cart.delete(deleted_item)}
+        puts cart
+
+    end
+
+
+    def view_receipt(cart)
+        colorizer = Lolize::Colorizer.new
+        colorizer.write "Thank you for shopping with us.\n
+        Your cart contains #{cart}\n".center(500)
+
+        table = TTY::Table.new(%w[Item Category Price/Item Quantity Total],
+            [%w[a1 a2 a3 a4 a5], %w[b1 b2 b3 b4 b5], %w[c1 c2 c3 c4 c5]])
+        puts table.render(:ascii, alignments: %i[center]) do |renderer|
+        renderer.border.separator = :each_row
+        end
+        
+    end
+
 
     def exit
         puts "**********"
