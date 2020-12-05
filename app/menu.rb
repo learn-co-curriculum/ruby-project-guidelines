@@ -104,7 +104,7 @@ class Menu
         if user_input == "1"
             display_results_by_attraction_name
         elsif user_input == "2"
-            #display_results_by_genre
+            get_results_by_event_type
         elsif user_input == "3"
             #display_results_by_date
         elsif user_input == "4"
@@ -182,7 +182,7 @@ class Menu
 
     def display_user_tickets
         puts "Here are the events #{self.user.name} has a ticket for:"
-        user_events = self.user.tickets.all.map {|t|t.event}
+        user_events = self.user.tickets.map {|t|t.event}
         if !user_events.empty?
             user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
             press_any_key_to_go_back
@@ -219,7 +219,114 @@ class Menu
     end 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
+    
+    def get_results_by_event_type
+        events = Event.all.select {|event|event.event_city.split.any?(user.city.capitalize) || event.event_city.split.any?(user.city)}  
+        if events.empty?
+            no_results_found
+            begin_search
+        else
+            i = 1
+            type_nums = {}
+            event_types = events.map{|event| event.event_type}.uniq
+            event_types.each do |type|
+            type_nums[i] = type
+            i += 1
+            end
+        end 
+    
+    user_select_event_type(type_nums, events)
+    end 
+
+    def user_select_event_type(type_nums, events)
+        puts "Please select the number of the event type you would like to see:"
+        type_nums.each {|num, type| puts "#{num}. #{type}"}
+        #puts "Press 'a' to see all events" << functionality to be added
+        puts "Press 's' to log out of the app" #to do - put these repeating phrases in a method in case we update
+        puts "Press 'x' to exit the app"
+        user_input = STDIN.gets.chomp.downcase
+        type_nums.each do |num, type|
+            if user_input == num.to_s
+                get_results_by_genre(type)
+            end 
+        end
+    end 
+
+    def get_results_by_genre(type)
+        events = Event.all.select {|event|event.event_type == type}
+        if events.empty?
+            no_results_found
+            begin_search
+        else
+            i = 1
+            genre_nums = {}
+            event_genres = events.map{|event| event.genre}.uniq
+            event_genres.each do |genre|
+            genre_nums[i] = genre
+            i += 1
+            end
+        user_display_genre(genre_nums)
+        end 
+    end 
+    
+    def user_display_genre(genre_nums)
+        puts "Please select the number of the genre of you would like to see:"
+        genre_nums.each {|num, genre| puts "#{num}. #{genre}"}
+        puts "Press 's' to log out of the app" #to do - put these repeating phrases in a method in case we update
+        puts "Press 'x' to exit the app"
+        user_input = STDIN.gets.chomp.downcase
+            genre_nums.each do |num, genre|
+                if user_input == num.to_s
+                    display_genre_events(genre)
+                end 
+            end 
+        end 
+
+    def display_genre_events(genre)
+        events = Event.all.select {|event|event.genre == genre}
+        if events.empty?
+            no_results_found
+            begin_search
+        else
+            display_events(events)
+        end
+    end 
+
+
 end
+
 
 
 
