@@ -4,8 +4,8 @@ def main_menu
     puts "1. list venue cities"
     puts "2. create a show"
     puts "3. show my dates"
-    puts "3. update a show date"
-    puts "4. delete a show"
+    puts "4. update a show date"
+    puts "5. delete a show"
     puts "6. Type 'exit' to leave Artist Tracker"
 end 
 
