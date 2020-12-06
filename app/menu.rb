@@ -109,15 +109,15 @@ class Menu
         elsif user_input == "4"
             display_results_in_users_city    
         elsif user_input == "5"
-            display_user_tickets
+            self.user.display_tickets
         elsif user_input == "s"
             back_to_start
         elsif user_input == "x"
             end_program
         else
             invalid_selection
-            begin_search
         end
+        begin_search
     end
 
     def filter_events_by_user_city(events=nil)
@@ -125,13 +125,7 @@ class Menu
     end
 
     def display_results_by_attraction_name
-        puts "Please enter the event or artist you would like to see:"
-        user_input = STDIN.gets.chomp.downcase.split(" ")
-        events = []
-        user_input.each do |word|
-            found_events = Event.all.select {|event|event.attraction_name.split.any?(word.capitalize) || event.attraction_name.split.any?(word)}.uniq
-            found_events.each {|e| events << e} 
-        end
+        events = NameSearch.new.results
         events.empty? ? no_results_found : display_events(events.uniq)
     end
 
@@ -163,38 +157,12 @@ class Menu
         puts "Would you like to buy a ticket for an event? Enter the number of the event, or x to go back"
         input = STDIN.gets.chomp
         begin_search if input == "x"
-        choice = events[input.to_i-1]
-        if choice
-            puts "#{choice.attraction_name} - #{choice.date} - #{choice.venue}"
-            puts "Confirm you would like to buy a ticket for this event. Y or N."
-            y_n_input = STDIN.gets.chomp
-            if y_n_input == "y"
-                self.user.buy_ticket(choice)
-                puts "Congratulations, #{self.user.name}. Enjoy #{choice.attraction_name} on #{choice.date}, at #{choice.venue}"
-                begin_search
-            elsif y_n_input == "n"
-                begin_search
-            else
-                invalid_selection
-                display_events(events)
-            end
+        if input.match? /\A\d+\z/
+            self.user.confirm_buy_ticket?(events[input.to_i-1])
+            begin_search
         else
             invalid_selection
             display_events(events)
-        end
-    end
-
-    def display_user_tickets
-        puts "Here are the events #{self.user.name} has a ticket for:"
-        user_events = self.user.tickets.all.map {|t|t.event}.sort_by(&:date)
-        if !user_events.empty?
-            user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
-            press_any_key_to_go_back
-            begin_search
-        else
-            puts "You have no tickets at this time"
-            press_any_key_to_go_back
-            begin_search
         end
     end
     
@@ -204,7 +172,9 @@ class Menu
     end
 
     def invalid_selection
+        puts
         puts "Not a valid selection. Please try again."
+        puts
     end
 
     def press_any_key_to_go_back
