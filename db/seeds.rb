@@ -2,6 +2,12 @@ require_relative "../config/environment.rb"
 require_relative "../app/models/customer.rb"
 require_relative "../app/models/food.rb"
 require_relative "../app/models/order.rb"
+require 'net/http'
+require 'open-uri'
+require 'json'
+
+# foods = GetFoods.new
+# puts foods.food_school
 
 Order.destroy_all
 Customer.destroy_all
@@ -31,10 +37,10 @@ Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, q
 Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2)
 Order.create(customer_id: Customer.all.sample.id, food_id: Food.all.sample.id, quantity: 2)
 
-
-
-
 puts "Food"
+
+
+
 
 
 # 30.times do 
