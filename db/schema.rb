@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_05_203806) do
+ActiveRecord::Schema.define(version: 2020_12_06_213753) do
+
+  create_table "arenas", force: :cascade do |t|
+    t.string "name"
+  end
 
   create_table "matches", force: :cascade do |t|
     t.datetime "date"
@@ -18,11 +22,7 @@ ActiveRecord::Schema.define(version: 2020_12_05_203806) do
     t.integer "away_team_id"
     t.integer "home_team_goals"
     t.integer "away_team_goals"
-    t.integer "stadium_id"
-  end
-
-  create_table "stadiums", force: :cascade do |t|
-    t.string "name"
+    t.integer "arena_id"
   end
 
   create_table "teams", force: :cascade do |t|
