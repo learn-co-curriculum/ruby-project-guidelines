@@ -3,6 +3,4 @@ class ShowDate < ActiveRecord::Base
     belongs_to :venue
 end 
 
-
-
 #full CRUD 
