@@ -20,6 +20,7 @@ gem "pastel"
 gem "tty-progressbar"
 gem "tty-spinner"
 gem 'tty-font'
+gem 'tty-table'
 gem 'date'
 gem 'rest-client'
 gem 'json'

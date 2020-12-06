@@ -333,9 +333,6 @@ ymddddyooooooooooooooooooooyddddmy       \n ".lines.map { |line| line.center(100
         # go_back
     end
 
-    def remove_and_add
-        
-    end
 
     def view_receipt(cart=[])
         categories = []
@@ -369,6 +366,19 @@ ymddddyooooooooooooooooooooyddddmy       \n ".lines.map { |line| line.center(100
         colorizer.write "\n\n Thank you for shopping with us.\n Your grand total is = #{total.sum}\n\n"
     
     end
+
+    def remove_and_add(cart=[])
+        #trash = []
+        puts 'YOU ARE NOW REMOVING ITEMS FROM A CART'
+        prompt = TTY::Prompt.new
+        choices = cart
+        choice = prompt.multi_select('\n \n', choices)
+        #cart.delete(choice)
+        choice.select{|deleted_item| cart.delete(deleted_item)}
+        puts cart
+
+    end
+
 
     def exit
         puts "**********"
