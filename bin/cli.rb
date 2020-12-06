@@ -1,5 +1,6 @@
 require 'io/console'
 require 'tty-prompt'
+require 'pry'
 require 'colorize'
 require 'lolize'
 require "tty-table"
@@ -15,19 +16,37 @@ class CLI
         @pastel = Pastel.new
         opener
         puts @pastel.cyan(@font.write("                                   Shopping        Cart !!"))
+        puts "                             
+        dMo                                     
+        yMN`                                    
+        :MM+                                    
+         mMNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNh
+         +MMs+++++++++++++++++++++++++++++++sMM+
+         `MMy                               yMM`
+          yMN`                             `NMy 
+          :MM+                             /MM: 
+           mMm-----------------------------dMm  
+           +MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMo  
+           `NMy``````````````````````````````   
+            yMN`                                
+            -MMdhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh+ 
+             +yyyMMMMMMMdyyyyyyyyMMMMMMMdyyyys/ 
+               `mMm+:/hMM:     `mMm+:/hMM/      
+               /MM:   `NMy     :MM/    NMh      
+               `mMm+:/hMN:     `dMNo:/hMM:      
+                `+dNMNms.        +hNMMms. 
+                \n".lines.map { |line| line.center(100) }.join("").cyan
         opener
         prompt = TTY::Prompt.new
-        hearts = "\u2665"
-        puts hearts.encode('utf-8')
-        choices = ['🔹Login' ,'🔹Signup'.blue.bold, '🔹Exit'.red.bold] # '🔹Update Name Info', '🔹Delete Account'
+        choices = ['🔹Login'.green ,'🔹Signup'.yellow, '🔹Exit'.red] # '🔹Update Name Info', '🔹Delete Account'
         choice = prompt.select("\n                                                      🔹Welcome to Shopping Cart, please make a selection🔹\n", choices) # do not use multi_select it leaves an octogon symble 
 
-        if choice == '🔹Login'
+        if choice == '🔹Login'.green
             attempts = 0
             login(attempts)
-        elsif choice == '🔹Signup'
+        elsif choice == '🔹Signup'.yellow
             signup
-        elsif choice == '🔹Exit'
+        elsif choice == '🔹Exit'.red
             exit
         end
     end
@@ -40,18 +59,21 @@ class CLI
         user_password = STDIN.noecho(&:gets).chomp
         if !Customer.exists?(name: user_name)
             Customer.create(name: user_name , password: user_password)
+            puts "Thank you for joining us for a fantastic shopping experience"
+            sleep(1)
+            shopping
         else
             puts "Oops! This user name is already taken!"
 
             prompt = TTY::Prompt.new
-            choices = ['🔹Sign-Up With Different User Name' , '🔹Login','🔹Exit'] 
+            choices = ['🔹Sign-Up With Different User Name'.green , '🔹Login'.yellow,'🔹Exit'.red] 
             choice = prompt.select("\n ? \n",choices)
-            if choice == '🔹Login'
+            if choice == '🔹Login'.yellow
                 attempts = 0
                 login(attempts)
-            elsif choice == '🔹Sign-Up With Different User Name'
+            elsif choice == '🔹Sign-Up With Different User Name'.green
                 signup
-            elsif choice == '🔹Exit'
+            elsif choice == '🔹Exit'.red
                 exit
             end
         end
@@ -63,6 +85,30 @@ class CLI
     def login(attempts=0)
         attempts = 0
         system 'clear'
+        puts"
+                                                  
+                                                  
+                   .-/+oooo+/-.                   
+              `:sdNMMNmddddmNMMNds:`              
+            :yNMms/-`        `-/smMNy:            
+          /mMmo.                  .omMm/          
+        -dMm/        -oyhhyo-        /mMd-        
+       /NMy`       .dMMMMMMMMd.       `yMN/       
+      /MM+        `NMMMMMMMMMMN`        +MM/      
+     .NMs         -MMMMMMMMMMMM-         sMN.     
+     sMN`          dMMMMMMMMMMd          `NMs     
+     mMy           `oNMMMMMMNo`           yMm     
+     MMo              -+oo+-              oMM     
+     mMy             `.----.`             yMm     
+     sMN`       -ohmMMMMMMMMMMmho-       `NMs     
+     .NMs     :dMMMMMMMMMMMMMMMMMMd:     sMN.     
+      /MMo   .MMMMMMMMMMMMMMMMMMMMMM.   oMM/      
+       /NMy` :MMMMMMMMMMMMMMMMMMMMMM: `yMN/       
+        .dMN+:MMMMMMMMMMMMMMMMMMMMMM:+NMd.        
+          /mMNMMMMMMMMMMMMMMMMMMMMMMNMm/          
+            :yNMMMMMMMMMMMMMMMMMMMMNy:            
+              `:sdNMMMMMMMMMMMMNds:`              
+                   .-/+oooo+/-.          \n    ".lines.map { |line| line.center(100) }.join("").magenta.bold
         if attempts < 3
             puts "Enter user name"
             user_name = gets.chomp
@@ -101,30 +147,49 @@ class CLI
     def shopping
         puts 'yay'
         prompt = TTY::Prompt.new
-        choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
+        choices = [ '🔹View Profile'.blue, '🔹View Cart'.green, '🔹Get To Shopping'.yellow,'🔹Checkout'.white, '🔹Exit'.red]
         system 'clear'
-        choice = prompt.select("\n ? \n",choices)
-        if choice == '🔹View Profile'
+        choice = prompt.select("\n                                                                           🔹Welcome Back!!🔹 \n", choices)
+        if choice == '🔹View Profile'.blue
             profile
-        elsif choice == '🔹View Cart'
+        elsif choice == '🔹View Cart'.green
             view_cart
-        elsif choice == '🔹Get To Shopping'
+        elsif choice == '🔹Get To Shopping'.yellow
             go_to_shopping
-        elsif choice == '🔹Checkout'
+        elsif choice == '🔹Checkout'.white
             checkout
-        elsif choice == '🔹Exit'
+        elsif choice == '🔹Exit'.red
             exit
         end
     end
 
 
-        #puts "yay"
-        #choices = [ '🔹View Profile ', '🔹View Cart', '🔹Get To Shopping','🔹Checkout', '🔹Exit']
-
-
-
     def profile
         system 'clear'
+        puts"
+                                                  
+                                                  
+                   .-/+oooo+/-.                   
+              `:sdNMMNmddddmNMMNds:`              
+            :yNMms/-`        `-/smMNy:            
+          /mMmo.                  .omMm/          
+        -dMm/        -oyhhyo-        /mMd-        
+       /NMy`       .dMMMMMMMMd.       `yMN/       
+      /MM+        `NMMMMMMMMMMN`        +MM/      
+     .NMs         -MMMMMMMMMMMM-         sMN.     
+     sMN`          dMMMMMMMMMMd          `NMs     
+     mMy           `oNMMMMMMNo`           yMm     
+     MMo              -+oo+-              oMM     
+     mMy             `.----.`             yMm     
+     sMN`       -ohmMMMMMMMMMMmho-       `NMs     
+     .NMs     :dMMMMMMMMMMMMMMMMMMd:     sMN.     
+      /MMo   .MMMMMMMMMMMMMMMMMMMMMM.   oMM/      
+       /NMy` :MMMMMMMMMMMMMMMMMMMMMM: `yMN/       
+        .dMN+:MMMMMMMMMMMMMMMMMMMMMM:+NMd.        
+          /mMNMMMMMMMMMMMMMMMMMMMMMMNMm/          
+            :yNMMMMMMMMMMMMMMMMMMMMNy:            
+              `:sdNMMMMMMMMMMMMNds:`              
+                   .-/+oooo+/-.           \n  ".lines.map { |line| line.center(100) }.join("").magenta.bold
         prompt = TTY::Prompt.new
         choices = ['🔹Reset User Name' ,'🔹Reset Password', '🔹Delete Account', '🔹Exit'] 
         choice = prompt.select("\n ? \n",choices)
@@ -148,56 +213,70 @@ class CLI
         elsif choice == '🔹Exit'
             exit
         end
-        # #reset user_name & password
-
-        # delete account
-        # go_back 
-
-        # go_back
-        # delete account
-
     end
 
-    def go_back
-        #-> if else
-    end
 
     def go_to_shopping(cart = [])
         system 'clear'
+        colorizer = Lolize::Colorizer.new
+        colorizer.write "
+        `oddddo`                     
+        `oddssssddo`                   
+       -mym`    `mym-                  
+      :dhd.      .dhd:                 
+     :dhd.        .dhd:                
+    `odhs          shdo`               
+    /mhd            dhm/               
+   :hdh-            -hhh:              
+...........omdd..............ddmo...........   
+mhhhhhhyssssssssssssssssssssssssssssyhhhhhhm   
+msoooooo/::::::::::::::::::::::::::/oooooosm   
+msoooooo+::::::::::::::::::::::::::+oooooosm   
++hsoooosss+++:::::::::::::::o/:::::+ooooosh+   
+myooooyyo+ohoo/ooo/ooo/ooo/o/+oo++sysoooym    
+myoooossysoyoy+hsh/dsd/hsh+y+yososhhyoooym    
+ohsooos+///////////d//:h+////////+shyoosho    
+dyoooo+:::::::::://::://::::::::/+ssooyd     
+dyoooo/::::::+ysy::::::::::::::::/ooooyd     
+-hyoo+:::::::+hso/+sy/:ysy+:::::::+ooyh-     
+dyoo+:::::::+ysy/ysys/ysh+:::::::+ooyd      
+yyso+:::::::::::::::::osy+:::::::+osyy      
+hyo+::::::::::::::::::::::::::::+oyh       
+hyo+::::::::::::::::::::::::::::+oyh       
+:yy+////++++++++++++++++++++////+yy:       
+ymddddyooooooooooooooooooooyddddmy       \n ".lines.map { |line| line.center(100) }.join("")
         prompt = TTY::Prompt.new
-        choices = ['🔹Fruits', '🔹Vegetables', '🔹Spices','🔹View Cart', '🔹Checkout', '🔹Exit']
+        choices = ['🔹Fruits'.blue, '🔹Vegetables'.green, '🔹Spices','🔹View Cart'.yellow, '🔹Checkout'.magenta, '🔹Exit'.red]
         choice = prompt.select("\n                                                                    Select an Aisle! \n", choices)
-        if choice == '🔹Fruits'
+        if choice == '🔹Fruits'.blue
             prompt = TTY::Prompt.new
             fruit_choices = Food.where(category: "Fruits").map{|fruit| fruit.name}
-            prompt.multi_select("Use Space Bar |____| to select/unselect Fruits, and hit Enter when done.", fruit_choices)
-            cart << fruit_choices 
-            #puts "fruit added"
+            fruits = prompt.multi_select("Use Space Bar |____| to select/unselect Fruits, and hit Enter when done.", fruit_choices)
+            cart << fruits
+            puts "\n\n #{fruits.join(",")} has/have been added to your cart"
+            sleep(1)
             go_to_shopping(cart.flatten)
-            #puts "fruit added"
-        elsif choice == '🔹Vegetables'
+        elsif choice == '🔹Vegetables'.green
             prompt = TTY::Prompt.new
             vegetable_choices = Food.where(category: "Vegetables").map{|veg| veg.name}
-            prompt.multi_select("Use Space Bar |____| to select/unselect Vegetables, and hit Enter when done.", vegetable_choices)
-            cart << vegetable_choices
-            #puts "Veg added"
+            vegetables = prompt.multi_select("Use Space Bar |____| to select/unselect Vegetables, and hit Enter when done.", vegetable_choices)
+            puts "\n\n #{vegetables.join(",")} has/have been added to your cart"
+            sleep(1)
+            cart << vegetables
             go_to_shopping(cart.flatten)
-            #puts "Veg added"
         elsif choice == '🔹Spices'
             prompt = TTY::Prompt.new
             spice_choices = Food.where(category: "Spices").map{|spice| spice.name}
-            prompt.multi_select("Use Space Bar |____| to select/unselect Spices, and hit Enter when done.", spice_choices)
-            puts "Spice has been added to your cart"
-            cart << spice_choices
-            #puts "Spice has been added to your cart"
+            spices = prompt.multi_select("Use Space Bar |____| to select/unselect Spices, and hit Enter when done.", spice_choices)
+            puts "\n\n #{spices.join(",")} has/have been added to your cart"
+            sleep(1)
+            cart << spices
             go_to_shopping(cart.flatten)
-            #puts "Spice has been added to your cart"
-        elsif choice == '🔹View Cart'
-            #puts "Cart is #{cart}"
+        elsif choice == '🔹View Cart'.yellow
             view_cart(cart.flatten)
-        elsif choice == '🔹Checkout'
+        elsif choice == '🔹Checkout'.magenta
             checkout(cart)
-        elsif choice == '🔹Exit' and cart.length == 0
+        elsif choice == '🔹Exit'.red and cart.length == 0
             exit
         end
         # # choose from aisles choices = [fruits, vegetables, spices, meats, delete items] 
@@ -210,16 +289,16 @@ class CLI
     end
 
 
-
     def view_cart(cart=[])
         if cart.length == 0
-            puts "Your cart is empty"
-            go_to_shopping
+            puts "Your cart is empty. Go back to shopping.\n Re-directing back to shopping"
+            sleep(1)
+            go_to_shopping(cart)
         else
-            puts "Your cart has #{cart} inside."
-            go_to_shopping
+            puts "Your cart has #{cart} inside.\n Re-directing back to shopping"
+            sleep(5)
+            go_to_shopping(cart)
         end
-
     end
 
         # }
@@ -229,12 +308,12 @@ class CLI
         # go_back
 
 
-    def checkout(cart)
+    def checkout(cart=[])
         prompt = TTY::Prompt.new
         choices = ['🔹Remove & Add', '🔹View Receipt', '🔹Exit']
-        choice = prompt.select('\n \n', choices)
+        choice = prompt.select('\n Select an option \n', choices)
         if choice == '🔹Remove & Add'
-            remove_and_add(cart)
+            remove_and_add
         elsif choice == '🔹View Receipt'
             view_receipt(cart)
         elsif choice == '🔹Exit'
@@ -254,6 +333,40 @@ class CLI
         # go_back
     end
 
+
+    def view_receipt(cart=[])
+        categories = []
+        cart.uniq.each do |food_item|
+            categories << Food.find_by(name: food_item).category
+        end
+        prices = []
+        cart.uniq.each do |food_item|
+            prices << Food.find_by(name: food_item).price
+        end
+        quantities = cart.uniq.each.map{|ele| cart.count(ele)}
+        total = []
+        iter = 0
+        while iter < cart.uniq.length do
+            total << prices[iter]*quantities[iter]
+            iter += 1
+        end 
+        table_array = []
+        index = 0
+        while index < cart.length do
+            table_array << [cart.uniq[index],categories[index],prices[index],quantities[index],total[index]]
+            index += 1
+        end
+        table = TTY::Table.new(%w[Item Category Price/Item Quantity Total],
+            table_array)
+        colorizer = Lolize::Colorizer.new
+        colorizer.write table.render(:ascii, alignments: %i[center]) do |renderer|
+        renderer.border.separator = :each_row
+        end
+
+        colorizer.write "\n\n Thank you for shopping with us.\n Your grand total is = #{total.sum}\n\n"
+    
+    end
+
     def remove_and_add(cart=[])
         #trash = []
         puts 'YOU ARE NOW REMOVING ITEMS FROM A CART'
@@ -267,42 +380,17 @@ class CLI
     end
 
 
-    def view_receipt(cart)
-        colorizer = Lolize::Colorizer.new
-        colorizer.write "Thank you for shopping with us.\n
-        Your cart contains #{cart}\n".center(500)
-
-        table = TTY::Table.new(%w[Item Category Price/Item Quantity Total],
-            [%w[a1 a2 a3 a4 a5], %w[b1 b2 b3 b4 b5], %w[c1 c2 c3 c4 c5]])
-        puts table.render(:ascii, alignments: %i[center]) do |renderer|
-        renderer.border.separator = :each_row
-        end
-        
-    end
-
-
     def exit
         puts "**********"
         puts "Good Bye!"
         puts "**********"
     end
 
-
-
     def opener 
         puts "\n 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 🔹 \n "
     end
 
-    
-
 end
 
-# shopping_cart = CLI.new()
-# # shopping_cart.main_menu
-# shopping_cart.login(attempts = 0)
-
-    # shopping_cart = CLI.new()
-    # # shopping_cart.main_menu
-    # shopping_cart.signup #(attempts = 0)
 
 

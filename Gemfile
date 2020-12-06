@@ -24,5 +24,7 @@ gem 'tty-table'
 gem 'date'
 gem 'rest-client'
 gem 'json'
-gem 'lolize'
 gem 'colorize'
+gem 'lolize'
+gem "tty-table"
+gem "rubocopy"
