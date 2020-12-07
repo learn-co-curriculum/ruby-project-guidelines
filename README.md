@@ -7,7 +7,7 @@
     1. "" ==> What is displayed in the application terminal
     2. '' ==> What to type into the terminal (excluding the '')
 
-# Prerequisites and Installation to Get Started:
+# Prerequisites and installation to get started:
     1. Please have the latest version of Ruby and an environment such Visual Studio.
     2. Fork and clone a copy of this repository into your local machine. 
     3. Ensure that all gems have been installed and updated correctly. This will be done for you by running 'bundle install' and 'bundle update' in the terminal. 
