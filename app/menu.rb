@@ -78,6 +78,7 @@ class Menu
             new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
             new_event.event_type = event.dig("classifications", 0, "segment", "name") 
             new_event.event_status = event.dig("dates", "status", "code")
+            new_event.event_state = event.dig("_embedded", "venues", 0, "state", "stateCode")
             events << new_event
         end
         save_new_events(events)
@@ -124,7 +125,7 @@ class Menu
     end
 
     def filter_events_by_user_city(events)
-        events.select {|e|e.event_city == self.user.city} 
+        events.select {|e|e.event_city == self.user.city && e.event_state == self.user.state} 
     end
 
     def display_results_by_attraction_name
@@ -138,7 +139,7 @@ class Menu
     end
 
     def display_results_in_users_city 
-        events = Event.all.select {|e|e.event_city == self.user.city}
+        events = Event.all.select {|e|e.event_city == self.user.city && e.event_state == self.user.state}
         display_events(events)
     end
 
@@ -193,100 +194,74 @@ class Menu
     end 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-    
     def get_results_by_event_type
-        events = Event.all.select {|event|event.event_city.split.any?(user.city.capitalize) || event.event_city.split.any?(user.city)}  
+        events =  Event.all.select {|e|e.event_city == self.user.city && e.event_state == self.user.state}
+        numbered_types = GenreSearch.new.numbered_types(events) 
         if events.empty?
             no_results_found
             begin_search
         else
-            i = 1
-            type_nums = {}
-            event_types = events.map{|event| event.event_type}.uniq
-            event_types.each do |type|
-            type_nums[i] = type
-            i += 1
-            end
+            user_select_event_type(numbered_types, events)
         end 
-    
-    user_select_event_type(type_nums, events)
     end 
+    
 
-    def user_select_event_type(type_nums, events)
+    def user_select_event_type(numbered_types, events)
         puts "Please select the number of the event type you would like to see:"
-        type_nums.each {|num, type| puts "#{num}. #{type}"}
-        #puts "Press 'a' to see all events" << functionality to be added
-        puts "Press 's' to log out of the app" #to do - put these repeating phrases in a method in case we update
+        numbered_types.each {|num, type| puts "#{num}. #{type}"}
+        puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
         user_input = STDIN.gets.chomp.downcase
-        type_nums.each do |num, type|
-            if user_input == num.to_s
-                get_results_by_genre(type)
-            end 
+        if numbered_types[user_input.to_i]
+            type = numbered_types[user_input.to_i]
+            results_by_genre(type)
+        elsif user_input == "s"
+            back_to_start
+        elsif user_input == "x"
+            end_program
+        else 
+            puts
+            invalid_selection
+            puts
+            user_select_event_type(numbered_types, events)
         end
     end 
 
-    def get_results_by_genre(type)
-        events = Event.all.select {|event|event.event_type == type}
+    def results_by_genre(type)
+        events = GenreSearch.new.genre_results(type)
         if events.empty?
             no_results_found
-            begin_search
-        else
-            i = 1
-            genre_nums = {}
-            event_genres = events.map{|event| event.genre}.uniq
-            event_genres.each do |genre|
-            genre_nums[i] = genre
-            i += 1
-            end
-        user_display_genre(genre_nums)
+            begin_search 
         end 
+        user_select_genre(GenreSearch.new.numbered_genres(events)) 
     end 
     
-    def user_display_genre(genre_nums)
-        puts "Please select the number of the genre of you would like to see:"
-        genre_nums.each {|num, genre| puts "#{num}. #{genre}"}
-        puts "Press 's' to log out of the app" #to do - put these repeating phrases in a method in case we update
+    def user_select_genre(numbered_genres)
+        puts "Please select the number of the genre you would like to see:"
+        numbered_genres.each {|num, genre| puts "#{num}. #{genre}"}
+        puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
         user_input = STDIN.gets.chomp.downcase
-            genre_nums.each do |num, genre|
-                if user_input == num.to_s
-                    display_genre_events(genre)
-                end 
+        if numbered_genres[user_input.to_i]
+            genre = numbered_genres[user_input.to_i]
+            if genre == "Other"
+                genre = nil
+                display_genre_events(genre)
+            else 
+            display_genre_events(genre)
             end 
+        elsif user_input == "s"
+            back_to_start
+        elsif user_input == "x"
+            end_program
+        else 
+            puts
+            invalid_selection
+            puts
+            user_select_genre(numbered_genres)
         end 
+ 
+    end 
 
     def display_genre_events(genre)
         events = Event.all.select {|event|event.genre == genre}
@@ -298,71 +273,9 @@ class Menu
         end
     end 
 
-
-end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#tester method only. to use, add call to method within normal run sequence
-def classification_tester(info)
-    info["_embedded"]["events"].each do |event|
-        puts "#{event["_embedded"]["venues"][0]["city"]["name"]} - #{event["classifications"][0]["genre"]["name"]} - #{event["classifications"][0]["segment"]["name"]}"
-    end 
-end 
-
 def error_message
     puts
-    puts "No events found in your city :(" #can make this a more generic message if we want to use this error method elsewhere
+    puts "No events found in your city :("
     puts  
     puts "Press '1' to enter a new city."
     puts "Press 'x' to exit the program."        
@@ -375,5 +288,7 @@ def error_message
     else
         puts "Invalid entry, please try another option"
     end 
+end 
+
 end 
 
