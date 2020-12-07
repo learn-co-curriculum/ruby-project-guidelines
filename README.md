@@ -9,8 +9,8 @@
 
 # Prerequisites and Installation to Get Started:
     1. Please have the latest version of Ruby and an environment such Visual Studio.
-    2. Fork and clone a local copy of this repository into your local machine. 
-    3. Ensure that all gems have been installed and updated correctly by running 'bundle install' and 'bundle update' in the terminal. 
+    2. Fork and clone a copy of this repository into your local machine. 
+    3. Ensure that all gems have been installed and updated correctly. This will be done for you by running 'bundle install' and 'bundle update' in the terminal. 
     4. Run 'rake db:migrate' once to create a database for storage.
     5. Run 'rake:db seed' once to have Venues and corresponding locations be pre-loaded into database. 
 
