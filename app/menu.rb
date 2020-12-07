@@ -182,7 +182,7 @@ class Menu
 
     def change_user_city
         self.user.change_city
-        pull_data_by_city_and_state(self.user.city, self.user.state)
+        pull_data(self.user.city, self.user.state)
     end
     
     def no_results_found
