@@ -7,10 +7,12 @@ class Menu
     end
 
     def start_program
+        puts
         puts "Welcome to Event Tracker! This app will allow you to track your favorite events and see their current status."
         self.user = get_user
-        pull_data(self.user.city, self.user.state)
-        puts "Thank you, #{user.name}"
+        pull_data_by_city_and_state(self.user.city, self.user.state)
+        puts
+        puts "Thank you, #{user.name}. Please select from the options below:"
         begin_search
     end
 
@@ -31,25 +33,9 @@ class Menu
         input == "" ? get_user_state : input
     end
 
-    # def pull_data_by_city_and_state(city, state)
-    #     info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-    #     info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
-    # end
-
-    def pull_data(city, state)
-        page_has_data = true
-        page = 1
-        while page_has_data && page < 4
-            path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&page=#{page}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
-            page_data = GetRequester.new(path).parse_json
-            if page_data.dig("page", "totalElements") == 0 || nil
-                page_has_data = false
-                error_message
-            else 
-                load_event_details(page_data)
-                page += 1
-            end
-        end       
+    def pull_data_by_city_and_state(city, state)
+        info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&size=100&sort=date,asc&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+        info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
     end
   
     def get_user
@@ -106,6 +92,7 @@ class Menu
     end
 
     def begin_search
+        puts
         puts "1. Search by event name or artist name"
         puts "2. Search by genre"
         puts "3. Search by date"
@@ -142,7 +129,7 @@ class Menu
     end
 
     def display_results_by_attraction_name
-        events = NameSearch.new.results
+        events = filter_events_by_user_city(NameSearch.new.results)
         events.empty? ? no_results_found : display_events(events)
     end
 
@@ -171,7 +158,7 @@ class Menu
         puts "Would you like to track an event's status? Enter the number of the event, or x to go back"
         input = STDIN.gets.chomp
         begin_search if input == "x"
-        if input.match? /\A\d+\z/
+        if (input.match? /\A\d+\z/) && (input.to_i <= events.length)
             self.user.confirm_track_event(events[input.to_i-1])
             begin_search
         else
@@ -186,7 +173,9 @@ class Menu
     end
     
     def no_results_found
+        puts
         puts "No results found. Please try again"
+        puts
         begin_search
     end
 
@@ -205,7 +194,6 @@ class Menu
         puts "Goodbye!"
         exit 
     end 
-
 
     def get_results_by_event_type
         events =  Event.all.select {|e|e.event_city == self.user.city && e.event_state == self.user.state}
@@ -242,6 +230,7 @@ class Menu
 
     def results_by_genre(type)
         events = GenreSearch.new.genre_results(type)
+        events = filter_events_by_user_city(events)
         if events.empty?
             no_results_found
             begin_search 
@@ -278,6 +267,7 @@ class Menu
 
     def display_genre_events(genre)
         events = Event.all.select {|event|event.genre == genre}
+        events = filter_events_by_user_city(events)
         if events.empty?
             no_results_found
             begin_search
