@@ -9,9 +9,8 @@ class Menu
     def start_program
         puts "Welcome to Event Tracker! This app will allow you to track your favorite events and see their current status."
         self.user = get_user
-        pull_data_by_city_and_state(self.user.city, self.user.state)
+        pull_data(self.user.city, self.user.state)
         puts "Thank you, #{user.name}"
-
         begin_search
     end
 
@@ -32,11 +31,24 @@ class Menu
 
     def pull_data_by_city_and_state(city, state)
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-        if  info["page"]["totalElements"] == 0 
-            error_message
-        else  
+        info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
+    end
+
+    def pull_data(city, state)
+        page_has_data = true
+        info = []
+        page = 1
+        while page_has_data && page < 3
+            path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&page=#{page}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
+            page_data = GetRequester.new(path).parse_json
+            if page_data.dig("page", "totalElements")
+                info << page_data
+                page += 1
+            else 
+                page_has_data = false
+            end
+        end       
         load_event_details(info)
-        end 
     end
   
     def get_user
@@ -69,16 +81,20 @@ class Menu
 
     def load_event_details(info)   
         events = []
-        info["_embedded"]["events"].each do |event|        
-            new_event = Event.new
-            new_event.attraction_name = event.dig("name")
-            new_event.date = event.dig("dates", "start", "localDate")
-            new_event.venue = event.dig("_embedded", "venues", 0, "name")
-            new_event.genre = event.dig("classifications", 0, "genre", "name")
-            new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
-            new_event.event_type = event.dig("classifications", 0, "segment", "name") 
-            new_event.event_status = event.dig("dates", "status", "code")
-            events << new_event
+        info.each do |page|
+            if page.dig("_embedded", "events")
+                page["_embedded"]["events"].each do |event|        
+                    new_event = Event.new
+                    new_event.attraction_name = event.dig("name")
+                    new_event.date = event.dig("dates", "start", "localDate")
+                    new_event.venue = event.dig("_embedded", "venues", 0, "name")
+                    new_event.genre = event.dig("classifications", 0, "genre", "name")
+                    new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
+                    new_event.event_type = event.dig("classifications", 0, "segment", "name") 
+                    new_event.event_status = event.dig("dates", "status", "code")
+                    events << new_event
+                end
+            end
         end
         save_new_events(events)
     end
