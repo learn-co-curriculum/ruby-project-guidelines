@@ -46,7 +46,7 @@ class Menu
             user = find_user_by(user_name = get_user_name)
             if !user
                 puts "Account information not found. Would you like to make an account? Y / N "
-                STDIN.gets.chomp == "y" ? user = create_user_by(user_name, get_user_city, get_user_state) : back_to_start
+                STDIN.gets.chomp.downcase == "y" ? user = create_user_by(user_name, get_user_city, get_user_state) : back_to_start
             end
         elsif input == "2"
             user = create_user_by(get_user_name, get_user_city, get_user_state)
@@ -71,13 +71,13 @@ class Menu
         events = []
         info["_embedded"]["events"].each do |event|        
             new_event = Event.new
-            new_event.attraction_name = event["name"]
-            new_event.date = event["dates"]["start"]["localDate"]
-            new_event.venue = event["_embedded"]["venues"][0]["name"]
-            new_event.genre = event["classifications"][0]["genre"]["name"] #changed subGenre to genre here
-            new_event.event_city = event["_embedded"]["venues"][0]["city"]["name"]
-            new_event.event_type = event["classifications"][0]["segment"]["name"] 
-            #new_event.event_status = event["dates"]["status"]["code"]
+            new_event.attraction_name = event.dig("name")
+            new_event.date = event.dig("dates", "start", "localDate")
+            new_event.venue = event.dig("_embedded", "venues", 0, "name")
+            new_event.genre = event.dig("classifications", 0, "genre", "name")
+            new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
+            new_event.event_type = event.dig("classifications", 0, "segment", "name") 
+            new_event.event_status = event.dig("dates", "status", "code")
             events << new_event
         end
         save_new_events(events)

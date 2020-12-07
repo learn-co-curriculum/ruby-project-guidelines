@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
     has_many :events, through: :tickets
 
     def my_upcoming_events
-        self.tickets.map {|t|t.event}.sort_by(&:date)
+        self.tickets.all.map {|t|t.event}.sort_by(&:date)
     end
 
     def display_user_information
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     end
 
     def show_events
-        self.my_upcoming_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
+        self.my_upcoming_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}. Status: #{e.event_status}"}
     end
 
     def display_has_no_tickets
