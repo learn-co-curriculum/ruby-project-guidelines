@@ -4,7 +4,7 @@ require_relative '../config/environment'
 #Assume Venues already exist in the database
 
 puts `clear`
-puts "BETA Build"
+puts "BETA Build v1.0"
 puts "\n\n\nHello, and welcome to the Artist Event Scheduler!\n\n\n\n"
 print "Please enter your Artist/Band Name: "
 artist_name = gets.chomp
@@ -13,28 +13,29 @@ puts `clear`
 
 input = "begin" 
 while input != "exit" do
-    print "\n\nPlease type 'menu' to see your list of available actions: "
+    print "\n\nPlease type '0' to see your list of available actions: "
     input = gets.chomp
     case input 
-    when "MENU".downcase
+    when "0"
         puts `clear`
         main_menu
-    when "CITY LIST".downcase
+    when "1"
         puts `clear`
         list_all_cities
-    when "CREATE SHOW".downcase
+    when "2"
         puts `clear`
         create_a_show(artist)
-    when "UPCOMING OR PAST DATES".downcase
+    when "3"
         puts `clear`
         show_all_my_show(artist)
-    when "UPDATE EXISTING SHOW".downcase
+    when "4"
         puts `clear`
         update_my_show(artist)
-    when "DELETE EXISTING SHOW".downcase
+    when "5"
         puts `clear`
         delete_my_show(artist)
     when "EXIT".downcase
+        puts `clear`
         break
     else 
         puts `clear`

@@ -1,5 +1,6 @@
-def main_menu 
-    puts "Please type in your selection\n\n"
+def main_menu
+    puts `clear`
+    puts "Please type a number from the list below...\n\n"
     puts "1. City List"
     puts "2. Create Show"
     puts "3. Upcoming or Past Dates"
@@ -47,9 +48,9 @@ def create_a_show(artist)
     puts "What city is your show in?: \n\n"
     list_all_cities
     puts "\n"
-    city = gets.chomp  
+    city = gets.chomp 
     puts `clear`
-    puts "Choose a venue!: \n\n"
+    puts "Choose a venue: \n\n"
     city_venue(city)
     puts "\n"
     venue = gets.chomp
@@ -112,7 +113,7 @@ def delete_my_show(artist)
     delete_date = ShowDate.all.find_by(artist_id: artist.id)
     delete_date.destroy
     puts "\n"
-    puts "Congratulations! Your selected show has been successfully cancelled!\n\n"
+    puts "Congratulations! Your selected show has been successfully deleted!\n\n"
 end 
 
 #Tried to implement return option:

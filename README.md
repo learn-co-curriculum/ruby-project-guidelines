@@ -3,16 +3,16 @@
 # Goal: 
     The goal of our CLI application is to be a simple tool for Artists and allows venue and concert date tracking. This is implementing a user built database with venue locations already pre-seeded.
 
-# Symbols throughout the README: 
+# Symbols throughout the README:
     1. "" ==> What is displayed in the application terminal
     2. '' ==> What to type into the terminal (excluding the '')
 
 # Prerequisites and installation to get started:
     1. Please have the latest version of Ruby and an environment such Visual Studio.
-    2. Fork and clone a copy of this repository into your local machine. 
-    3. Ensure that all gems have been installed and updated correctly. This will be done for you by running 'bundle install' and 'bundle update' in the terminal. 
+    2. Fork and clone a copy of this repository into your local machine.
+    3. Ensure that all gems have been installed and updated correctly. This will be done for you by running 'bundle install' and 'bundle update' in the terminal.
     4. Run 'rake db:migrate' once to create a database for storage.
-    5. Run 'rake:db seed' once to have Venues and corresponding locations be pre-loaded into database. 
+    5. Run 'rake:db seed' once to have Venues and corresponding locations be pre-loaded into database.
 
 # As a user of our application, an artist can do a few things:
     1. Create a profile/account if they do not have one.
