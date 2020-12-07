@@ -12,37 +12,42 @@ class User < ActiveRecord::Base
         press_any_key_to_go_back
     end
 
-    def display_tickets
-        puts "Here are the events #{self.name} has a ticket for:"
-        self.my_upcoming_events.empty? ? display_has_no_tickets : show_events
+    def display_tracked_events
+        self.my_upcoming_events.empty? ? display_has_no_saved_events : show_events
         press_any_key_to_go_back
     end
 
     def show_events
-        self.my_upcoming_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}. Status: #{e.event_status}"}
+        puts "Here are your saved events:"
+        self.my_upcoming_events.each {|event|puts event_display_format(event)}
     end
 
-    def display_has_no_tickets
-        puts "You have no tickets at this time"
+    def display_has_no_saved_events
+        puts "You are not tracking any events at this time"
     end
 
-    def confirm_buy_ticket(event)
-        puts "#{event.attraction_name} - #{event.date} - #{event.venue}"
-        puts "Confirm you would like to buy a ticket for this event. Y or N."
+    def confirm_track_event(event)
+        puts event_display_format(event)
+        puts "Confirm you would like to track this event. Y or N."
         y_n_input = STDIN.gets.chomp.downcase
         if y_n_input == "y"
             Ticket.create(user_id: self.id, event_id: event.id)
             puts
-            puts "Congratulations, #{self.name}. Enjoy #{event.attraction_name} on #{event.date}, at #{event.venue}"
-            puts 
+            puts "Now tracking event: " 
+            puts event_display_format(event)
+            puts
         elsif y_n_input == "n"
             puts "Returning to search results..."
             puts
         else
             puts "Not a valid selection. Please enter Y or N:"
             puts
-            confirm_buy_ticket?(event)
+            confirm_track_event(event)
         end
+    end
+
+    def event_display_format(event)
+        "#{event.attraction_name}. Current status: #{event.event_status.capitalize}. Scheduled for #{event.date_display_format}, at #{event.venue}."
     end
 
     def change_city

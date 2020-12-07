@@ -7,11 +7,10 @@ class Menu
     end
 
     def start_program
-        puts "Welcome to EventFinder!"
+        puts "Welcome to Event Tracker! This app will allow you to track your favorite events and see their current status."
         self.user = get_user
-        pull_data_by_city_and_state(self.user.city, self.user.state)
+        pull_data(self.user.city, self.user.state)
         puts "Thank you, #{user.name}"
-
         begin_search
     end
 
@@ -22,21 +21,35 @@ class Menu
 
     def get_user_city
         puts "Please enter your City"
-        STDIN.gets.chomp.capitalize
+        input = STDIN.gets.chomp.split.map(&:capitalize).join(' ')
+        input == "" ? get_user_city : input
     end
 
     def get_user_state
         puts "Please enter your State (ex. WA, CA, NY)"
-        STDIN.gets.chomp.upcase
+        input = STDIN.gets.chomp.upcase
+        input == "" ? get_user_state : input
     end
 
-    def pull_data_by_city_and_state(city, state)
-        info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-        if  info["page"]["totalElements"] == 0 
-            error_message
-        else  
-        load_event_details(info)
-        end 
+    # def pull_data_by_city_and_state(city, state)
+    #     info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+    #     info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
+    # end
+
+    def pull_data(city, state)
+        page_has_data = true
+        page = 1
+        while page_has_data && page < 4
+            path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&page=#{page}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
+            page_data = GetRequester.new(path).parse_json
+            if page_data.dig("page", "totalElements") == 0 || nil
+                page_has_data = false
+                error_message
+            else 
+                load_event_details(page_data)
+                page += 1
+            end
+        end       
     end
   
     def get_user
@@ -97,7 +110,7 @@ class Menu
         puts "2. Search by genre"
         puts "3. Search by date"
         puts "4. See all events in my city"
-        puts "5. See My Tickets"
+        puts "5. See My Tracked Events and the Current Status"
         puts "6. Change my city"
         puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
@@ -111,7 +124,7 @@ class Menu
         when "4"
             display_results_in_users_city    
         when "5"
-            self.user.display_tickets
+            self.user.display_tracked_events
         when "6"
             change_user_city
         when "s"
@@ -148,18 +161,18 @@ class Menu
         i = 1
         events = events.sort_by(&:date)
         events.each do |e| 
-            puts "#{i}. #{e.attraction_name} - #{e.date} - #{e.venue}" 
+            puts "#{i}. " + e.event_display_format
             i = i+1
         end
-        buy_ticket(events)
+        track_event(events)
     end
 
-    def buy_ticket(events)
-        puts "Would you like to buy a ticket for an event? Enter the number of the event, or x to go back"
+    def track_event(events)
+        puts "Would you like to track an event's status? Enter the number of the event, or x to go back"
         input = STDIN.gets.chomp
         begin_search if input == "x"
         if input.match? /\A\d+\z/
-            self.user.confirm_buy_ticket(events[input.to_i-1])
+            self.user.confirm_track_event(events[input.to_i-1])
             begin_search
         else
             invalid_selection
