@@ -4,15 +4,12 @@ Artist.destroy_all
 ShowDate.destroy_all
 Venue.destroy_all
 
-
-
-
 # 15.times do 
 #     Artist.create(name:Faker::Music.band)
 # end
 # puts 'done'
 
-15.times do
+100.times do
     Venue.create(name:Faker::GreekPhilosophers.name, city:Faker::Address.city, state:Faker::Address.state)
 end
 puts 'done'

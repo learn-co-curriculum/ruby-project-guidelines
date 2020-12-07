@@ -1,20 +1,19 @@
-
 def main_menu 
-    puts "Please type in your selection"
-    puts "1. list venue cities"
-    puts "2. create a show"
-    puts "3. show my dates"
-    puts "4. update a show date"
-    puts "5. delete a show"
-    puts "6. Type 'exit' to leave Artist Tracker"
+    puts "Please type in your selection\n\n"
+    puts "1. City List"
+    puts "2. Create Show"
+    puts "3. Upcoming or Past Dates"
+    puts "4. Update Existing Show"
+    puts "5. Delete Existing Show"
+    puts "6. Type 'Exit' to leave the Artist Event Scheduler"
 end 
 
 # Sign in or create account for Artist method
 def create_account
-    print "Type in your band name: "
+    print "Whats your Artist/Band name?: "
     user_input = gets.chomp
     new_account = Artist.find_or_create_by(name: user_input)
-    puts "Welcome #{user_input}"
+    puts "Welcome, #{user_input}!"
     new_account
 end
 
@@ -23,14 +22,12 @@ def list_all_cities
     index = 0
     Venue.all.each{|venue| puts "#{index += 1}. #{venue.city}"}
 end 
- 
 
 #HELPER METHOD for listing Venue names of their respective cities
 def city_venue(city)
     all_venue_cities = Venue.all.select{|venue| venue.city == city}
-    all_venue_cities.each{|venue| puts "#{venue.name}"}
+    all_venue_cities.each{|venue| puts "-#{venue.name}"}
 end 
-
 
 #HELPER METHOD for showing artists existing dates
 def dates_of_shows_helper_method(artist)
@@ -42,18 +39,19 @@ def venues_of_shows_helper_method(artist)
     ShowDate.all.select{|show_date| show_date.artist_id == artist.id}.map{|showdate| showdate.venue.name}
 end 
 
-
 #CREATE ShowDate method
 def create_a_show(artist)
-    puts "When and where would you like to play? Please use format 'YYYY-MM-DD': "
+    puts "When is your show? (MM-DD-YYY): \n\n" #Could use any format, but for designer purposes.
     date = gets.chomp
     puts `clear`
-    puts "What city would you like to play in?: "
+    puts "What city is your show in?: \n\n"
     list_all_cities
+    puts "\n"
     city = gets.chomp  
     puts `clear`
-    puts "Which of these Venues would you like to play at?: "
+    puts "Choose a venue!: \n\n"
     city_venue(city)
+    puts "\n"
     venue = gets.chomp
     puts `clear`
     selected_venue = Venue.find_by(name: venue)
@@ -62,46 +60,60 @@ def create_a_show(artist)
     new_show_date.artist_id = artist.id
     new_show_date.venue_id = selected_venue.id
     new_show_date.save
-    puts "Congratualtions! Your show date is #{date}, at #{venue} in #{city}."
+    puts "Congratulations! Your show date is #{date}, at #{venue} in #{city}!\n\n"
 end
-
 
 #READ ShowDate method
 def show_all_my_show(artist)
    all_show_dates = dates_of_shows_helper_method(artist)
    all_venue_names = venues_of_shows_helper_method(artist)
     if all_show_dates == [] && all_venue_names == [] 
-        puts "Sorry, you currently do not have any dates listed for a venue. Please create a show."
-        else  puts "You will be playing on the date #{all_show_dates.uniq.join(', ')} at #{all_venue_names.uniq.join(', ')}."
+        puts "Oh no! Looks like you don't have any dates yet! Go back to the menu to create one!\n\n"
+        else  puts "You have a show on #{all_show_dates.uniq.join(', ')} at #{all_venue_names.uniq.join(', ')}!\n\n"
     end 
 end 
 
-
 # UPDATE ShowDate method
 def update_my_show(artist)
-    puts "Here is a list of your Venue dates. Please type in the date you would like to change: "
-    puts "- #{dates_of_shows_helper_method(artist).join(", ")}"
+    puts "Here is a list of your shows! Please type in the date you would like to change: \n\n"
+    puts "- #{dates_of_shows_helper_method(artist).join(", ")} at #{venues_of_shows_helper_method(artist).uniq.join(', ')}.\n\n"
     date_selected = gets.chomp
     puts `clear`
-    print "Please enter your new desired date in the format 'YYYY-MM-DD': "
+    puts "Choose a city for the updated show: \n\n"
+    list_all_cities
+    puts "\n"
+    city_selected = gets.chomp
+    puts `clear`
+    puts "Choose the venue: \n\n"
+    city_venue(city_selected)
+    puts "\n"
+    puts "Selected Venue: \n"
+    venue_selected = gets.chomp
+    puts "\n"
+    puts `clear`
+    print "Please enter your new desired date in the format 'MM-DD-YYYY': \n\n"
     new_date = gets.chomp
     puts `clear`
     change_date = ShowDate.all.find_by(artist_id: artist.id)
+    change_city = Venue.all.find_by(city: city_selected)
+    change_venue = Venue.all.find_by(name: venue_selected)
     set_date = change_date.update(date: new_date)
-    puts "Congratulations, your Venue date is now updated to #{new_date}!"
+    set_city = change_city.update(city: city_selected)
+    set_venue = change_venue.update(name: venue_selected)
+    puts "Congratulations! Your Show for that date is now updated to #{new_date} in #{city_selected} at #{venue_selected}!\n\n"
 end 
-
 
 #DELETE ShowDate method
 def delete_my_show(artist)
-    puts "Here are your Venue dates. Please type in the date you would like to cancel and delete: "
-    puts "- #{dates_of_shows_helper_method(artist).uniq.join(", ")}"
+    puts "Here are your shows! Please type in the date you would like to cancel and delete: \n\n"
+    puts "- #{dates_of_shows_helper_method(artist).uniq.join(", ")}\n\n"
+    puts "Selected Date: "
     date_selected = gets.chomp
     delete_date = ShowDate.all.find_by(artist_id: artist.id)
-    delete_date.destroy 
-    puts "Congratulations, your selected venue date has been successfully cancelled."
+    delete_date.destroy
+    puts "\n"
+    puts "Congratulations! Your selected show has been successfully cancelled!\n\n"
 end 
-
 
 #Tried to implement return option:
 # def return_to_menu
@@ -115,5 +127,3 @@ end
 #         end 
 #     end 
 # end 
-
-

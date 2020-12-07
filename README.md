@@ -2,7 +2,7 @@
 
 # Symbols throughout the README: 
     1. "" ==> What is displayed in the application terminal
-    2. '' ==> WHat to type into the terminal (excluding the '')
+    2. '' ==> What to type into the terminal (excluding the '')
 
 # Goal: 
     The goal of our CLI application is to be a simple tool for Artists and allows venue and concert date tracking. This is implementing a user built database with venue locations already pre-seeded.

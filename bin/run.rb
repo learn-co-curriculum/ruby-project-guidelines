@@ -3,41 +3,41 @@ require_relative '../config/environment'
 #ALL VENUE INSTANCES HAVE TO BE PRELOADED
 #Assume Venues already exist in the database
 
-puts `clear` 
-puts "Welcome to our Artist App Tracker!"
-print "please enter username: "
+puts `clear`
+puts "BETA Build"
+puts "\n\n\nHello, and welcome to the Artist Event Scheduler!\n\n\n\n"
+print "Please enter your Artist/Band Name: "
 artist_name = gets.chomp
 artist = Artist.find_or_create_by(name: artist_name)
 puts `clear`
 
-
 input = "begin" 
 while input != "exit" do
-    print "Please type 'menu' for menu: "
+    print "\n\nPlease type 'menu' to see your list of available actions: "
     input = gets.chomp
     case input 
-    when "menu" 
+    when "MENU".downcase
         puts `clear`
         main_menu
-    when "list venue cities"
+    when "CITY LIST".downcase
         puts `clear`
         list_all_cities
-    when "create a show"
+    when "CREATE SHOW".downcase
         puts `clear`
         create_a_show(artist)
-    when "show my dates"
+    when "UPCOMING OR PAST DATES".downcase
         puts `clear`
         show_all_my_show(artist)
-    when "update a show date"
+    when "UPDATE EXISTING SHOW".downcase
         puts `clear`
         update_my_show(artist)
-    when "delete a show"
+    when "DELETE EXISTING SHOW".downcase
         puts `clear`
         delete_my_show(artist)
-    when "exit"
+    when "EXIT".downcase
         break
     else 
         puts `clear`
-        puts "This is an unknown command, please try again."
+        puts "This is an UNKNOWN command, please try again!"
     end 
 end 
