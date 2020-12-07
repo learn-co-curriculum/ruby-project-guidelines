@@ -27,7 +27,7 @@ class Menu
 
     def get_user_state
         puts "Please enter your State (ex. WA, CA, NY)"
-        STDIN.gets.chomp
+        STDIN.gets.chomp.upcase
     end
 
     def pull_data_by_city_and_state(city, state)
@@ -97,22 +97,25 @@ class Menu
         puts "3. Search by date"
         puts "4. See all events in my city"
         puts "5. See My Tickets"
+        puts "6. Change my city"
         puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
-        user_input = STDIN.gets.chomp
-        if user_input == "1"
+        case STDIN.gets.chomp
+        when "1"
             display_results_by_attraction_name
-        elsif user_input == "2"
+        when "2"
             get_results_by_event_type
-        elsif user_input == "3"
+        when "3"
             display_results_by_date
-        elsif user_input == "4"
+        when "4"
             display_results_in_users_city    
-        elsif user_input == "5"
+        when "5"
             self.user.display_tickets
-        elsif user_input == "s"
+        when "6"
+            change_user_city
+        when "s"
             back_to_start
-        elsif user_input == "x"
+        when "x"
             end_program
         else
             invalid_selection
@@ -120,26 +123,23 @@ class Menu
         begin_search
     end
 
-    def filter_events_by_user_city(events=nil)
-        events == nil ? Event.all.select {|e|e.event_city == self.user.city} : events.select {|e|e.event_city == self.user.city} 
+    def filter_events_by_user_city(events)
+        events.select {|e|e.event_city == self.user.city} 
     end
 
     def display_results_by_attraction_name
         events = NameSearch.new.results
-        events.empty? ? no_results_found : display_events(events.uniq)
-    end
-
-    def display_results_in_users_city 
-        display_events(filter_events_by_user_city)
+        events.empty? ? no_results_found : display_events(events)
     end
 
     def display_results_by_date
-        puts "Please enter a date: MM/DD/YYYY"
-        date = STDIN.gets.chomp.split("/")
-        date_formatted =  "#{date[2]}-#{date[0]}-#{date[1]}"
-        events = Event.all.select {|e|e.date == date_formatted}
-        events = filter_events_by_user_city(events)
+        events = filter_events_by_user_city(DateSearch.new.search_by_date)
         events.empty? ? no_results_found : display_events(events)
+    end
+
+    def display_results_in_users_city 
+        events = Event.all.select {|e|e.event_city == self.user.city}
+        display_events(events)
     end
 
     def display_events(events)
@@ -158,12 +158,17 @@ class Menu
         input = STDIN.gets.chomp
         begin_search if input == "x"
         if input.match? /\A\d+\z/
-            self.user.confirm_buy_ticket?(events[input.to_i-1])
+            self.user.confirm_buy_ticket(events[input.to_i-1])
             begin_search
         else
             invalid_selection
             display_events(events)
         end
+    end
+
+    def change_user_city
+        self.user.change_city
+        pull_data_by_city_and_state(self.user.city, self.user.state)
     end
     
     def no_results_found
@@ -177,12 +182,6 @@ class Menu
         puts
     end
 
-    def press_any_key_to_go_back
-        puts "Press Enter to continue."
-        input = gets
-        if input
-        end
-    end
 
     def back_to_start
         Menu.new.start_program 
@@ -362,16 +361,16 @@ def classification_tester(info)
 end 
 
 def error_message
-    self.user.delete
     puts
     puts "No events found in your city :(" #can make this a more generic message if we want to use this error method elsewhere
     puts  
-    puts "Press 's' to return to start"
-    puts "Press 'x' to exit the program"        
+    puts "Press '1' to enter a new city."
+    puts "Press 'x' to exit the program."        
     user_input = STDIN.gets.chomp
-    if user_input == "s"
-        back_to_start
+    if user_input == "1"
+        change_user_city
     elsif user_input == "x"
+        self.user.delete
         end_program
     else
         puts "Invalid entry, please try another option"

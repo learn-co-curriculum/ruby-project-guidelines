@@ -6,6 +6,12 @@ class User < ActiveRecord::Base
         self.tickets.map {|t|t.event}.sort_by(&:date)
     end
 
+    def display_user_information
+        puts self.name
+        puts "#{self.city}, #{self.state}"
+        press_any_key_to_go_back
+    end
+
     def display_tickets
         puts "Here are the events #{self.name} has a ticket for:"
         self.my_upcoming_events.empty? ? display_has_no_tickets : show_events
@@ -20,7 +26,7 @@ class User < ActiveRecord::Base
         puts "You have no tickets at this time"
     end
 
-    def confirm_buy_ticket?(event)
+    def confirm_buy_ticket(event)
         puts "#{event.attraction_name} - #{event.date} - #{event.venue}"
         puts "Confirm you would like to buy a ticket for this event. Y or N."
         y_n_input = STDIN.gets.chomp.downcase
@@ -39,9 +45,16 @@ class User < ActiveRecord::Base
         end
     end
 
+    def change_city
+        puts "Please enter your city:"
+        self.city = STDIN.gets.chomp.capitalize
+        puts "Please enter your State: (WA, CA, FL...)"
+        self.state = STDIN.gets.chomp.upcase
+    end
+
     def press_any_key_to_go_back
+        puts
         puts "Press Enter to continue."
-        input = gets
-        input
+        gets
     end
 end
