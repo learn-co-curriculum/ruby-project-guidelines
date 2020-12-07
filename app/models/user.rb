@@ -18,12 +18,15 @@ class User < ActiveRecord::Base
     end
 
     def show_events
+        puts
         puts "Here are your saved events:"
         self.my_upcoming_events.each {|event|puts event_display_format(event)}
     end
 
     def display_has_no_saved_events
+        puts
         puts "You are not tracking any events at this time"
+        puts
     end
 
     def confirm_track_event(event)
@@ -52,7 +55,7 @@ class User < ActiveRecord::Base
 
     def change_city
         puts "Please enter your city:"
-        self.city = STDIN.gets.chomp.capitalize
+        self.city = STDIN.gets.chomp.split.map(&:capitalize).join(' ')
         puts "Please enter your State: (WA, CA, FL...)"
         self.state = STDIN.gets.chomp.upcase
     end
