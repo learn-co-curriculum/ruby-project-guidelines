@@ -7,7 +7,7 @@ class Menu
     end
 
     def start_program
-        puts "Welcome to EventFinder!"
+        puts "Welcome to Event Tracker! This app will allow you to track your favorite events and see their current status."
         self.user = get_user
         pull_data_by_city_and_state(self.user.city, self.user.state)
         puts "Thank you, #{user.name}"
@@ -22,7 +22,7 @@ class Menu
 
     def get_user_city
         puts "Please enter your City"
-        STDIN.gets.chomp.capitalize
+        STDIN.gets.chomp.split.map(&:capitalize).join(' ')
     end
 
     def get_user_state
@@ -96,7 +96,7 @@ class Menu
         puts "2. Search by genre"
         puts "3. Search by date"
         puts "4. See all events in my city"
-        puts "5. See My Tickets"
+        puts "5. See My Tracked Events and the Current Status"
         puts "6. Change my city"
         puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
@@ -110,7 +110,7 @@ class Menu
         when "4"
             display_results_in_users_city    
         when "5"
-            self.user.display_tickets
+            self.user.display_tracked_events
         when "6"
             change_user_city
         when "s"
@@ -147,18 +147,18 @@ class Menu
         i = 1
         events = events.sort_by(&:date)
         events.each do |e| 
-            puts "#{i}. #{e.attraction_name} - #{e.date} - #{e.venue}" 
+            puts "#{i}. " + e.event_display_format
             i = i+1
         end
-        buy_ticket(events)
+        track_event(events)
     end
 
-    def buy_ticket(events)
-        puts "Would you like to buy a ticket for an event? Enter the number of the event, or x to go back"
+    def track_event(events)
+        puts "Would you like to track an event's status? Enter the number of the event, or x to go back"
         input = STDIN.gets.chomp
         begin_search if input == "x"
         if input.match? /\A\d+\z/
-            self.user.confirm_buy_ticket(events[input.to_i-1])
+            self.user.confirm_track_event(events[input.to_i-1])
             begin_search
         else
             invalid_selection
