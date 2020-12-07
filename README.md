@@ -1,59 +1,38 @@
-# Module One Final Project Guidelines
+# Venue and Date Tracker for Artists
 
-Congratulations, you're at the end of module one! You've worked crazy hard to get here and have learned a ton.
+# Symbols throughout the README: 
+    1. "" ==> What is displayed in the application terminal
+    2. '' ==> What to type into the terminal (excluding the '')
 
-For your final project, we'll be building a Command Line database application.
+# Goal: 
+    The goal of our CLI application is to be a simple tool for Artists and allows venue and concert date tracking. This is implementing a user built database with venue locations already pre-seeded.
 
-## Project Requirements
+# As a user of our application, an artist can do a few things:
+    1. Create a profile/account if they do not have one.
+    2. Create a date for a venue location to perform.
+    3. View all of their current dates and matching venues.
+    4. Update any existing venue dates. 
+    5. Delete any existing concert or venue dates. 
 
-### Option One - Data Analytics Project
+# Symbols throughout the README: 
+    1. "" ==> What is displayed in the application terminal.
+    2. '' ==> What to type into the terminal (excluding the '').
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have at minimum three models including one join model. This means you must have a many-to-many relationship.
-3. You should seed your database using data that you collect either from a CSV, a website by scraping, or an API.
-4. Your models should have methods that answer interesting questions about the data. For example, if you've collected info about movie reviews, what is the most popular movie? What movie has the most reviews?
-5. You should provide a CLI to display the return values of your interesting methods.  
-6. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+# How to use our application:
+    1. Please type in 'bundle install' and then 'bundle update' within the terminal. Next type in 'rake db:seed' in the terminal to generate the venue seed. 
 
-  **Resource:** [Easy Access APIs](https://github.com/learn-co-curriculum/easy-access-apis)
+    2. To start the application, type into the terminal 'ruby bin/rb' 
 
-### Option Two - Command Line CRUD App
+    3. Following the prompts, simply type in your artist name and the application will look for your profile in the database. If it exists, it will pull up your profile, otherwise, your profile will be created. 
 
-1. Access a Sqlite3 Database using ActiveRecord.
-2. You should have a minimum of three models.
-3. You should build out a CLI to give your user full CRUD ability for at least one of your resources. For example, build out a command line To-Do list. A user should be able to create a new to-do, see all todos, update a todo item, and delete a todo. Todos can be grouped into categories, so that a to-do has many categories and categories have many to-dos.
-4. Use good OO design patterns. You should have separate classes for your models and CLI interface.
+    4. To access the menu, type in 'menu'
 
-### Brainstorming and Proposing a Project Idea
+    5. Our program is based on key typing selection. To access any of the listed options, please follow the prompts and type in your choice excluding the numbered list ("1."). 
 
-Projects need to be approved prior to launching into them, so take some time to brainstorm project options that will fulfill the requirements above.  You must have a minimum of four [user stories](https://en.wikipedia.org/wiki/User_story) to help explain how a user will interact with your app.  A user story should follow the general structure of `"As a <role>, I want <goal/desire> so that <benefit>"`. For example, if we were creating an app to randomly choose nearby restaurants on Yelp, we might write:
+    6. For example, if you choose the option "show my dates" within the menu, type in 'show my dates' and more prompts will follow. 
 
-* As a user, I want to be able to enter my name to retrieve my records
-* As a user, I want to enter a location and be given a random nearby restaurant suggestion
-* As a user, I should be able to reject a suggestion and not see that restaurant suggestion again
-* As a user, I want to be able to save to and retrieve a list of favorite restaurant suggestions
+    7. Each time an option has been completed, you will automatically be return to the main menu. 
 
-## Instructions
+    8. A brief video demonstration will be linked here as well: 
+ 
 
-1. Fork and clone this repository.
-2. Build your application. Make sure to commit early and commit often. Commit messages should be meaningful (clearly describe what you're doing in the commit) and accurate (there should be nothing in the commit that doesn't match the description in the commit message). Good rule of thumb is to commit every 3-7 mins of actual coding time. Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
-3. Make sure to create a good README.md with a short description, install instructions, a contributor's guide and a link to the license for your code.
-4. Make sure your project checks off each of the above requirements.
-5. Prepare a video demo (narration helps!) describing how a user would interact with your working project.
-    * The video should:
-      - Have an overview of your project. (2 minutes max)
-6. Prepare a presentation to follow your video. (3 minutes max)
-    * Your presentation should:
-      - Describe something you struggled to build, and show us how you ultimately implemented it in your code.
-      - Discuss 3 things you learned in the process of working on this project.
-      - Address what, if anything, you would change or add to what you have today.
-      - Present any code you would like to highlight.   
-7. *OPTIONAL, BUT RECOMMENDED*: Write a blog post about the project and process.
-
----
-### Common Questions:
-- How do I turn off my SQL logger?
-```ruby
-# in config/environment.rb add this line:
-ActiveRecord::Base.logger = nil
-```
