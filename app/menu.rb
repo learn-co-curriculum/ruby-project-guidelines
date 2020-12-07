@@ -27,7 +27,7 @@ class Menu
 
     def get_user_state
         puts "Please enter your State (ex. WA, CA, NY)"
-        STDIN.gets.chomp
+        STDIN.gets.chomp.upcase
     end
 
     def pull_data_by_city_and_state(city, state)
@@ -46,7 +46,7 @@ class Menu
             user = find_user_by(user_name = get_user_name)
             if !user
                 puts "Account information not found. Would you like to make an account? Y / N "
-                STDIN.gets.chomp == "y" ? user = create_user_by(user_name, get_user_city, get_user_state) : back_to_start
+                STDIN.gets.chomp.downcase == "y" ? user = create_user_by(user_name, get_user_city, get_user_state) : back_to_start
             end
         elsif input == "2"
             user = create_user_by(get_user_name, get_user_city, get_user_state)
@@ -71,13 +71,13 @@ class Menu
         events = []
         info["_embedded"]["events"].each do |event|        
             new_event = Event.new
-            new_event.attraction_name = event["name"]
-            new_event.date = event["dates"]["start"]["localDate"]
-            new_event.venue = event["_embedded"]["venues"][0]["name"]
-            new_event.genre = event["classifications"][0]["genre"]["name"] #changed subGenre to genre here
-            new_event.event_city = event["_embedded"]["venues"][0]["city"]["name"]
-            new_event.event_type = event["classifications"][0]["segment"]["name"] 
-            #new_event.event_status = event["dates"]["status"]["code"]
+            new_event.attraction_name = event.dig("name")
+            new_event.date = event.dig("dates", "start", "localDate")
+            new_event.venue = event.dig("_embedded", "venues", 0, "name")
+            new_event.genre = event.dig("classifications", 0, "genre", "name")
+            new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
+            new_event.event_type = event.dig("classifications", 0, "segment", "name") 
+            new_event.event_status = event.dig("dates", "status", "code")
             events << new_event
         end
         save_new_events(events)
@@ -97,55 +97,49 @@ class Menu
         puts "3. Search by date"
         puts "4. See all events in my city"
         puts "5. See My Tickets"
+        puts "6. Change my city"
         puts "Press 's' to log out of the app"
         puts "Press 'x' to exit the app"
-        user_input = STDIN.gets.chomp
-        if user_input == "1"
+        case STDIN.gets.chomp
+        when "1"
             display_results_by_attraction_name
-        elsif user_input == "2"
+        when "2"
             get_results_by_event_type
-        elsif user_input == "3"
+        when "3"
             display_results_by_date
-        elsif user_input == "4"
+        when "4"
             display_results_in_users_city    
-        elsif user_input == "5"
-            display_user_tickets
-        elsif user_input == "s"
+        when "5"
+            self.user.display_tickets
+        when "6"
+            change_user_city
+        when "s"
             back_to_start
-        elsif user_input == "x"
+        when "x"
             end_program
         else
             invalid_selection
-            begin_search
         end
+        begin_search
     end
 
-    def filter_events_by_user_city(events=nil)
-        events == nil ? Event.all.select {|e|e.event_city == self.user.city} : events.select {|e|e.event_city == self.user.city} 
+    def filter_events_by_user_city(events)
+        events.select {|e|e.event_city == self.user.city} 
     end
 
     def display_results_by_attraction_name
-        puts "Please enter the event or artist you would like to see:"
-        user_input = STDIN.gets.chomp.downcase.split(" ")
-        events = []
-        user_input.each do |word|
-            found_events = Event.all.select {|event|event.attraction_name.split.any?(word.capitalize) || event.attraction_name.split.any?(word)}.uniq
-            found_events.each {|e| events << e} 
-        end
-        events.empty? ? no_results_found : display_events(events.uniq)
-    end
-
-    def display_results_in_users_city 
-        display_events(filter_events_by_user_city)
+        events = NameSearch.new.results
+        events.empty? ? no_results_found : display_events(events)
     end
 
     def display_results_by_date
-        puts "Please enter a date: MM/DD/YYYY"
-        date = STDIN.gets.chomp.split("/")
-        date_formatted =  "#{date[2]}-#{date[0]}-#{date[1]}"
-        events = Event.all.select {|e|e.date == date_formatted}
-        events = filter_events_by_user_city(events)
+        events = filter_events_by_user_city(DateSearch.new.search_by_date)
         events.empty? ? no_results_found : display_events(events)
+    end
+
+    def display_results_in_users_city 
+        events = Event.all.select {|e|e.event_city == self.user.city}
+        display_events(events)
     end
 
     def display_events(events)
@@ -163,39 +157,18 @@ class Menu
         puts "Would you like to buy a ticket for an event? Enter the number of the event, or x to go back"
         input = STDIN.gets.chomp
         begin_search if input == "x"
-        choice = events[input.to_i-1]
-        if choice
-            puts "#{choice.attraction_name} - #{choice.date} - #{choice.venue}"
-            puts "Confirm you would like to buy a ticket for this event. Y or N."
-            y_n_input = STDIN.gets.chomp
-            if y_n_input == "y"
-                self.user.buy_ticket(choice)
-                puts "Congratulations, #{self.user.name}. Enjoy #{choice.attraction_name} on #{choice.date}, at #{choice.venue}"
-                begin_search
-            elsif y_n_input == "n"
-                begin_search
-            else
-                invalid_selection
-                display_events(events)
-            end
+        if input.match? /\A\d+\z/
+            self.user.confirm_buy_ticket(events[input.to_i-1])
+            begin_search
         else
             invalid_selection
             display_events(events)
         end
     end
 
-    def display_user_tickets
-        puts "Here are the events #{self.user.name} has a ticket for:"
-        user_events = self.user.tickets.all.map {|t|t.event}.sort_by(&:date)
-        if !user_events.empty?
-            user_events.each {|e|puts "#{e.attraction_name} on #{e.date}, at #{e.venue}"}
-            press_any_key_to_go_back
-            begin_search
-        else
-            puts "You have no tickets at this time"
-            press_any_key_to_go_back
-            begin_search
-        end
+    def change_user_city
+        self.user.change_city
+        pull_data_by_city_and_state(self.user.city, self.user.state)
     end
     
     def no_results_found
@@ -204,15 +177,11 @@ class Menu
     end
 
     def invalid_selection
+        puts
         puts "Not a valid selection. Please try again."
+        puts
     end
 
-    def press_any_key_to_go_back
-        puts "Press Enter to continue."
-        input = gets
-        if input
-        end
-    end
 
     def back_to_start
         Menu.new.start_program 
@@ -392,16 +361,16 @@ def classification_tester(info)
 end 
 
 def error_message
-    self.user.delete
     puts
     puts "No events found in your city :(" #can make this a more generic message if we want to use this error method elsewhere
     puts  
-    puts "Press 's' to return to start"
-    puts "Press 'x' to exit the program"        
+    puts "Press '1' to enter a new city."
+    puts "Press 'x' to exit the program."        
     user_input = STDIN.gets.chomp
-    if user_input == "s"
-        back_to_start
+    if user_input == "1"
+        change_user_city
     elsif user_input == "x"
+        self.user.delete
         end_program
     else
         puts "Invalid entry, please try another option"
