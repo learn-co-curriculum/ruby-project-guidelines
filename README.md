@@ -33,6 +33,4 @@
 
     7. Each time an option has been completed, you will automatically be return to the main menu. 
 
-    8. A brief video demonstration will be linked here as well: 
- 
-
+    8. A brief video demonstration will be linked here as well:

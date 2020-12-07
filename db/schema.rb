@@ -25,6 +25,6 @@ ActiveRecord::Schema.define(version: 2020_12_03_175042) do
   create_table "venues", force: :cascade do |t|
     t.string "name"
     t.string "city"
-    t.string "state"
   end
+
 end

@@ -1,16 +1,16 @@
 require 'faker'
 
-Artist.destroy_all
-ShowDate.destroy_all
-Venue.destroy_all
+#Artist.destroy_all
+#ShowDate.destroy_all
+#Venue.destroy_all
 
-# 15.times do 
+# 15.times do
 #     Artist.create(name:Faker::Music.band)
 # end
 # puts 'done'
 
-100.times do
-    Venue.create(name:Faker::GreekPhilosophers.name, city:Faker::Address.city, state:Faker::Address.state)
+50.times do
+    Venue.create(name:Faker::GreekPhilosophers.name, city:Faker::Address.city) #state:Faker::Address.state
 end
 puts 'done'
 
