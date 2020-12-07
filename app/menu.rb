@@ -21,34 +21,35 @@ class Menu
 
     def get_user_city
         puts "Please enter your City"
-        STDIN.gets.chomp.split.map(&:capitalize).join(' ')
+        input = STDIN.gets.chomp.split.map(&:capitalize).join(' ')
+        input == "" ? get_user_city : input
     end
 
     def get_user_state
         puts "Please enter your State (ex. WA, CA, NY)"
-        STDIN.gets.chomp.upcase
+        input = STDIN.gets.chomp.upcase
+        input == "" ? get_user_state : input
     end
 
-    def pull_data_by_city_and_state(city, state)
-        info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
-        info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
-    end
+    # def pull_data_by_city_and_state(city, state)
+    #     info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+    #     info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
+    # end
 
     def pull_data(city, state)
         page_has_data = true
-        info = []
         page = 1
-        while page_has_data && page < 3
+        while page_has_data && page < 4
             path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&page=#{page}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
             page_data = GetRequester.new(path).parse_json
-            if page_data.dig("page", "totalElements")
-                info << page_data
-                page += 1
-            else 
+            if page_data.dig("page", "totalElements") == 0 || nil
                 page_has_data = false
+                error_message
+            else 
+                load_event_details(page_data)
+                page += 1
             end
         end       
-        load_event_details(info)
     end
   
     def get_user
@@ -81,20 +82,16 @@ class Menu
 
     def load_event_details(info)   
         events = []
-        info.each do |page|
-            if page.dig("_embedded", "events")
-                page["_embedded"]["events"].each do |event|        
-                    new_event = Event.new
-                    new_event.attraction_name = event.dig("name")
-                    new_event.date = event.dig("dates", "start", "localDate")
-                    new_event.venue = event.dig("_embedded", "venues", 0, "name")
-                    new_event.genre = event.dig("classifications", 0, "genre", "name")
-                    new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
-                    new_event.event_type = event.dig("classifications", 0, "segment", "name") 
-                    new_event.event_status = event.dig("dates", "status", "code")
-                    events << new_event
-                end
-            end
+        info["_embedded"]["events"].each do |event|        
+            new_event = Event.new
+            new_event.attraction_name = event.dig("name")
+            new_event.date = event.dig("dates", "start", "localDate")
+            new_event.venue = event.dig("_embedded", "venues", 0, "name")
+            new_event.genre = event.dig("classifications", 0, "genre", "name")
+            new_event.event_city = event.dig("_embedded", "venues", 0, "city", "name")
+            new_event.event_type = event.dig("classifications", 0, "segment", "name") 
+            new_event.event_status = event.dig("dates", "status", "code")
+            events << new_event
         end
         save_new_events(events)
     end
