@@ -1,6 +1,6 @@
 require 'io/console'
 require 'tty-prompt'
-# require 'pry'
+require 'pry'
 
 class CLI
 
@@ -225,12 +225,12 @@ class CLI
         # go_back
 
 
-    def checkout(cart)
+    def checkout(cart=[])
         prompt = TTY::Prompt.new
         choices = ['🔹Remove & Add', '🔹View Receipt', '🔹Exit']
         choice = prompt.select('\n \n', choices)
         if choice == '🔹Remove & Add'
-            remove_and_add
+            remove_and_add(cart)
         elsif choice == '🔹View Receipt'
             view_receipt
         elsif choice == '🔹Exit'
@@ -250,9 +250,43 @@ class CLI
         # go_back
     end
 
-    def remove_and_add
+    def remove_and_add(cart)
+        prompt = TTY::Prompt.new
+        choices = ['🔹Remove', '🔹Add', '🔹Exit']
+        choice = prompt.select('\n \n', choices)
+        if choice == '🔹Remove'
+            remove(cart)
+        elsif choice == '🔹Add'
+            go_to_shopping(cart)
+        elsif choice == '🔹Exit'
+            exit
+        end
 
     end
+
+    def remove(cart=[])
+        trash = []
+        puts 'YOU ARE NOW REMOVING ITEMS FROM A CART'
+        prompt = TTY::Prompt.new
+        choices = (cart)
+        choice = prompt.multi_select('\n \n', choices)
+        if choice == cart.index(0..10)
+            trash << cart.index(0..10)
+            trash.destroy_all
+            checkout
+        else 
+            puts 'yay'
+            checkout
+        end
+
+
+    end
+
+    def take_out()
+
+    end
+
+
 
 
     def view_receipt
