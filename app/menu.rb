@@ -276,22 +276,22 @@ class Menu
         end
     end 
 
-def error_message
-    puts
-    puts "No events found in your city :("
-    puts  
-    puts "Press '1' to enter a new city."
-    puts "Press 'x' to exit the program."        
-    user_input = STDIN.gets.chomp
-    if user_input == "1"
-        change_user_city
-    elsif user_input == "x"
-        self.user.delete
-        end_program
-    else
-        puts "Invalid entry, please try another option"
+    def error_message
+        puts
+        puts "No events found in your city :("
+        puts  
+        puts "Press '1' to enter a new city."
+        puts "Press 'x' to exit the program."        
+        user_input = STDIN.gets.chomp
+        if user_input == "1"
+            change_user_city
+        elsif user_input == "x"
+            self.user.delete
+            end_program
+        else
+            puts "Invalid entry, please try another option"
+        end 
     end 
-end 
 
 end 
 

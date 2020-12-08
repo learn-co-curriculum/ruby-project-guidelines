@@ -38,10 +38,5 @@ class GenreSearch
         end
         numbered_genres 
     end 
-        
-
-
-    
-
 end 
     
