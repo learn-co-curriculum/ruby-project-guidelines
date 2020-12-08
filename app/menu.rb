@@ -182,10 +182,6 @@ class Menu
         if (input.match? /\A\d+\z/) && (input.to_i <= events.length)
             self.user.confirm_track_event(events[input.to_i-1])
             begin_search
-            else 
-                invalid_selection
-                display_events(events)
-            end 
         else
             invalid_selection
             display_events(events)
