@@ -37,27 +37,6 @@ class Menu
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&size=100&sort=date,asc&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
         info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
     end
-
-    # def pull_data(city, state)
-    #     page_has_data = true
-    #     page = 1 
-    #     while page_has_data && page < 4
-    #         path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&page=#{page}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
-    #         page_data = GetRequester.new(path).parse_json
-    #         if page_data.dig("page", "totalPages") == 1
-    #             path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
-    #             page_data = GetRequester.new(path).parse_json
-    #             load_event_details(page_data)
-    #             break
-    #         elsif page_data.dig("page", "totalElements") == 0 || nil
-    #             page_has_data = false
-    #             error_message                
-    #         else 
-    #             load_event_details(page_data)
-    #             page += 1
-    #         end
-    #     end       
-    # end
   
     def get_user
         puts "Enter 1 to Log in, or 2 to Create a new account, or x to exit the application"
@@ -182,14 +161,10 @@ class Menu
         if (input.match? /\A\d+\z/) && (input.to_i <= events.length)
             self.user.confirm_track_event(events[input.to_i-1])
             begin_search
-            else 
-                invalid_selection
-                display_events(events)
-            end 
         else
             invalid_selection
             display_events(events)
-        end 
+        end
     end
 
     def change_user_city
