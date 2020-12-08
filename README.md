@@ -26,16 +26,14 @@
 
     2. Following the prompts, simply type in your artist name and the application will look for your profile in the database. If it exists, it will pull up your profile, otherwise, your profile will be created. 
 
-    3. To access the menu, type in 'menu'
+    3. To access the menu, type in '0'
 
-    4. Our program is based on key typing selection. To access any of the listed options, please follow the prompts and type in your choice excluding any numbered list ("1."). 
+    4. Our program is based on number and key character typing selection. To access any of the listed options in the main menu, please type in your desired number option. 
 
-    5. For example, if you choose the option "Upcoming or Past Dates" within the menu, type in 'Upcoming or Past Dates' and more prompts will follow. 
+    5. For example, if you choose the option "Upcoming or Past Dates" within the menu, type in '3' and more prompts will follow. 
 
-        NOTE: Menu item selection is not case sensitive.
+        NOTE: When Selecting inner options, inputs must match what is displayed. EX: Within "Create Show", selecting a city name is case sensistive and has to be a inputted as a match to the list. 
 
-        NOTE: When Selecting inner options, inputs must match what is displayed. EX: Within "Create Show", selecting a city name is case sensistive and has to be a match to what is listed. 
-
-    6. Each time an option has been completed, you will automatically be return to the main menu. 
+    6. Each time an option has been completed, you will have to type '0' to return to the main menu. This prompt will viewable as well.  
 
     7. A brief video demonstration will be linked here as well:
