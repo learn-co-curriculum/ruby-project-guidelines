@@ -1,13 +1,13 @@
 # Venue and Date Tracker for Artists
 
 # Goal: 
-    The goal of our CLI application is to be a simple tool for Artists and allows venue and concert date tracking. This is implementing a user built database with venue locations already pre-seeded.
+    The goal of our CLI application is to be a simple tool for Artists that allows venue and concert date tracking. This is implementing a user built database with venue locations already pre-seeded.
 
 # Symbols throughout the README:
     1. "" ==> What is displayed in the application terminal
     2. '' ==> What to type into the terminal (excluding the '')
 
-# Prerequisites and installation to get started:
+# Prerequisites and installation guide to get started:
     1. Please have the latest version of Ruby and an environment such Visual Studio.
     2. Fork and clone a copy of this repository into your local machine.
     3. Ensure that all gems have been installed and updated correctly. This will be done for you by running 'bundle install' and 'bundle update' in the terminal.
@@ -32,8 +32,11 @@
 
     5. For example, if you choose the option "Upcoming or Past Dates" within the menu, type in '3' and more prompts will follow. 
 
-        NOTE: When Selecting inner options, inputs must match what is displayed. EX: Within "Create Show", selecting a city name is case sensistive and has to be a inputted as a match to the list. 
+        NOTE: When selecting inner options, inputs must match what is displayed. EX: Within "Create Show", selecting a city name is case sensistive and has to be a inputted as a match to the list. 
 
     6. Each time an option has been completed, you will have to type '0' to return to the main menu. This prompt will viewable as well.  
 
-    7. A brief video demonstration will be linked here as well:
+    7. A brief video demonstration is linked below:
+
+
+    *https://drive.google.com/file/d/1DrpCUfpq0eow_fq1gSAkgDGylB86Qh0J/view?usp=sharing*
