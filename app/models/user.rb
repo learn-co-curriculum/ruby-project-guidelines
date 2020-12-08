@@ -57,7 +57,7 @@ class User < ActiveRecord::Base
         puts "Please enter your city:"
         self.city = STDIN.gets.chomp.split.map(&:capitalize).join(' ')
         puts "Please enter your State: (WA, CA, FL...)"
-        self.state = STDIN.gets.chomp.upcase
+        self.state =  STDIN.gets.chomp.upcase
     end
 
     def press_any_key_to_go_back

@@ -37,6 +37,27 @@ class Menu
         info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&size=100&sort=date,asc&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
         info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
     end
+
+    # def pull_data(city, state)
+    #     page_has_data = true
+    #     page = 1 
+    #     while page_has_data && page < 4
+    #         path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&page=#{page}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
+    #         page_data = GetRequester.new(path).parse_json
+    #         if page_data.dig("page", "totalPages") == 1
+    #             path = "https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ"
+    #             page_data = GetRequester.new(path).parse_json
+    #             load_event_details(page_data)
+    #             break
+    #         elsif page_data.dig("page", "totalElements") == 0 || nil
+    #             page_has_data = false
+    #             error_message                
+    #         else 
+    #             load_event_details(page_data)
+    #             page += 1
+    #         end
+    #     end       
+    # end
   
     def get_user
         puts "Enter 1 to Log in, or 2 to Create a new account, or x to exit the application"
@@ -161,10 +182,14 @@ class Menu
         if (input.match? /\A\d+\z/) && (input.to_i <= events.length)
             self.user.confirm_track_event(events[input.to_i-1])
             begin_search
+            else 
+                invalid_selection
+                display_events(events)
+            end 
         else
             invalid_selection
             display_events(events)
-        end
+        end 
     end
 
     def change_user_city
@@ -215,7 +240,7 @@ class Menu
         user_input = STDIN.gets.chomp.downcase
         if numbered_types[user_input.to_i]
             type = numbered_types[user_input.to_i]
-            results_by_genre(type)
+            results_by_genre(type, events)
         elsif user_input == "s"
             back_to_start
         elsif user_input == "x"
@@ -228,14 +253,13 @@ class Menu
         end
     end 
 
-    def results_by_genre(type)
-        events = GenreSearch.new.genre_results(type)
-        events = filter_events_by_user_city(events)
-        if events.empty?
+    def results_by_genre(type, events)
+        events_filtered_by_type = GenreSearch.new.genre_results(type, events)
+        if events_filtered_by_type.empty?
             no_results_found
             begin_search 
         end 
-        user_select_genre(GenreSearch.new.numbered_genres(events)) 
+        user_select_genre(GenreSearch.new.numbered_genres(events_filtered_by_type)) 
     end 
     
     def user_select_genre(numbered_genres)
@@ -246,12 +270,7 @@ class Menu
         user_input = STDIN.gets.chomp.downcase
         if numbered_genres[user_input.to_i]
             genre = numbered_genres[user_input.to_i]
-            if genre == "Other"
-                genre = nil
-                display_genre_events(genre)
-            else 
-            display_genre_events(genre)
-            end 
+            display_genre_events(genre) 
         elsif user_input == "s"
             back_to_start
         elsif user_input == "x"
@@ -266,13 +285,13 @@ class Menu
     end 
 
     def display_genre_events(genre)
-        events = Event.all.select {|event|event.genre == genre}
-        events = filter_events_by_user_city(events)
-        if events.empty?
-            no_results_found
-            begin_search
-        else
-            display_events(events)
+        events = Event.all.select {|e|e.event_city == self.user.city && e.event_state == self.user.state}
+        if genre == "Other" 
+            events_by_genre = events.select {|event|event.genre == nil || event.genre == "Undefined"}
+            display_events(events_by_genre)
+        else 
+            events_by_genre = events.select {|event|event.genre == genre}
+            display_events(events_by_genre)
         end
     end 
 
