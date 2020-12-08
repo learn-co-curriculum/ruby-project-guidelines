@@ -7,11 +7,12 @@ class Menu
     end
 
     def start_program
+        puts
         puts "Welcome to Event Tracker! This app will allow you to track your favorite events and see their current status."
         self.user = get_user
         pull_data_by_city_and_state(self.user.city, self.user.state)
-        # pull_data(self.user.city, self.user.state)
-        puts "Thank you, #{user.name}"
+        puts
+        puts "Thank you, #{user.name}. Please select from the options below:"
         begin_search
     end
 
@@ -33,7 +34,7 @@ class Menu
     end
 
     def pull_data_by_city_and_state(city, state)
-        info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
+        info = GetRequester.new("https://app.ticketmaster.com/discovery/v2/events.json?city=#{city}&stateCode=#{state}&size=100&sort=date,asc&apikey=QATrioQ3vEzlLyBebumHRHuNBfT39vrZ").parse_json
         info["page"]["totalElements"] == 0 ? error_message : load_event_details(info)
     end
 
@@ -112,6 +113,7 @@ class Menu
     end
 
     def begin_search
+        puts
         puts "1. Search by event name or artist name"
         puts "2. Search by genre"
         puts "3. Search by date"
@@ -148,7 +150,7 @@ class Menu
     end
 
     def display_results_by_attraction_name
-        events = NameSearch.new.results
+        events = filter_events_by_user_city(NameSearch.new.results)
         events.empty? ? no_results_found : display_events(events)
     end
 
@@ -177,8 +179,7 @@ class Menu
         puts "Would you like to track an event's status? Enter the number of the event, or x to go back"
         input = STDIN.gets.chomp
         begin_search if input == "x"
-        if input.match? /\A\d+\z/
-            if input.to_i <= events.count
+        if (input.match? /\A\d+\z/) && (input.to_i <= events.length)
             self.user.confirm_track_event(events[input.to_i-1])
             begin_search
             else 
@@ -197,7 +198,9 @@ class Menu
     end
     
     def no_results_found
+        puts
         puts "No results found. Please try again"
+        puts
         begin_search
     end
 
@@ -216,7 +219,6 @@ class Menu
         puts "Goodbye!"
         exit 
     end 
-
 
     def get_results_by_event_type
         events =  Event.all.select {|e|e.event_city == self.user.city && e.event_state == self.user.state}
