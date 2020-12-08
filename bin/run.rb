@@ -1,5 +1,2 @@
 require_relative '../config/environment'
-
-
-
-puts "HELLO WORLD"
+Menu.new.start_program
