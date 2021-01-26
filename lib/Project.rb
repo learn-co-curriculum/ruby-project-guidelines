@@ -1,6 +1,6 @@
 class Project
     #name, id
-    attr_accessor :id,project
+    attr_accessor :id, :project
     @@all = []
 
     def initalize(id=nil,project)

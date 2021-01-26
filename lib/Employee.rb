@@ -1,12 +1,12 @@
 class Employee
     #name, id, project_id
-    attr_accessor :id,:name,:emploeer,:project_id
+    attr_accessor :id, :name, :employeer, :project_id
     @@all = []
 
-    def initalize (id=nil,name, employeer, project_id=Nil)
+    def initalize(id = nil, name, employeer) #, project_id = nil)
         @id=id
         @name = name
-        @project_id=project_id
+        # @project_id = project_id
         @employeer = employeer
         @@all << self
     end
@@ -50,7 +50,5 @@ class Employee
     #   end
 
 
-
-
-
 end
+
