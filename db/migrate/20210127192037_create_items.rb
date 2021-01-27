@@ -1,9 +1,9 @@
 class CreateItems < ActiveRecord::Migration[6.1]
   def change
     create_table :items do
-      |item|
-      item.string :name
-      item.timestamps
+      |t|
+      t.string :name
+      t.timestamps
     end
   end
 end

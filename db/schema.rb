@@ -13,14 +13,14 @@
 ActiveRecord::Schema.define(version: 2021_01_27_192100) do
 
   create_table "inventories", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "store_id"
     t.integer "item_id"
     t.float "price"
     t.integer "quantity"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["item_id"], name: "index_inventories_on_item_id"
-    t.index ["user_id"], name: "index_inventories_on_user_id"
+    t.index ["store_id"], name: "index_inventories_on_store_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2021_01_27_192100) do
 
   create_table "users", force: :cascade do |t|
     t.string "name"
-    t.string "address"
+    t.string "current_location"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
