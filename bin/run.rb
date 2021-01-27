@@ -1,4 +1,5 @@
 require_relative '../config/environment'
+require_relative 'api_parsing'
 
 
  
@@ -16,10 +17,19 @@ puts "3. Suggest a new recipe"
     #traverse through recipes and spit out random one
     #be sure to prompt_user_for_rating
 puts "4. Look up a recipe by recipe name"
+
     #call find_recipe_by_name
 puts "5. List all recipes with a certain ingredient"
     #call find_recipe_by_ingredient method and return an array of choices
 choice = gets.chomp
+puts "Thank you"
+# binding.pry
+choice = choice.to_i
+if choice == 4
+    puts "Enter the name of your drink"
+    name = gets.chomp
+    get_data(name)
+end
     #if choice == 1 do blah blah blah etc.
 
 #make method prompt_user_for_rating which will ask for a rating 
