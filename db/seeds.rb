@@ -4,9 +4,9 @@
 # Purchase.all.destroy
 # Store.all.destroy
 
-alex = User.create(name: "Alex", address: "1440 G St. NW, Washington DC 20001")
-truce = User.create(name: "Truce", address: "60008 Franklin square, Washington D.C. 20015")
-bode = User.create(name: "Bode", address: "5959 Dublin street, Washington D.C. 20033")
+alex = User.create(name: "Alex", current_location: "1440 G St. NW, Washington DC 20001")
+truce = User.create(name: "Truce", current_location: "60008 Franklin square, Washington D.C. 20015")
+bode = User.create(name: "Bode", current_location: "5959 Dublin street, Washington D.C. 20033")
 
 shoppers = Store.create(name: "Shoppers World", address: "1259 Washington Boulevard, D.C. 20002")
 walmart = Store.create(name: "Walmart", address: "5288 Mushin street, D.C. 20019")
