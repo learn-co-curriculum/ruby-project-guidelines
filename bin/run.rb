@@ -7,7 +7,8 @@ puts "Welcome to the Cocktail Recipe Interface"
 puts "Please enter your username"
 user_name = gets.chomp #call find_or_create_by_name method in user.rb
 current_user = User.find_or_create_by_name(user_name)
-    binding.pry
+
+puts "Hello, #{user_name},"
 puts "What would you like to do?"
 puts "1. Find a random recipe by ingredient" 
     #call suggest_random_recipe using find_recipe_by_ingredient method and then 
@@ -26,12 +27,27 @@ puts "5. List all recipes with a certain ingredient"
 puts "6. Import a recipe from the database"
 choice = gets.chomp
 choice = choice.to_i
-if choice == 6
+if choice == 2
+    current_user.show_highest_ratings
+
+elsif choice == 3
+    #Right now it just picks a random recipe even if the user has made it before
+    #Maybe change to only reccomend new recipes?
+    current_recipe = Recipe.suggest_random_recipe
+    puts "Time to make a(n) #{current_recipe.name}!"
+    puts "Here are the ingredients:"
+    Recipe.list_my_ingredients(current_recipe)
+    puts current_recipe.instructions
+    current_user.rate_recipe(current_recipe)
+    binding.pry
+
+elsif choice == 6
     puts "Enter the recipe name you are looking for"
     name = gets.chomp
     get_data(name)
+    puts "The recipe for #{name} has been sucessfully imported."
 end
-    #if choice == 1 do blah blah blah etc.
+
 
 #make method prompt_user_for_rating which will ask for a rating 
 #then store it with the recipe in the user_recipe table
