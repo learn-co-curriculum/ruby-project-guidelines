@@ -24,16 +24,6 @@ ActiveRecord::Schema.define(version: 5) do
 
   create_table "recipes", force: :cascade do |t|
     t.string "name"
-    t.string "ingredient_1"
-    t.string "measurement_1"
-    t.string "ingredient_2"
-    t.string "measurement_2"
-    t.string "ingredient_3"
-    t.string "measurement_3"
-    t.string "ingredient_4"
-    t.string "measurement_4"
-    t.string "ingredient_5"
-    t.string "measurement_5"
     t.text "instructions"
   end
 

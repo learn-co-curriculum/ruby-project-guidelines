@@ -3,13 +3,9 @@ require 'rest-client'
 require 'json'
 require 'pry'
 
-def enter_name
-    puts "Enter drink name"
-    name = gets.chomp
-end
 
 def get_data(name)
-    # binding.pry
+
 
     url = "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=#{name}"
     response = RestClient.get(url)
@@ -22,10 +18,21 @@ def get_data(name)
         response = RestClient.get(url)
         result = JSON.parse(response)
     end
-    binding.pry
+
     drink_name = result["drinks"][0]["strDrink"]
     drink_instructions = result["drinks"][0]["strInstructions"]
-    Recipe.import_recipe(name: drink_name, instructions: drink_instructions)
+    current_ingr_num = 1
+    current_recipe = Recipe.find_or_create_recipe(drink_name, drink_instructions)
+    
+    while result["drinks"][0]["strIngredient#{current_ingr_num}"]
+        current_ingredient = Ingredient.add__or_create_ingredient(result["drinks"][0]["strIngredient#{current_ingr_num}"])
+        IngredientRecipe.find_or_create_ingredient_recipe(current_recipe.id, current_ingredient.id)
+        current_ingr_num += 1
+    end
+
+
+    
+
     
 end
 

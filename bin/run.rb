@@ -21,12 +21,11 @@ puts "4. Look up a recipe by recipe name"
     #call find_recipe_by_name
 puts "5. List all recipes with a certain ingredient"
     #call find_recipe_by_ingredient method and return an array of choices
+puts "6. Import a recipe from the database"
 choice = gets.chomp
-puts "Thank you"
-# binding.pry
 choice = choice.to_i
-if choice == 4
-    puts "Enter the name of your drink"
+if choice == 6
+    puts "Enter the recipe name you are looking for"
     name = gets.chomp
     get_data(name)
 end
