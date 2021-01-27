@@ -3,7 +3,7 @@ class CreatePurchase < ActiveRecord::Migration[6.1]
     create_table :purchases do
       |t|
       t.references :item
-      t.references :user
+      t.references :customer
       t.timestamps
     end
   end

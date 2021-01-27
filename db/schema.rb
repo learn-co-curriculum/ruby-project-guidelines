@@ -12,6 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2021_01_27_192100) do
 
+  create_table "customers", force: :cascade do |t|
+    t.string "name"
+    t.string "current_location"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "inventories", force: :cascade do |t|
     t.integer "store_id"
     t.integer "item_id"
@@ -31,23 +38,16 @@ ActiveRecord::Schema.define(version: 2021_01_27_192100) do
 
   create_table "purchases", force: :cascade do |t|
     t.integer "item_id"
-    t.integer "user_id"
+    t.integer "customer_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_purchases_on_customer_id"
     t.index ["item_id"], name: "index_purchases_on_item_id"
-    t.index ["user_id"], name: "index_purchases_on_user_id"
   end
 
   create_table "stores", force: :cascade do |t|
     t.string "name"
     t.string "address"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-    t.string "current_location"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
