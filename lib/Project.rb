@@ -1,18 +1,32 @@
-class Project
-    #name, id
-    attr_accessor :id, :project
-    @@all = []
+class Project < ActiveRecord::Base
 
-    def initalize(id=nil,project)
-        @id=id
-        @project = project
-        @@all << self
-    end
+    belongs_to :employers
+    has_many :employees
+
+
+
+
+
+
+
+
+
+
+
+
+end
+    # #name, id
+    # attr_accessor :id, :project
+    # @@all = []
+
+    # def initalize(id=nil,project)
+    #     @id=id
+    #     @project = project
+    #     @@all << self
+    # end
 
     
 
-    def self.all
-        @@all
-    end
-
-end
+    # def self.all
+    #     @@all
+    # end

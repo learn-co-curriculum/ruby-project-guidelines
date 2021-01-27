@@ -1,20 +1,42 @@
-class Employee
-    #name, id, project_id
-    attr_accessor :id, :name, :employeer, :project_id
-    @@all = []
+class Employee < ActiveRecord::Base
 
-    def initalize(id = nil, name, employeer) #, project_id = nil)
-        @id=id
-        @name = name
-        # @project_id = project_id
-        @employeer = employeer
-        @@all << self
-    end
+    belongs_to :employer
+    belongs_to :project
+    has_many :skills
+   
 
 
-    def self.all
-        @@all
-    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+end
+
+ # #name, id, project_id
+    # attr_accessor :id, :name, :employeer, :project_id
+    # @@all = []
+
+    # def initalize(id = nil, name, employeer)#, project_id = nil)
+    #     @id=id
+    #     @name = name
+    #     @employeer = employeer
+    #     #@project_id = project_id
+    #     @@all << self
+    # end
+
+
+    # def self.all
+    #     @@all
+    # end
 
     #basic save method to add new record into database using sql. Note requires .update method
     # def save
@@ -48,7 +70,3 @@ class Employee
     #     sql = "UPDATE employee SET name = ?, employeer_id = ?, project_id, WHERE id = ?"
     #     DB[:conn].execute(sql, self.name, self.employeer_id, self.project_id self.id)
     #   end
-
-
-end
-

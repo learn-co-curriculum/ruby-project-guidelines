@@ -10,7 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 6) do
+ActiveRecord::Schema.define(version: 7) do
+
+  create_table "employee_projects", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "project_id"
+    t.string "status"
+  end
 
   create_table "employees", force: :cascade do |t|
     t.string "name"
@@ -39,7 +45,7 @@ ActiveRecord::Schema.define(version: 6) do
   end
 
   create_table "skills", force: :cascade do |t|
-    t.string "skill_name"
+    t.string "name"
   end
 
 end

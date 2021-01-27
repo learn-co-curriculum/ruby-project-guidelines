@@ -1,16 +1,24 @@
-class Skill
-    #id, name
-    @@all = []
-    
-    attr_accessor :id, :name
-    def initalize(id=nil, name)
-        @id = id
-        @name = name  
-        @@all << self
-    end
+class Skill < ActiveRecord::Base
 
-    def self.all
-        @@all
-    end 
+    belongs_to :employees
 
 end
+
+
+    # #id, name
+    # @@all = []
+    
+    # attr_accessor :id, :name
+    # def initalize(id=nil, name)
+    #     @id = id
+    #     @name = name  
+    #     @@all << self
+    # end
+
+    # def self.all
+    #     @@all
+    # end 
+
+
+
+
