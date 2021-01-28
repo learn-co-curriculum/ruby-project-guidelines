@@ -45,4 +45,9 @@ class User < ActiveRecord::Base
         end
     end
 
+    def list_my_recipe_ids
+        user_rec_array = UserRecipe.all.select {|i| i.user_id == self.id}
+        user_rec_array.map{|r| r.recipe_id}
+    end
+
 end

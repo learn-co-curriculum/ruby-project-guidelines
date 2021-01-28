@@ -9,7 +9,9 @@ user_name = gets.chomp #call find_or_create_by_name method in user.rb
 current_user = User.find_or_create_by_name(user_name)
 
 puts "Hello, #{user_name},"
+sleep(1)
 puts "What would you like to do?"
+sleep(1)
 puts "1. Find a random recipe by ingredient" 
     #call suggest_random_recipe using find_recipe_by_ingredient method and then 
     #picking a random array element in recipe.rb 
@@ -33,13 +35,16 @@ if choice == 2
 elsif choice == 3
     #Right now it just picks a random recipe even if the user has made it before
     #Maybe change to only reccomend new recipes?
-    current_recipe = Recipe.suggest_random_recipe
+    # binding.pry
+    current_users_recipe_ids = current_user.list_my_recipe_ids
+    # binding.pry
+    current_recipe = Recipe.suggest_random_recipe(current_users_recipe_ids)
     puts "Time to make a(n) #{current_recipe.name}!"
     puts "Here are the ingredients:"
     Recipe.list_my_ingredients(current_recipe)
     puts current_recipe.instructions
     current_user.rate_recipe(current_recipe)
-    binding.pry
+
 
 elsif choice == 6
     puts "Enter the recipe name you are looking for"
