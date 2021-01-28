@@ -29,8 +29,7 @@ def get_data(name)
         current_ingr_num += 1
     end
 
-    
-    
+    drink_name
 
     
 end

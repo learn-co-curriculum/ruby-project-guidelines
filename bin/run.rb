@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 require_relative 'api_parsing'
+ActiveRecord::Base.logger = nil
 
 
  
@@ -7,8 +8,11 @@ puts "Welcome to the Cocktail Recipe Interface"
 puts "Please enter your username"
 user_name = gets.chomp #call find_or_create_by_name method in user.rb
 current_user = User.find_or_create_by_name(user_name)
-binding.pry
+
+puts "Hello, #{user_name},"
+sleep(1)
 puts "What would you like to do?"
+sleep(1)
 puts "1. Find a random recipe by ingredient" 
     #call suggest_random_recipe using find_recipe_by_ingredient method and then 
     #picking a random array element in recipe.rb 
@@ -25,45 +29,42 @@ puts "5. List all recipes with a certain ingredient"
 puts "6. Import a recipe from the database"
 choice = gets.chomp
 choice = choice.to_i
+case choice
+    when 1    
+        puts "Enter the ingredient"
+        ingredient = gets.chomp
+        current_recipe = IngredientRecipe.random_recipe_from_ingredient(ingredient)
+        current_user.rate_recipe(current_recipe)
 
-# if choice == 1
-#     puts "Enter an ingredient and we'll give you a recipe"
-#     recipe = gets.chomp
-#     get_data(recipe)
-# end 
+    when 2
+        current_user.show_highest_ratings
+    when 3
+        current_users_recipe_ids = current_user.list_my_recipe_ids
+        current_recipe = Recipe.suggest_random_recipe(current_users_recipe_ids)
+        puts "Time to make a(n) #{current_recipe.name}!"
+        puts "Here are the ingredients:"
+        Recipe.list_my_ingredients(current_recipe)
+        puts current_recipe.instructions
+        current_user.rate_recipe(current_recipe)
+    when 4
+        puts "Enter recipe name." 
+        name = gets.chomp  
+        current_user.find_recipe_by_name(name)
+    when 5
+       
+        puts "Enter the ingredient"
+        ingredient = gets.chomp
+        recipe = IngredientRecipe.find_recipe_by_ingredient(ingredient)
+        IngredientRecipe.print_recipes(recipe)
+    when 6
+       
+        puts "Enter the recipe name you are looking for"
+        name = gets.chomp
+        get_data(name)
+    else
+        puts "That is not a valid choice."
+end
 
-# if choice == 2
-#     puts "Here are your favorite recipes"
-#     recipe = gets.chomp
-#     get_data(recipe)
-# end 
-
-
-# if choice == 4
-#     puts "Enter recipe name"
-#     recipe = gets.chomp
-#     get_data(recipe)
-# end 
-
-# if choice == 5
-#     puts "Enter an ingredient"
-#     recipe = gets.chomp
-#     get_data(recipe)
-# end 
-
-
-if choice == 3
-    current_recipe = Recipe.suggest_random_recipe
-    puts "Here's a suggestion!"
-    get_data(name) 
-
-    elseif choice == 6 
-
-    puts "Enter the recipe name you are looking for"
-    name = gets.chomp
-    get_data(name)
-end 
-    #if choice == 1 do blah blah blah etc.
 
 #make method prompt_user_for_rating which will ask for a rating 
 #then store it with the recipe in the user_recipe table
