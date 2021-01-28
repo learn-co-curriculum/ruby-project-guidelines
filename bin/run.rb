@@ -30,6 +30,12 @@ puts "6. Import a recipe from the database"
 choice = gets.chomp
 choice = choice.to_i
 case choice
+    when 1    
+        puts "Enter the ingredient"
+        ingredient = gets.chomp
+        current_recipe = IngredientRecipe.random_recipe_from_ingredient(ingredient)
+        current_user.rate_recipe(current_recipe)
+
     when 2
         current_user.show_highest_ratings
     when 3
@@ -44,7 +50,8 @@ case choice
     when 5
         puts "Enter the ingredient"
         ingredient = gets.chomp
-        IngredientRecipe.find_recipe_by_ingredient(ingredient)
+        recipe = IngredientRecipe.find_recipe_by_ingredient(ingredient)
+        IngredientRecipe.print_recipes(recipe)
     when 6
         puts "Enter the recipe name you are looking for"
         name = gets.chomp
