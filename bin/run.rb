@@ -1,5 +1,6 @@
 require_relative '../config/environment'
 require_relative 'api_parsing'
+ActiveRecord::Base.logger = nil
 
 
  
