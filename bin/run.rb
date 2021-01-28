@@ -29,28 +29,29 @@ puts "5. List all recipes with a certain ingredient"
 puts "6. Import a recipe from the database"
 choice = gets.chomp
 choice = choice.to_i
-if choice == 2
-    current_user.show_highest_ratings
-
-elsif choice == 3
-    #Right now it just picks a random recipe even if the user has made it before
-    #Maybe change to only reccomend new recipes?
-    # binding.pry
-    current_users_recipe_ids = current_user.list_my_recipe_ids
-    # binding.pry
-    current_recipe = Recipe.suggest_random_recipe(current_users_recipe_ids)
-    puts "Time to make a(n) #{current_recipe.name}!"
-    puts "Here are the ingredients:"
-    Recipe.list_my_ingredients(current_recipe)
-    puts current_recipe.instructions
-    current_user.rate_recipe(current_recipe)
-
-
-elsif choice == 6
-    puts "Enter the recipe name you are looking for"
-    name = gets.chomp
-    get_data(name)
-    puts "The recipe for #{name} has been sucessfully imported."
+case choice
+    when 2
+        current_user.show_highest_ratings
+    when 3
+        current_users_recipe_ids = current_user.list_my_recipe_ids
+        # binding.pry
+        current_recipe = Recipe.suggest_random_recipe(current_users_recipe_ids)
+        puts "Time to make a(n) #{current_recipe.name}!"
+        puts "Here are the ingredients:"
+        Recipe.list_my_ingredients(current_recipe)
+        puts current_recipe.instructions
+        current_user.rate_recipe(current_recipe)
+    when 5
+        puts "Enter the ingredient"
+        ingredient = gets.chomp
+        IngredientRecipe.find_recipe_by_ingredient(ingredient)
+    when 6
+        puts "Enter the recipe name you are looking for"
+        name = gets.chomp
+        get_data(name)
+        puts "The recipe for #{name} has been sucessfully imported."
+    else
+        puts "That is not a valid choice."
 end
 
 
