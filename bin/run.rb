@@ -50,6 +50,7 @@ case choice
         puts "Enter recipe name." 
         name = gets.chomp  
         current_user.find_recipe_by_name(name)
+        binding.pry
     when 5
        
         puts "Enter the ingredient"

@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
     #     end     
     #     end 
         puts "Here is your #{name} recipe."
+        Recipe.list_my_ingredients(rec_name)
         puts rec_name.instructions
         self.rate_recipe(rec_name)
     end 
