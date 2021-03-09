@@ -1,17 +1,16 @@
 
-class Student <ActiveRecord :Base 
-
-    has_many
-    belongs_to 
-    attr_reader :name 
-    attr_accessor :subject 
+class Student < ActiveRecord::Base 
+    has_many :lesson
+    has_many :tutor, through: :lesson
+    
+  
 
     
 
-    def initialize (new, subject)
-        @name = name
-        @subject = subject
-    end
+    #def initialize (new, subject)
+    #    @name = name
+    #    @subject = subject
+  #  end
 
 
     def login
