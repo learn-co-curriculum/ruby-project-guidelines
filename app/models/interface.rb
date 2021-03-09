@@ -20,7 +20,8 @@ class Interface
 end 
 
 def login
-
+    puts "Login here"
+    @student = Student
 end 
 
 def register

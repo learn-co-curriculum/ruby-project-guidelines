@@ -1,6 +1,6 @@
 class Tutor < ActiveRecord::Base
-    belongs_to :student
-    has_many :student, through: :lesson
+    belongs_to :students
+    has_many :students, through: :lessons
    
 
     # def initialize (name, subject)

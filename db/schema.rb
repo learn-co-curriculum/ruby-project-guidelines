@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
- ##ActiveRecord::Schema.define(version: 2021_03_09) do 
+ActiveRecord::Schema.define(version: 2021_03_09) do 
 
 
 
@@ -30,3 +30,8 @@ create_table "lessons" do |t|
     t.integer "student_id"
     t.integer "tutor_id"
 end
+
+Questions: 
+1. How do we know what we need to set up the appropriate enviroment?
+2. What do we have to setup to test/ are we missing something in our program to test?
+3. 

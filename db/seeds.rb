@@ -5,7 +5,7 @@ require_relative 'lib/lesson.rb'
 require_relative 'lib/tutor.rb'
 
 
-barak = User.create(username: "Barak", password: "123") 
+barak = Student.create(username: "Barak", password: "123") 
 nyasha = User.create(username: "Nyasha", password: "1234")
 # nyasha = Student.new(name = "Nyasha", subject = "Math")
 # barak = Tutor.new(name = "Barak", subject = "Math")
