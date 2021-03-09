@@ -1,0 +1,1 @@
+t1=Theater.create(name: "donovan")
