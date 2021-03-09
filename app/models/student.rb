@@ -12,6 +12,8 @@ class Student < ActiveRecord::Base
 
         #find a way to check validity of username and password
     end
+
+  
     
 
     def self.register_method

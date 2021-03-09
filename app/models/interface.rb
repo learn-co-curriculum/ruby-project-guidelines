@@ -1,33 +1,24 @@
-class Interface 
-    attr_accessor :user
+class Interface < ActiveRecord::Base
+    has_many :students
+    has_many :tutors
+    # attr_accessor :student
 
-    def welcome
+    def self.welcome
         puts "Welcome to Full Stack Tutoring!"
     end
 
-    def login_or_register
+    def self.login_or_register
         puts "Login or Register"
         answer = STDIN.gets.chomp
             if answer == "login"
-                 # login method
+                 Student.login_method
             elsif answer == "register"
-                 #register method
+                 Student.register_method
              else 
-                 #error message
+                puts "We make choices...that was a bad one."
              end
     end 
 
 end 
 
-def login
-    puts "Login here"
-    @student = Student
-end 
 
-def register
-
-end
-
-def error_message
-    puts "We make choices...that was a bad one."
-end

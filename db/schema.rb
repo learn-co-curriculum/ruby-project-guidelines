@@ -14,24 +14,24 @@ ActiveRecord::Schema.define(version: 2021_03_09) do
 
 
 
-create_table "students" do |t|
+create_table (:students) do |t|
     t.string "name"
     t.string "subject"
 end
 
-create_table "tutors" do |t|
-    t.string "name"
-    t.string "subject"
-end
+# create_table "tutors" do |t|
+#     t.string "name"
+#     t.string "subject"
+# end
 
-create_table "lessons" do |t|
-    t.string "topic"
-    t.string "date"
-    t.integer "student_id"
-    t.integer "tutor_id"
-end
+# create_table "lessons" do |t|
+#     t.string "topic"
+#     t.string "date"
+#     t.integer "student_id"
+#     t.integer "tutor_id"
+# end
 
-Questions: 
-1. How do we know what we need to set up the appropriate enviroment?
-2. What do we have to setup to test/ are we missing something in our program to test?
-3. 
+# Questions: 
+# 1. How do we know what we need to set up the appropriate enviroment?
+# 2. What do we have to setup to test/ are we missing something in our program to test?
+# 3. 
