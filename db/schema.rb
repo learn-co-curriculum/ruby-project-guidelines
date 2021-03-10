@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_225013) do
+ActiveRecord::Schema.define(version: 2021_03_10_163524) do
 
   create_table "genres", force: :cascade do |t|
     t.string "genre"
@@ -22,9 +22,9 @@ ActiveRecord::Schema.define(version: 2021_03_09_225013) do
 
   create_table "movies", force: :cascade do |t|
     t.string "title"
-    t.string "genre"
+    t.integer "genre_id"
     t.integer "showtime"
-    t.string "theater"
+    t.integer "theater_id"
   end
 
   create_table "theaters", force: :cascade do |t|
@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 2021_03_09_225013) do
   end
 
   create_table "tickets", force: :cascade do |t|
-    t.string "theater"
-    t.string "movie"
-    t.string "guest"
+    t.integer "theater_id"
+    t.integer "movie_id"
+    t.integer "guest_id"
   end
 
 end

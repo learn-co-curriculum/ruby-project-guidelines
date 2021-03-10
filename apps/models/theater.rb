@@ -1,3 +1,3 @@
 class Theater < ActiveRecord::Base
-    has_many :guest :through :ticket
+     has_many :tickets
 end
