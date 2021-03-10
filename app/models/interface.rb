@@ -16,16 +16,15 @@ class Interface < ActiveRecord::Base
         elsif answer == "register"
              @student = Student.register
         else 
-            puts "We make choices...that was a bad one."
+            puts "We make all choices...that was a bad one."
          end
          if @student 
             Lesson.start(@student) 
+         elsif @student
+            #Lesson.view_scheduled_lessons(@student)
          end 
+
     end 
-
-    
-
-
 
 end 
 
