@@ -24,11 +24,11 @@ class Lesson < ActiveRecord::Base
         tutors = Tutor.where(subject: answer) 
         if tutors.exists?
             tutors.each do |tutor| 
-             puts tutor.name   
+             puts tutor.name
+             #Allow student to select a tutor (Toni or Eric) and schedule lesson
+             #Output lesson confirmation with puts statement.
             end  
         end
-
-
     end
 
     def self.past_lessons(student)
