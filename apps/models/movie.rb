@@ -2,6 +2,17 @@ class Movie < ActiveRecord::Base
     belongs_to :theater
     belongs_to :genre
 
+    # @@all = []
+
+    # def initialize
+    #     @@all<<self
+    # end
+    
+    # def all 
+    #     @@all
+    # end
+
+
     # def self.browse
     #     #return all movies
     # end
