@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_10_163524) do
+ActiveRecord::Schema.define(version: 2021_03_10_214457) do
 
   create_table "genres", force: :cascade do |t|
     t.string "genre"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 2021_03_10_163524) do
 
   create_table "guests", force: :cascade do |t|
     t.string "name"
+    t.integer "password"
   end
 
   create_table "movies", force: :cascade do |t|

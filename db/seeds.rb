@@ -4,6 +4,8 @@ Genre.destroy_all
 Movie.destroy_all
 Ticket.destroy_all
 
+
+
 commando=Theater.create(name: "Commando Theater")
 
 rom_com=Genre.create(genre: "Romantic Comedy")
@@ -11,16 +13,17 @@ action=Genre.create(genre: "Action")
 sci_fi=Genre.create(genre: "Science Fiction")
 slasher=Genre.create(genre: "Slasher")
 
-g1=Guest.create(name: "Hadi")
-g2=Guest.create(name: "Donovan")
-g3=Guest.create(name: "Drake")
-g4=Guest.create(name: "Sonny")
-g5=Guest.create(name: "Shrek")
-g6=Guest.create(name: "Neo")
-g7=Guest.create(name: "Trinity")
-g8=Guest.create(name: "P.Rudd")
-g9=Guest.create(name: "Jackie Chan")
-g10=Guest.create(name: "Bagheera")
+donovan = Guest.create(name: "theater", password: "123")
+g1=Guest.create(name: "Hadi", password: "123")
+g2=Guest.create(name: "Donovan", password: "123")
+g3=Guest.create(name: "Drake", password: "123")
+g4=Guest.create(name: "Sonny", password: "123")
+g5=Guest.create(name: "Shrek", password: "123")
+g6=Guest.create(name: "Neo", password: "123")
+g7=Guest.create(name: "Trinity", password: "123")
+g8=Guest.create(name: "P.Rudd", password: "123")
+g9=Guest.create(name: "Jackie Chan", password: "123")
+g10=Guest.create(name: "Bagheera", password: "123")
 
 m1 = Movie.create(title: "Groundhog Day", genre_id: rom_com.id, showtime: 6, theater_id: commando.id )
 m2 = Movie.create(title: "Clueless",  genre_id: rom_com.id, showtime: 3, theater_id: commando.id)
@@ -53,3 +56,4 @@ t14=Ticket.create(theater_id: commando.id, movie_id: m2.id, guest_id: g2.id)
 t15=Ticket.create(theater_id: commando.id, movie_id: m3.id, guest_id: g4.id)
 t16=Ticket.create(theater_id: commando.id, movie_id: m9.id, guest_id: g5.id)
 t17=Ticket.create(theater_id: commando.id, movie_id: m11.id, guest_id: g5.id)
+
