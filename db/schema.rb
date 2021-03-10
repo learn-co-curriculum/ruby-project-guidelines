@@ -10,11 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_09_225016) do
+ActiveRecord::Schema.define(version: 2021_03_10_225540) do
 
   create_table "lessons", force: :cascade do |t|
     t.string "topic"
-    t.string "date"
+    t.datetime "date"
     t.integer "student_id"
     t.integer "tutor_id"
     t.datetime "created_at", precision: 6, null: false

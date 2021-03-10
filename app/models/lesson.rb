@@ -12,7 +12,7 @@ class Lesson < ActiveRecord::Base
         elsif answer == "2"
             past_lessons(student)
         elsif answer == "3"
-            view_scheduled_lessons(student)
+            scheduled_lessons(student)
             #Calling scheduled_lessons method
         else
             puts "Try again"
@@ -21,45 +21,67 @@ class Lesson < ActiveRecord::Base
 
     def self.schedule_lesson(student)
         puts "What would you like to learn?"
-            answer = STDIN.gets.chomp 
+        answer = STDIN.gets.chomp 
         puts "When would you like to have your lesson?"
-            date = STDIN.gets.chomp
-        puts "Please enter your username."
-            name = STDIN.gets.chomp
-        puts "Who would you like to learn with?"
-            puts Tutor.all
-            binding.pry 
-            tutor = STDIN.gets.chomp
-            # tutors = Tutor.where(subject: answer) 
-            #     if tutors.exists?
-            #         tutors.each do |tutor| 
-            #             puts tutor.name
-            #         end
-            #         puts "Please select a tutor."                   
-            #         response = STDIN.gets.chomp 
-            #         Tutor.find_by(name: response)
-                    Lesson.create(topic: answer, date: date, student: name, tutor: tutor)
-                    # if response == tutors.name
-                    #     return "Your lesson has been scheduled." 
-                    #   
-            #         puts "Your lesson has been scheduled."
-            #  #Allow student to select a tutor (Toni or Eric) and schedule lesson
-            #  #Output lesson confirmation with puts statement.       
+        date = STDIN.gets.chomp
+        puts "Who would you like to learn with?" 
+        tutors = Tutor.where(subject: answer) 
+
+        if tutors.exists?
+            tutors.each do |tutor|
+                puts "#{tutor.id}. #{tutor.name}"
+            end
+        end
+
+        tutor_number = STDIN.gets.chomp
+        tutor = Tutor.find_by(id: tutor_number)
+        Lesson.create(topic: answer, date: date, student: student, tutor: tutor)
+        puts "Your lesson has been scheduled." 
+              
+            
     end
 
     def self.past_lessons(student)
-        lessons = Lesson.where(student: student)
+        lessons = Lesson.where(student: student).where("date < ?", Time.current)
         if lessons.exists?
             lessons.each do |lesson|
-                puts lesson.date
-                puts lesson.topic 
-                puts lesson.tutor.name
+                puts "#{student.username} had a #{lesson.topic} lesson on #{lesson.date} with #{lesson.tutor.name}"
+                # puts lesson.topic 
+                # puts lesson.tutor.name
             end
         end
     end
 
     def self.scheduled_lessons(student)
+        lessons = Lesson.where(student: student).where("date > ?", Time.current)
+        if lessons.exists?
+            lessons.each do |lesson|
+                puts "#{lesson.id}. #{student.username} has a #{lesson.topic} lesson on #{lesson.date} with #{lesson.tutor.name}"
+            end
+            puts "Pick a lesson to reschedule or cancel."
+            lesson_id = STDIN.gets.chomp 
+            lesson = Lesson.find_by(id: lesson_id)
+            puts "1. Reschedule"
+            puts "2. Cancel"
+            student_choice = STDIN.gets.chomp 
+            if student_choice == "1"
+                reschedule_lesson(lesson)
+            elsif student_choice == "2"
+                cancel_lesson(lesson)
+             end
+        end
+    end
 
+    def self.reschedule_lesson(lesson)
+        puts "When would you like to reschedule your lesson?"
+        lesson_reschedule = STDIN.get.chomp 
+        lesson.update(date: lesson_reschedule)
+        puts "Your lesson has been rescheduled!"
+    end
+
+    def self.cancel_lesson(lesson)
+        lesson.destroy 
+        puts "Your lesson has been cancelled."
     end
 
 end

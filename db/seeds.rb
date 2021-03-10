@@ -15,14 +15,13 @@ sean = Tutor.create(name: "Sean", subject: "English")
 toni = Tutor.create(name: "Toni", subject: "Math")
 justin = Tutor.create(name: "Justin", subject: "Science")
 
-math = Lesson.create(topic: "Math", date: "Monday", student: barak, tutor: eric )
-english = Lesson.create(topic: "English", date: "Tuesday", student: nyasha, tutor: sean )
-science = Lesson.create(topic: "Science", date: "Wednesday", student: barak, tutor: toni )
-math = Lesson.create(topic: "Math", date: "Thursday", student: nyasha, tutor: justin )
+math = Lesson.create(topic: "Math", date: "08/08/2021 9:00am", student: barak, tutor: eric )
+english = Lesson.create(topic: "English", date: "08/08/2021 10:00am", student: nyasha, tutor: sean )
+science = Lesson.create(topic: "Science", date: "22/02/2021 11:00am", student: barak, tutor: toni )
+math = Lesson.create(topic: "Math", date: "22/02/2021 8:00am", student: nyasha, tutor: justin )
 
 # nyasha = Student.new(name = "Nyasha", subject = "Math")
 # barak = Tutor.new(name = "Barak", subject = "Math")
 # lesson = Lesson.new(topic = "math", date = "Monday", student_id = 1, tutor_id = 1)
-
 
 
