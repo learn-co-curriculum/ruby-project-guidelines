@@ -58,3 +58,11 @@ end
 login
 welcome
 search
+
+
+
+
+
+# 10.times do
+#     Ticket.create(address: Guest::Com_1.theater)
+#   end
