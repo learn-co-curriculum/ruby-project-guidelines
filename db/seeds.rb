@@ -1,8 +1,10 @@
 require 'pry'
 
-require_relative 'lib/student.rb'
-require_relative 'lib/lesson.rb'
-require_relative 'lib/tutor.rb'
+require_all 
+
+Student.destroy_all 
+Tutor.destroy_all
+Lesson.destroy_all
 
 
 barak = Student.create(username: "Barak", password: "123") 
@@ -13,10 +15,10 @@ sean = Tutor.create(name: "Sean", subject: "English")
 toni = Tutor.create(name: "Toni", subject: "Math")
 justin = Tutor.create(name: "Justin", subject: "Science")
 
-math = Lesson.create(topic: "Math", date: "Monday", student_id: , tutor_id: )
-english = Lesson.create(topic: "English", date: "Tuesday", student_id: , tutor_id: )
-science = Lesson.create(topic: "Science", date: "Wednesday", student_id: , tutor_id: )
-math2 = Lesson.create(topic: "Math", date: "Thursday", student_id: , tutor_id: )
+math = Lesson.create(topic: "Math", date: "Monday", student: barak, tutor: eric )
+english = Lesson.create(topic: "English", date: "Tuesday", student: nyasha, tutor: sean )
+science = Lesson.create(topic: "Science", date: "Wednesday", student: barak, tutor: toni )
+math = Lesson.create(topic: "Math", date: "Thursday", student: nyasha, tutor: justin )
 
 # nyasha = Student.new(name = "Nyasha", subject = "Math")
 # barak = Tutor.new(name = "Barak", subject = "Math")
@@ -24,4 +26,3 @@ math2 = Lesson.create(topic: "Math", date: "Thursday", student_id: , tutor_id: )
 
 
 
-binding.pry
