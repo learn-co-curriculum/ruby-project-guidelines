@@ -14,7 +14,7 @@ def signup
     if (login_choice == "Sign Up")
         new_username = prompt.ask("What is your username?")
         new_password = prompt.ask("What is your password?")
-        Guest.create(name: "#{new_username}", password: "#{new_password}")
+        $g = Guest.create(name: "#{new_username}", password: "#{new_password}")
         
             puts "Lets start watching!"
         else 
@@ -22,9 +22,6 @@ def signup
             exit!
         end
     end
-welcome
-signup
-
 
 
 
@@ -43,7 +40,7 @@ def search
         menu_options = prompt.select("What would you like to do next", ["Purchase Ticket", "Start Over"])
         if menu_options == "Purchase Ticket"
             puts "Here is your ticket! Excited yet?!"
-            your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: select_movie.id, guest_id: $guest.id) 
+            your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: select_movie.id, guest_id: $g.id) 
             puts your_ticket
             puts "Please save this id for your confirmation number." 
             puts "You're going to see the #{select_movie.genre.genre} movie, #{your_ticket.movie.title}, @ #{select_movie.showtime} "
@@ -64,7 +61,7 @@ def search
             menu_options = prompt.select("What would you like to do next", ["Purchase Ticket", "Start Over"])
                 if menu_options == "Purchase Ticket"
                     puts "Here is your ticket! Excited yet?!"
-                    your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: ticket_choice.id, guest_id: $guest.id) 
+                    your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: ticket_choice.id, guest_id: $g.id) 
                     puts your_ticket
                     puts "Please save this id for your confirmation number."
                     puts "You're going to see a #{ticket_choice.genre.genre} movie, #{your_ticket.movie.title}, @ #{ticket_choice.showtime} "
@@ -90,6 +87,6 @@ end
 
 
 welcome
-login
+signup
 search
 thanks
