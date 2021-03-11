@@ -37,9 +37,9 @@ class Lesson < ActiveRecord::Base
         tutor_number = STDIN.gets.chomp
         tutor = Tutor.find_by(id: tutor_number)
         Lesson.create(topic: answer, date: date, student: student, tutor: tutor)
-        puts "Your lesson has been scheduled." 
-        Interface.welcome        
+        puts "Your lesson has been scheduled."     
             
+        Interface.welcome
     end
 
     def self.past_lessons(student)
