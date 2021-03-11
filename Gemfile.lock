@@ -62,7 +62,11 @@ GEM
     zeitwerk (2.4.2)
 
 PLATFORMS
+<<<<<<< HEAD
   x86_64-linux
+=======
+  x86_64-darwin-20
+>>>>>>> c98a82eb71033996bc90db1f366de9922371ff5c
 
 DEPENDENCIES
   artii (~> 2.1)
@@ -74,4 +78,8 @@ DEPENDENCIES
   tty-prompt (~> 0.21.0)
 
 BUNDLED WITH
+<<<<<<< HEAD
    2.2.11
+=======
+   2.2.13
+>>>>>>> c98a82eb71033996bc90db1f366de9922371ff5c
