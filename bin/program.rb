@@ -70,7 +70,7 @@ def search
             if thanks_choice == "Rate Your Commando Experience"
                 rate= prompt.select("Give us a rating...", ["1", "2", "3", "4", "5"])
                 if rate == "1"
-                    puts "Thank you for your feedback"
+                    puts "Thank you for your feedback."
                 end
             end
         end
