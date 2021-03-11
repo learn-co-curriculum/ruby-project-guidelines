@@ -2,16 +2,16 @@ require 'pry'
 require_relative '../config/environment'
 
 def welcome 
-title=Artii::Base.new(:font=> "cursive")
+title=Artii::Base.new(:font=> "cosmic")
 puts "Welcome to"
-puts title.asciify("Command Theater")
+puts title.asciify("Command Theater").colorize(:blue)
 end
 
 
 def signup 
   
     prompt = TTY::Prompt.new
-    login_choice = prompt.select("New users please Sign Up",["Sign Up", "Login", "Exit"]) #could say "Log in or new user please sign up and put login back in as an option IF
+    login_choice = prompt.select("New users please Sign Up",["Sign Up", "Login", ("Exit").colorize(:red)]) #could say "Log in or new user please sign up and put login back in as an option IF
    
     if (login_choice == "Sign Up")
         $new_username = prompt.ask("What is your username?")
@@ -66,7 +66,7 @@ def search
             puts "Here is your ticket! Excited yet?!"
             your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: select_movie.id, guest_id: $g.id) 
             puts your_ticket
-            puts "Please save this id for your confirmation number." 
+            puts ("Please save this id for your confirmation number.").colorize(:magenta) 
             puts "You're going to see the #{select_movie.genre.genre}, #{your_ticket.movie.title}, @ #{select_movie.showtime} "
         end
         
@@ -87,7 +87,7 @@ def search
                     puts "Here is your ticket! Excited yet?!"
                     your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: ticket_choice.id, guest_id: $g.id) 
                     puts your_ticket
-                    puts "Please save this id for your confirmation number."
+                    puts ("Please save this id for your confirmation number.").colorize(:magenta)
                     puts "You're going to see a #{ticket_choice.genre.genre}, #{your_ticket.movie.title}, @ #{ticket_choice.showtime} "
         end
     end
@@ -102,7 +102,7 @@ end
         puts "Thank you for your purchase! Commando Theater is b.y.o.b so feel free and WELCOME to bring your own refreshments. We cant wait to watch a movie with you!"
         prompt = TTY::Prompt.new
         thanks_choice = prompt.ask("Please leave us a rating from 1-5")
-        puts "Thank you for your feedback!"
+        puts ("Thank you for your feedback!").colorize(:yellow)
        # puts "Here are your Commando login credentials. Username: #{$new_username} Password: #{$new_password}. We hope to see you again soon!"
         end
         
