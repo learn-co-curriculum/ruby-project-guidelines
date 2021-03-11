@@ -20,10 +20,8 @@ class Interface < ActiveRecord::Base
          end
          if @student 
             Lesson.start(@student) 
-         elsif @student
-            #Lesson.view_scheduled_lessons(@student)
+         #elseif @student 
          end 
-
     end 
 
 end 
