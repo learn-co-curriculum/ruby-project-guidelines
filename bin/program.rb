@@ -1,6 +1,7 @@
 require 'pry'
 require_relative '../config/environment'
 
+
 def welcome 
 title=Artii::Base.new(:font=> "cursive")
 puts "Welcome to"
@@ -37,6 +38,9 @@ def search
             puts "You're going to see #{your_ticket.movie.title} at #{your_ticket.theater.name}. "
         else 
             welcome
+            login
+            search
+            thanks
         end
     end
 
@@ -46,11 +50,15 @@ def search
         thanks_choice = prompt.select("What would you like to do?", ["Rate Your Commando Expereince", "Start Over"])
             if thanks_choice == "Rate Your Commando Experience"
                 rate= prompt.select("Give us a rating...", ["1", "2", "3", "4", "5"])
+                ###for thursday figure out why options not showing up
                 if rate == "1"
                     puts "Thank you for your feedback."
                 end
             end
         end
+
+
+
                 
 
 
