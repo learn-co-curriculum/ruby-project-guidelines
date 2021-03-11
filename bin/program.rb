@@ -8,21 +8,31 @@ puts title.asciify("Command Theater")
 end
 
 
-def signup
+def signup 
+  
     prompt = TTY::Prompt.new
-    login_choice = prompt.select("New users please Sign Up",["Sign Up", "Exit"])
+    login_choice = prompt.select("New users please Sign Up",["Sign Up", "Login", "Exit"]) #could say "Log in or new user please sign up and put login back in as an option IF
+   
     if (login_choice == "Sign Up")
-        new_username = prompt.ask("What is your username?")
-        new_password = prompt.ask("What is your password?")
-        $g = Guest.create(name: "#{new_username}", password: "#{new_password}")
+        $new_username = prompt.ask("What is your username?")
+        $new_password = prompt.ask("What is your password? Must only include numbers")
+        $g = Guest.create(name: "#{$new_username}", password: "#{$new_password}")
         
             puts "Lets start watching!"
+    elsif login_choice == "Login"
+        name = prompt.ask("What username?")
+        password = prompt.ask("What pass?")
+        users = Guest.all.map{|u| u.name}
+        if users.include?(name) && Guest.find_by(password: password)
+            #assign variable of guest
+            $g = Guest.find_by(name: name)
+            puts "Hello #{$g.name} lets  buy  a ticket"
+        end
+
         else 
-            puts "Incorrect username or password"
             exit!
         end
     end
-
 
 
 
@@ -37,13 +47,13 @@ def search
         puts "You selected #{choice}!!! We love that one!"
         select_movie = Movie.find_by(title: choice)
     
-        menu_options = prompt.select("What would you like to do next", ["Purchase Ticket", "Start Over"])
+        menu_options = prompt.select("What would you like to do next", ["Purchase Ticket"])
         if menu_options == "Purchase Ticket"
             puts "Here is your ticket! Excited yet?!"
             your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: select_movie.id, guest_id: $g.id) 
             puts your_ticket
             puts "Please save this id for your confirmation number." 
-            puts "You're going to see the #{select_movie.genre.genre} movie, #{your_ticket.movie.title}, @ #{select_movie.showtime} "
+            puts "You're going to see the #{select_movie.genre.genre}, #{your_ticket.movie.title}, @ #{select_movie.showtime} "
         end
         
     elsif (search_choice == "Genres")
@@ -58,16 +68,13 @@ def search
            
     
             prompt = TTY::Prompt.new
-            menu_options = prompt.select("What would you like to do next", ["Purchase Ticket", "Start Over"])
-                if menu_options == "Purchase Ticket"
+            menu_options = prompt.select("What would you like to do next", ["Purchase Ticket"])
+                if (menu_options == "Purchase Ticket")
                     puts "Here is your ticket! Excited yet?!"
                     your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: ticket_choice.id, guest_id: $g.id) 
                     puts your_ticket
                     puts "Please save this id for your confirmation number."
-                    puts "You're going to see a #{ticket_choice.genre.genre} movie, #{your_ticket.movie.title}, @ #{ticket_choice.showtime} "
-                   
-                else
-                    welcome
+                    puts "You're going to see a #{ticket_choice.genre.genre}, #{your_ticket.movie.title}, @ #{ticket_choice.showtime} "
         end
     end
 end
@@ -82,7 +89,9 @@ end
         prompt = TTY::Prompt.new
         thanks_choice = prompt.ask("Please leave us a rating from 1-5")
         puts "Thank you for your feedback!"
+       # puts "Here are your Commando login credentials. Username: #{$new_username} Password: #{$new_password}. We hope to see you again soon!"
         end
+        
 
 
 
