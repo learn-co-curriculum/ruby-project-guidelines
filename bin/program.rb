@@ -26,13 +26,27 @@ def signup
         if users.include?(name) && Guest.find_by(password: password)
             #assign variable of guest
             $g = Guest.find_by(name: name)
-            puts "Hello #{$g.name} lets  buy  a ticket"
+            puts "Hello #{$g.name}."
+            guest_choice = prompt.select("What would you like to do?", ["Review Orders", "Continue Browsing"])
+                if guest_choice == "Review Orders"
+                    puts $g.tickets
+                    # puts "You were scheduled to see #{$g.tickets.movie}"
+                    option = prompt.select("What next?", ["Cancel Ticket", "Continue Browsing"])
+                    if option == "Cancel Ticket"
+                        $g.tickets.delete
+                        puts "#{$g.name}, your ticket has been deleted."
+                        exit!
+                    end
+                elsif guest_choice == "Continue Browsing"
+                    search
+                end            
         end
-
         else 
             exit!
         end
     end
+
+
 
 
 
