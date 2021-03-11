@@ -13,7 +13,7 @@ class Lesson < ActiveRecord::Base
         elsif answer == "2"
             past_lessons(student)
         elsif answer == "3"
-            scheduled_lessons(student)
+           scheduled_lessons(student)
         else
             puts "Try again"
         end
@@ -38,7 +38,7 @@ class Lesson < ActiveRecord::Base
         tutor = Tutor.find_by(id: tutor_number)
         Lesson.create(topic: answer, date: date, student: student, tutor: tutor)
         puts "Your lesson has been scheduled." 
-              
+        Interface.welcome        
             
     end
 
@@ -46,9 +46,10 @@ class Lesson < ActiveRecord::Base
         lessons = student.lessons.where("date < ?", Time.current)
         if lessons.exists?
             lessons.each do |lesson|
-                puts "#{student.username} had a #{lesson.topic} lesson on #{lesson.date} with #{lesson.tutor.name}"
+                puts "#{student.username} had a #{lesson.topic} lesson on #{lesson.date}."
             end
         end
+         Interface.welcome
     end
 
     def self.scheduled_lessons(student)
@@ -56,7 +57,7 @@ class Lesson < ActiveRecord::Base
         lessons = student.lessons.where("date > ?", Time.current)
         if lessons.exists?
             lessons.each do |lesson|
-                puts "#{lesson.id}. #{student.username} has a #{lesson.topic} lesson on #{lesson.date}" #    #{lesson.id}. with #{lesson.tutor.name} 
+                puts "#{lesson.id}. #{student.username} has a #{lesson.topic} lesson on #{lesson.date}." #    #{lesson.id}. with #{lesson.tutor.name} 
             end 
                 lesson_id = STDIN.gets.chomp 
             lesson = Lesson.find_by(id: lesson_id)

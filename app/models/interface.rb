@@ -19,7 +19,8 @@ class Interface
          end
          if @student 
             Lesson.start(@student) 
-         #elseif @student 
+         elsif 
+            Interface.welcome
          end 
     end 
 

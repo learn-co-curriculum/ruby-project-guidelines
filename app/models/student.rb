@@ -11,7 +11,7 @@ class Student < ActiveRecord::Base
         password = STDIN.gets.chomp
 
         Student.find_by(username: username, password: password)
-#Search db for entered username and password 
+        #Search db for entered username and password 
         #find a way to check validity of username and password
     end
 
