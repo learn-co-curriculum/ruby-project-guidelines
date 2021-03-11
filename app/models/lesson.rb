@@ -43,7 +43,7 @@ class Lesson < ActiveRecord::Base
     end
 
     def self.past_lessons(student)
-        lessons = Lesson.where(student: student).where("date < ?", Time.current)
+        lessons = student.lessons.where("date < ?", Time.current)
         if lessons.exists?
             lessons.each do |lesson|
                 puts "#{student.username} had a #{lesson.topic} lesson on #{lesson.date} with #{lesson.tutor.name}"
@@ -53,10 +53,10 @@ class Lesson < ActiveRecord::Base
 
     def self.scheduled_lessons(student)
         puts "Pick a lesson to reschedule or cancel."
-        lessons = Lesson.where(student: student).where("date > ?", Time.current)
+        lessons = student.lessons.where("date > ?", Time.current)
         if lessons.exists?
             lessons.each do |lesson|
-                puts "#{student.username} has a #{lesson.topic} lesson on #{lesson.date}" #    #{lesson.id}. with #{lesson.tutor.name} 
+                puts "#{lesson.id}. #{student.username} has a #{lesson.topic} lesson on #{lesson.date}" #    #{lesson.id}. with #{lesson.tutor.name} 
             end 
                 lesson_id = STDIN.gets.chomp 
             lesson = Lesson.find_by(id: lesson_id)
@@ -65,7 +65,7 @@ class Lesson < ActiveRecord::Base
             student_choice = STDIN.gets.chomp 
             if student_choice == "1"
                 puts "Pick a lesson to reschedule."
-                reschedule_lesson(lesson)
+                reschedule_lesson(lesson) 
             elsif student_choice == "2"
                 puts "Pick a lesson to cancel."
                 cancel_lesson(lesson)
@@ -76,19 +76,22 @@ class Lesson < ActiveRecord::Base
     def self.reschedule_lesson(lesson)
         puts "When would you like to reschedule your lesson?"
         lesson_reschedule = STDIN.gets.chomp 
-        Lesson.update(date: lesson_reschedule)
+        lesson.update(date: lesson_reschedule)
         puts "Your lesson has been rescheduled!"
-        Lesson.start(@student)
+        Interface.welcome 
     end
 
     def self.cancel_lesson(lesson)
-        lesson.destroy(lesson) 
+        lesson.destroy 
         puts "Your lesson has been cancelled."
-        Lesson.start(@student)
+        Interface.welcome 
     end
 
-
+    def display_nicely
+    puts "#You had a #{topic} lesson on #{date} with #{tutor.name}"
+    end 
 end
+
 
 # user_option = STDIN.gets.chomp 
 # if user_option == "yes"

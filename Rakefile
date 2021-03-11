@@ -9,3 +9,8 @@ task :console do
   #Open Pry console, similar to binding.pry.
   Pry.start
 end
+
+
+task :start do 
+Interface.welcome 
+end

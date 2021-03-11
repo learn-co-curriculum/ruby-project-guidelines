@@ -1,6 +1,5 @@
-class Interface < ActiveRecord::Base
-    has_many :students
-    has_many :tutors
+class Interface
+    
     # attr_accessor :student
 
     def self.welcome
