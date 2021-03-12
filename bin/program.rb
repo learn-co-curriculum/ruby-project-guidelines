@@ -24,13 +24,11 @@ def signup
         password = prompt.ask("What pass?")
         users = Guest.all.map{|u| u.name}
         if users.include?(name) && Guest.find_by(password: password)
-            #assign variable of guest
             $g = Guest.find_by(name: name)
             puts "Hello #{$g.name}."
             guest_choice = prompt.select("What would you like to do?", ["Review Orders", "Continue Browsing"])
                 if guest_choice == "Review Orders"
                     puts $g.tickets
-                    # puts "You were scheduled to see #{$g.tickets.movie}"
                     option = prompt.select("What next?", ["Cancel Ticket", "Continue Browsing"])
                     if option == "Cancel Ticket"
                         $g.tickets.delete
@@ -45,10 +43,6 @@ def signup
             exit!
         end
     end
-
-
-
-
 
 def search
     movies = Movie.all.map {|movie| movie.title}
@@ -88,25 +82,18 @@ def search
                     your_ticket = Ticket.create(theater_id: Theater.all.first.id, movie_id: ticket_choice.id, guest_id: $g.id) 
                     puts your_ticket
                     puts ("Please save this id for your confirmation number.").colorize(:magenta)
-                    puts "You're going to see a #{ticket_choice.genre.genre}, #{your_ticket.movie.title}, @ #{ticket_choice.showtime} "
+                    puts "You're going to see a #{ticket_choice.genre.genre} movie, #{your_ticket.movie.title}, @ #{ticket_choice.showtime} "
         end
     end
 end
 
-
-
-
-
-####how to save rat
     def thanks
-        puts "Thank you for your purchase! Commando Theater is b.y.o.b so feel free and WELCOME to bring your own refreshments. We cant wait to watch a movie with you!"
+        puts "Thank you for your purchase! We cant wait to watch a movie with you!"
         prompt = TTY::Prompt.new
         thanks_choice = prompt.ask("Please leave us a rating from 1-5")
         puts ("Thank you for your feedback!").colorize(:yellow)
-       # puts "Here are your Commando login credentials. Username: #{$new_username} Password: #{$new_password}. We hope to see you again soon!"
-        end
-        
 
+        end
 
 
 welcome

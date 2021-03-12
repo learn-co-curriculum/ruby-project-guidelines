@@ -4,8 +4,6 @@ Genre.destroy_all
 Movie.destroy_all
 Ticket.destroy_all
 
-
-
 commando=Theater.create(name: "Commando Theater")
 
 rom_com=Genre.create(genre: ("Romantic Comedy").colorize(:cyan))
@@ -13,7 +11,6 @@ action=Genre.create(genre: ("Action").colorize(:cyan))
 sci_fi=Genre.create(genre: ("Science Fiction").colorize(:cyan))
 slasher=Genre.create(genre: ("Slasher").colorize(:cyan))
 
-donovan = Guest.create(name: "theater", password: "123")
 g1=Guest.create(name: "Hadi", password: "123")
 g2=Guest.create(name: "Donovan", password: "123")
 g3=Guest.create(name: "Drake", password: "123")
