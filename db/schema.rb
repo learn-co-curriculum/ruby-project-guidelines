@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_193200) do
+ActiveRecord::Schema.define(version: 2021_06_20_193941) do
 
   create_table "employees", force: :cascade do |t|
     t.string "name"
@@ -18,6 +18,13 @@ ActiveRecord::Schema.define(version: 2021_06_20_193200) do
     t.integer "years_experience"
     t.boolean "full_time"
     t.integer "hours_scheduled"
+  end
+
+  create_table "stores", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "pet_id"
+    t.string "city"
+    t.string "name"
   end
 
 end
