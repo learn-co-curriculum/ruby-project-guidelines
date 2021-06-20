@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_200604) do
+ActiveRecord::Schema.define(version: 2021_06_20_200813) do
 
   create_table "employees", force: :cascade do |t|
     t.string "name"
     t.integer "years_experience"
     t.boolean "full_time"
     t.integer "hours_scheduled"
+    t.integer "age"
+    t.integer "salary"
   end
 
   create_table "pets", force: :cascade do |t|
