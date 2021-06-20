@@ -24,7 +24,7 @@ puts "Creating pets..."
 SPECIES = ["Cat", "Dog", "Bird", "Lizard", "Frog"]
 
 20.times do 
-    Pet.create(name: Faker::FunnyName.name, species: SPECIES.sample, weight: rand(1..20), age: rand(1..20), alive: rand(0..1), years_in_captivity: rand(0..10), price(1.5...100.0))
+    Pet.create(nickname: Faker::FunnyName.name, species: SPECIES.sample, weight: rand(1..20), age: rand(1..20), alive: rand(0..1), years_in_captivity: rand(0..10), price: rand(1.5...100.0))
 end
 
 puts "Done creating pets!"
@@ -34,5 +34,7 @@ puts "Done creating pets!"
 puts "Creating Stores.."
 
 3.times do 
-    Store.create(employee_id: Employee.ids.sample, pet_id: Pet.ids.sample, city: Faker::Address.city, name: (Faker:FunnyName.name + "'s Pet Store"))
+    Store.create(employee_id: Employee.ids.sample, pet_id: Pet.ids.sample, city: Faker::Address.city, name: Faker::FunnyName.name + "'s Pet Store")
 end 
+
+puts "Done creating stores!"
