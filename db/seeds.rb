@@ -28,3 +28,11 @@ SPECIES = ["Cat", "Dog", "Bird", "Lizard", "Frog"]
 end
 
 puts "Done creating pets!"
+
+# STORES
+
+puts "Creating Stores.."
+
+3.times do 
+    Store.create(employee_id: Employee.ids.sample, pet_id: Pet.ids.sample, city: Faker::Address.city, name: (Faker:FunnyName.name + "'s Pet Store"))
+end 
