@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_20_200813) do
+ActiveRecord::Schema.define(version: 2021_06_21_163210) do
+
+  create_table "adoptions", force: :cascade do |t|
+    t.integer "employee_id"
+    t.integer "pet_id"
+    t.string "city"
+    t.string "name"
+  end
 
   create_table "employees", force: :cascade do |t|
     t.string "name"
@@ -29,13 +36,6 @@ ActiveRecord::Schema.define(version: 2021_06_20_200813) do
     t.boolean "alive"
     t.integer "years_in_captivity"
     t.float "price"
-  end
-
-  create_table "stores", force: :cascade do |t|
-    t.integer "employee_id"
-    t.integer "pet_id"
-    t.string "city"
-    t.string "name"
   end
 
 end
