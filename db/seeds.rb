@@ -13,7 +13,7 @@ Pet.destroy_all
 # STORES
 
 5.times do
-    Store.create(name: Faker::FunnyName.first_name + "'s Pet Store", city: Faker::Address.city)
+    Store.create(name: Faker::Name.first_name + "'s Pet Store", address: (Faker::Address.street_name + ", " + Faker::Address.city + ", " Faker::Address.state + " " + Faker::Address.zip))
 end
 
 # EMPLOYEES
