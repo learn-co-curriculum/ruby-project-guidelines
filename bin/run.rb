@@ -1,5 +1,5 @@
 require_relative '../config/environment'
 
 
-
-puts "HELLO WORLD"
+CLI.title_screen
+# puts "HELLO WORLD"
