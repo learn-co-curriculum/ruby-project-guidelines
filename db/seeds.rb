@@ -1,11 +1,20 @@
 puts "Delete stores!"
 Store.destroy_all
 
+puts "Delete adoptions!"
+Adoption.destroy_all
+
 puts "Delete employees!"
 Employee.destroy_all
 
 puts "Delete pets!"
 Pet.destroy_all
+
+# STORES
+
+5.times do
+    Store.create(name: Faker::FunnyName.first_name + "'s Pet Store", city: Faker::Address.city)
+end
 
 # EMPLOYEES
 
