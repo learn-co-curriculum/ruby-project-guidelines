@@ -1,4 +1,4 @@
+# Store -< Employee
 class Store < ActiveRecord::Base
-    belongs_to :employee
-    belongs_to :pet
+    has_many :employees
 end
