@@ -1,5 +1,5 @@
-# Employee -< Store
+# Employee -< Adoption
 class Employee < ActiveRecord::Base
-    has_many :stores
-    has_many :pets, through: :stores
+    has_many :adoptions
+    has_many :pets, through: :adoptions
 end
