@@ -3,9 +3,11 @@ class Employee < ActiveRecord::Base
     has_many :adoptions
     has_many :pets, through: :adoptions
     belongs_to :store
+    has_many :sales
+    has_many :products, through :sales
 
     def pets_at_my_store
-        Pet.all.map{|pet| pet_id == self.store.pet_id}
+        Pet.all.select{|pet| pet_id == self.store.pet_id}
     end
 
     def change_status
@@ -35,5 +37,31 @@ class Employee < ActiveRecord::Base
         Sale.create(employee_id: self.id, product_id: product_id, customer_id: customer_id)
     end
 
+    def make_return(sale_id)
+        self.sales.all.each do |sale|
+            if sale.id == sale_id
+                sale.clear
+            end
+        end
+    end
+
+    def products_sold_at_my_store
+        Product.all.select{|product| product.store_id == self.store.id}
+    end
+
+    def sort_pets_by_yrs
+        self.pets.sort_by{|pet| pet.years_in_captivity}
+    end
+
+    def find_remove_dead_pets
+        dead_pets = []
+        self.pets.each do |pet|
+            if pet.alive == false
+                dead_pets << pet
+                pet.clear
+            end
+        end
+        dead_pets
+    end
 
 end
