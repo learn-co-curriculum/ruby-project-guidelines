@@ -10,7 +10,7 @@ class CLI
         system('clear')
         self.title
         self.art
-
+        self.start_menu
     end
 
     def self.title
@@ -32,6 +32,23 @@ class CLI
     HRD
         puts art
     end
+
+    def self.start_menu
+        new_prompt = TTY::Prompt.new
+
+        selection = new_prompt.select("\n\n Welcome to your new Job!") do |option|
+            option.choice "Start Game"
+            option.choice "Quit Game"
+        end 
+
+        if selection == "Start Game"
+            self.build_resume
+        else
+            system('clear')
+        end
+    end
+
+
 
 
 end

@@ -1,3 +1,3 @@
-class customer < ActiveRecord::Base
+class Customer < ActiveRecord::Base
     has_many :sales
 end

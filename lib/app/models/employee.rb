@@ -5,7 +5,7 @@ class Employee < ActiveRecord::Base
     has_many :pets, through: :adoptions
     belongs_to :store
     has_many :sales
-    has_many :products, through :sales
+    has_many :products, through: :sales
 
     def pets_at_my_store
         Pet.all.select{|pet| pet_id == self.store.pet_id}
