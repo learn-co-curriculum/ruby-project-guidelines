@@ -4,6 +4,9 @@ class CLI
     @@prompt = TTY::Prompt.new
     @@pastel = Pastel.new
     @@font = TTY::Font.new(:doom)
+    @@chosen_store = nil
+    @@resume = nil
+    @@first_time_resume = 1
 
 
     def self.title_screen
@@ -43,6 +46,8 @@ class CLI
 
         if selection == "Start Game"
             self.build_resume
+            self.choose_store
+            # self.store_stats
         else
             system('clear')
         end
@@ -52,25 +57,30 @@ class CLI
         system('clear')
         self.title
         prompt = TTY::Prompt.new
+        if @@first_time_resume
+            @@resume = prompt.collect do 
+                key(:name).ask("What is your name?")
 
-        resume = prompt.collect do 
-            key(:name).ask("What is your name?")
+                key(:age).ask("How old are you? (shhhhhh OSHA doesn't exist)", convert: :int)
 
-            key(:age).ask("How old are you? (shhhhhh OSHA doesn't exist)", convert: :int)
-
-            key(:hours).ask("How many hours do you want to work a week?", convert: :int)
-            
-            key(:exp).ask("How many years experience do you have?", convert: :int)
+                key(:hours).ask("How many hours do you want to work a week?", convert: :int)
+                
+                key(:exp).ask("How many years experience do you have?", convert: :int)
+            end 
+            @@first_time_resume = 0
         end
 
         # store_names = Store.all.each { |store| puts store.name } 
 
-        choosen_store = prompt.select("What store do you want to apply to?") do |menu|
-            Store.all.map do |store|
-                menu.choice "#{store.name.rjust(20)}   Average Wage: $#{store.avg_wage}\tNumber of Employees: #{store.num_emps_at_store}"
-            end
-        end
+        
+        # self.store_stats
+        
+        
 
+        
+
+        # puts choosen_store
+        # puts store_name
         
 
 
@@ -82,8 +92,52 @@ class CLI
 
     end
 
+    def self.choose_store
+        system('clear')
+        self.title
+        prompt = TTY::Prompt.new
+        @@chosen_store = prompt.select("What store do you want to apply to?\n") do |menu|
+            Store.all.map do |store|
+                menu.choice "#{store.name.rjust(20)}" + "(General Info Below): \n" + "\tAverage Wage: $#{store.avg_wage}" + "\t |   Number of Employees: #{store.num_emps_at_store}\n"
+                
+            end
+        
+        end
+
+        puts @@chosen_store
+
+        puts Store.all
+
+        
+    end
+
     def self.store_stats
-        puts 
+        system('clear')
+        self.title
+        puts @@chosen_store
+        prompt = TTY::Prompt.new
+
+        store_obj = Store.all.find { |store| store.name == @@chosen_store }
+
+        puts store_obj.name, store_obj.avg_wage, store_obj.num_emps_at_store
+
+        puts "\tAverage Wage: $#{store_obj.avg_wage}" + "\t Number of Employees: #{store_obj.num_emps_at_store}"
+
+        selection = prompt.select("\n\nDo you want to apply here?") do |opt|
+            opt.choice "Yes"
+            opt.choice "No (Go back to store list)"
+        end
+
+        if selection == "Yes"
+
+        else
+            system('clear')
+            self.title
+            self.choose_store
+        end 
+
+        
+
 
     end
 
