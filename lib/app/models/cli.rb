@@ -63,13 +63,27 @@ class CLI
             key(:exp).ask("How many years experience do you have?", convert: :int)
         end
 
-        store_names = Store.all.map {|store| store.name}
+        # store_names = Store.all.each { |store| puts store.name } 
+
+        choosen_store = prompt.select("What store do you want to apply to?") do |menu|
+            Store.all.map do |store|
+                menu.choice "#{store.name.rjust(20)}   Average Wage: $#{store.avg_wage}\tNumber of Employees: #{store.num_emps_at_store}"
+            end
+        end
 
         
 
 
+
+
+
         # puts "#{Store.all}"
 
+
+    end
+
+    def self.store_stats
+        puts 
 
     end
 
