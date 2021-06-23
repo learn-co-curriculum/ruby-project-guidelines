@@ -65,6 +65,8 @@ class CLI
 
         store_names = Store.all.map {|store| store.name}
 
+        
+
 
         # puts "#{Store.all}"
 
