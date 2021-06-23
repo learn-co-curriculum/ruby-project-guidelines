@@ -48,6 +48,29 @@ class CLI
         end
     end
 
+    def self.build_resume
+        system('clear')
+        self.title
+        prompt = TTY::Prompt.new
+
+        resume = prompt.collect do 
+            key(:name).ask("What is your name?")
+
+            key(:age).ask("How old are you? (shhhhhh OSHA doesn't exist)", convert: :int)
+
+            key(:hours).ask("How many hours do you want to work a week?", convert: :int)
+            
+            key(:exp).ask("How many years experience do you have?", convert: :int)
+        end
+
+        store_names = Store.all.map {|store| store.name}
+
+
+        # puts "#{Store.all}"
+
+
+    end
+
 
 
 
