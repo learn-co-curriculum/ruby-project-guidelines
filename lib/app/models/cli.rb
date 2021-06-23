@@ -3,7 +3,7 @@ require "tty-font"
 class CLI
     @@prompt = TTY::Prompt.new
     @@pastel = Pastel.new
-    @@font = TTY::Font.new(:standard)
+    @@font = TTY::Font.new(:doom)
 
 
     def self.title_screen
