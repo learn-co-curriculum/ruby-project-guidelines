@@ -248,9 +248,11 @@ class CLI
             # puts user_obj
             # puts pet_names
             # binding.pry
-            table = TTY::Table.new(["header1","header2", "h3", "h4", "h5", "h6", "h7"], [all_pets[0], all_pets[1], all_pets[2], all_pets[3], all_pets[4]])
+            table = TTY::Table.new(["Nickname","Species", "Weight (lbs)", "Age", "Alive", "Years in Captivity", "Price ($)"], [all_pets[0], all_pets[1], all_pets[2], all_pets[3], all_pets[4]])
             # table = TTY::Table.new([all_pets[0], all_pets[1], all_pets[2], all_pets[3], all_pets[4], all_pets[5], all_pets[6]])
             puts table.render(:ascii)
+            sleep(2)
+            self.start_work
         elsif selection == "Adopt a new pet"
         
         end 
