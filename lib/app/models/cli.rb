@@ -198,6 +198,7 @@ class CLI
             Adoption.create(employee_id: user_obj.id, pet_id: Pet.ids.sample)
         end
         # sleep(8)
+        self.return_to_work
     end
 
     def self.start_work
@@ -237,7 +238,6 @@ class CLI
 
             table = TTY::Table.new(["Nickname","Species", "Weight (lbs)", "Age", "Alive", "Years in Captivity", "Price ($)"], all_pets.uniq)
             puts table.render(:ascii)
-            puts Pet.last.nickname
 
             self.return_to_work
 
@@ -259,7 +259,7 @@ class CLI
             self.title
             
     
-            new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: rand(0..1), years_in_captivity: 0, price: rand(1.5...100.0).round(2))
+            new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: 1, years_in_captivity: 0, price: rand(1.5...100.0).round(2))
             Adoption.create(employee_id: user_obj.id, pet_id: new_pet.id)
     
     
@@ -268,11 +268,36 @@ class CLI
             self.print_boss_art
             puts "#{@@boss_name}:  Alright, #{@@resume[:name]}, fine--I got that new pet you wanted. Its name is #{new_pet.nickname},\n\t and it's an #{new_pet.weight} lbs #{new_pet.age}-year-old #{new_pet.species}. \n\t And the $#{new_pet.price} it costed is coming out of YOUR paycheck!"
             self.return_to_work
+
+        elsif selection == "Change my Schedule"
+
         end 
 
     end
 
     def self.adopt_a_new_pet
+        system('clear')
+        self.title
+        new_prompt = TTY::Prompt.new
+
+        if user_obj.full_time 
+            work_status = "Full Time"
+        else
+            work_status = "Part Time"
+        end 
+
+        puts "\n\nHours scheduled Form\n\nEmployee: #{@@resume[:name]}\n Hours this Week: #{user_obj.hours_scheduled}\n Status: #{work_status}\n"
+    
+        selection_hash = new_prompt.collect do 
+            key(:hrs).ask("How many hours do you want to work", convert: :int)
+
+            key(:full_time).ask("Do you want to have full-time benefits?")
+        end 
+
+
+        if selection_hash[:hrs] >= 80
+            full_time = rand(0.0..1.0).round
+        end
 
 
 
