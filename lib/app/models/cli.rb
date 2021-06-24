@@ -205,12 +205,13 @@ class CLI
         new_prompt = TTY::Prompt.new
 
         selection = new_prompt.select("\n\n You're at work now, what do you want to do?\n\n") do |option|
-            option.choice "View the all of the pets that I have"
-            option.choice "Adopt a new pet"
-            option.choice "Change my schedule"
-            option.choice "EWWWW! What's that smell?"
-            option.choice "Change what store I work at"
-            option.choice "Quit my job!"
+            option.choice "View the all of the pets that I have" # kyle
+            option.choice "Adopt a new pet" # new adoption instance # kyle
+            option.choice "Change my schedule" # change hours #kyle 
+            option.choice "EWWWW! What's that smell?" #remove the dead pets Lindsay 
+            option.choice "Change what store I work at" #change store Lindsay 
+            option.choice "Quit my job!" # delete employee instance (the @@user/user_obj) Lindsay 
+            # for quitting, Delete the obj from the db (.delete), then call self.start_menu
         end 
 
         if selection == "View the all of the pets at my store"
@@ -218,6 +219,8 @@ class CLI
 
             puts pet_names
 
+        elsif selection == "Adopt a new pet"
+        
         end 
 
     end
