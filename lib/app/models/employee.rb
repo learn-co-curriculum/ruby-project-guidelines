@@ -8,7 +8,9 @@ class Employee < ActiveRecord::Base
     has_many :products, through: :sales
 
     def pets_at_my_store
-        Pet.all.select{|pet| pet_id == self.store.pet_id}
+        # Pet.all.select{|pet| pet.id == self.adoptions.pet_id}
+        self.pets
+        # puts "test"
     end
 
     def change_status
