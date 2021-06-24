@@ -10,6 +10,7 @@ class CLI
     @@chosen_store = nil
     @@resume = nil
     @@user = nil
+    @@boss_name
 
     # system('rake db:seed')
 
@@ -168,7 +169,7 @@ class CLI
         choosen_store_name_str = "#{chosen_store_arr[0]}" + " #{chosen_store_arr[1]}" + " #{chosen_store_arr[2]}" 
         # get the store owner's name
         boss_name = "#{chosen_store_arr[0]}"
-        boss_name = boss_name[0..((boss_name.length) - 3)]
+        @@boss_name = boss_name[0..((boss_name.length) - 3)]
         
         # get wage, remove dollar sign
         # avg_wage = "#{chosen_store_arr[5]}"
@@ -235,7 +236,7 @@ class CLI
             sleep(2)
             self.start_work
         elsif selection == "Adopt a new pet"
-
+            self.adopt_a_new_pet
         
         end 
 
@@ -249,20 +250,25 @@ class CLI
 
         puts "\n\nTime to get a new pet!\n\n"
 
-        selection_hash = prompt.collect do 
+        selection_hash = new_prompt.collect do 
             key(:species).ask("What species is the pet?")
 
-            key(:nickname).ask("What is the pet's nickname?", convert: :int)
+            key(:nickname).ask("What is the pet's nickname?")
         end 
 
         system('clear')
         self.title
 
-        new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: rand(0..1), years_in_captivity: rand(0..10), price: rand(1.5...100.0).round(2))
+        new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: rand(0..1), years_in_captivity: 0, price: rand(1.5...100.0).round(2))
         Adoption.create(employee_id: @@user.id, pet_id: new_pet.id)
 
+        self.print_boss_art
+        puts "#{@@boss_name}:  Alright, #{@@resume[:name]}, fine--I got that new pet you wanted. Its name is #{new_pet.name},\n\t and it's an #{new_pet.weight} lbs #{new_pet.age}-year-old #{new_pet.species}. \n\t And the $#{pet_id.price} it costed is coming out of YOUR paycheck!"
         
 
+        sleep(6)
+        
+        self.start_work
 
     end
 
