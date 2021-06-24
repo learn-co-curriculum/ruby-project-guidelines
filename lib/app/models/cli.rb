@@ -8,7 +8,7 @@ class CLI
     @@font = TTY::Font.new(:doom)
     @@chosen_store = nil
     @@resume = nil
-    @@first_time_resume = 1
+    @@user = nil
 
     # system('rake db:seed')
 
@@ -119,6 +119,7 @@ class CLI
             self.choose_store
             # self.store_stats
             self.get_hired
+            self.start_work
         else
             system('clear')
         end
@@ -169,11 +170,13 @@ class CLI
         boss_name = boss_name[0..((boss_name.length) - 3)]
         
         # get wage, remove dollar sign
-        avg_wage = "#{chosen_store_arr[5]}"
+        # avg_wage = "#{chosen_store_arr[5]}"
 
-        avg_wage = (avg_wage[1..-1]).to_f
+        # avg_wage = (avg_wage[1..-1]).to_f
 
         store_obj = Store.all.find { |store| store.name == choosen_store_name_str }
+
+        avg_wage = store_obj.avg_wage
 
         if @@resume[:hours] < 38 
             full_time = 0
@@ -182,11 +185,44 @@ class CLI
         end
 
         puts "#{boss_name}:  Congratulations, #{@@resume[:name]}, you're hired! Since you only have #{@@resume[:exp]} years of experience,\n\t you'll be payed half of our average salary and work 10 more hours than you asked,\n\t because, ya know, capitalism"
-        puts "\nStarting Salary: $#{(avg_wage/2.0)}\tHours Scheduled: #{(@@resume[:hours] + 10)}"
+        puts "\nStarting Salary: $#{(avg_wage/2.0).to_i}\tHours Scheduled: #{(@@resume[:hours] + 10)}"
         # salary 
         
-        Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, (@@resume[:hours] + 10), @@resume[:age], (avg_wage/2.0), store_obj.id)
+        @@user = Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, (@@resume[:hours] + 10), @@resume[:age], (avg_wage/2.0).to_i, store_obj.id)
+        puts @@user.pets_at_my_store
     end
+
+    def self.start_work
+        sleep(8)
+        system('clear')
+        self.title
+        # for some reason using @@user.pets later was causing bugs
+        user_obj = Employee.all.find {|emp| emp.id == @@user.id}
+        
+        5.times do 
+            Adoption.create(employee_id: user_obj.id, pet_id: Pet.ids.sample)
+        end
+        new_prompt = TTY::Prompt.new
+
+        selection = new_prompt.select("\n\n You're at work now, what do you want to do?\n\n") do |option|
+            option.choice "View the all of the pets that I have"
+            option.choice "Adopt a new pet"
+            option.choice "Change my schedule"
+            option.choice "EWWWW! What's that smell?"
+            option.choice "Change what store I work at"
+            option.choice "Quit my job!"
+        end 
+
+        if selection == "View the all of the pets at my store"
+            pet_names = user_obj.pets.map {|pet| pet.nickname}
+
+            puts pet_names
+
+        end 
+
+    end
+
+    self
 
 
 
