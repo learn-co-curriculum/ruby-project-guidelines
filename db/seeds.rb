@@ -10,14 +10,14 @@ Employee.destroy_all
 puts "Delete pets!"
 Pet.destroy_all
 
-puts "Delete sales!"
-Sale.destroy_all
+# puts "Delete sales!"
+# Sale.destroy_all
 
-puts "Delete products!"
-Product.destroy_all
+# puts "Delete products!"
+# Product.destroy_all
 
-puts "Delete customers!"
-Customer.destroy_all
+# puts "Delete customers!"
+# Customer.destroy_all
 
 # STORES
 
@@ -59,30 +59,30 @@ puts "Done creating adoptions!"
 
 # PRODUCTS
 
-puts "Creating products..."
+# puts "Creating products..."
 
-20.times do
-    Product.create(store_id: Store.ids.sample, name: , price: rand(1.0..500.0))
-end
+# 20.times do
+#     Product.create(store_id: Store.ids.sample, name: , price: rand(1.0..500.0))
+# end
 
-puts "Done creating products!"
+# puts "Done creating products!"
 
-# CUSTOMERS
+# # CUSTOMERS
 
-puts "Creating customers..."
+# puts "Creating customers..."
 
-7.times do
-    Customer.create(name: Faker::FunnyName.name)
-end
+# 7.times do
+#     Customer.create(name: Faker::FunnyName.name)
+# end
 
-puts "Done creating customers!"
+# puts "Done creating customers!"
 
-# SALES
+# # SALES
 
-puts "Creating sales..."
+# puts "Creating sales..."
 
-15.times do
-    Sale.create(employee_id: Employee.ids.sample, product_id: Product.ids.sample, customer_id: Customer.ids.sample)
-end
+# 15.times do
+#     Sale.create(employee_id: Employee.ids.sample, product_id: Product.ids.sample, customer_id: Customer.ids.sample)
+# end
 
-puts "Done creating sales!"
+# puts "Done creating sales!"

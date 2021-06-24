@@ -186,7 +186,7 @@ class CLI
             full_time = 1
         end
 
-        puts "#{boss_name}:  Congratulations, #{@@resume[:name]}, you're hired! Since you only have #{@@resume[:exp]} years of experience,\n\t you'll be payed half of our average salary and work 10 more hours than you asked,\n\t because, ya know, capitalism"
+        puts "#{@@boss_name}:  Congratulations, #{@@resume[:name]}, you're hired! Since you only have #{@@resume[:exp]} years of experience,\n\t you'll be payed half of our average salary and work 10 more hours than you asked,\n\t because, ya know, capitalism"
         puts "\nStarting Salary: $#{(avg_wage/2.0).to_i}\tHours Scheduled: #{(@@resume[:hours] + 10)}"
         # salary 
         
@@ -224,6 +224,13 @@ class CLI
 
                 vals = pet.attributes.values
 
+                # check to see if the user got a new pet, if so add it to vals
+                # if (user_obj.pets.last != Pet.last) && (user_obj.pets.last.id == Pet.last.id)
+
+                #     vals += Pet.last.attributes.values
+
+                # end
+
                 vals_as_strs = vals.map do |val|
                     val.to_s
                 end 
@@ -231,12 +238,44 @@ class CLI
                 fin_arr << vals_as_strs[1..-1]
             end 
 
+            
+
+
             table = TTY::Table.new(["Nickname","Species", "Weight (lbs)", "Age", "Alive", "Years in Captivity", "Price ($)"], [all_pets[0], all_pets[1], all_pets[2], all_pets[3], all_pets[4]])
             puts table.render(:ascii)
             sleep(2)
             self.start_work
         elsif selection == "Adopt a new pet"
-            self.adopt_a_new_pet
+            # self.adopt_a_new_pet
+            system('clear')
+            self.title
+            new_prompt = TTY::Prompt.new
+    
+            puts "\n\nTime to get a new pet!\n\n"
+    
+            selection_hash = new_prompt.collect do 
+                key(:species).ask("What species is the pet?")
+    
+                key(:nickname).ask("What is the pet's nickname?")
+            end 
+    
+            system('clear')
+            self.title
+            
+    
+            new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: rand(0..1), years_in_captivity: 0, price: rand(1.5...100.0).round(2))
+            Adoption.create(employee_id: @@user.id, pet_id: new_pet.id)
+    
+    
+            
+    
+            self.print_boss_art
+            puts "#{@@boss_name}:  Alright, #{@@resume[:name]}, fine--I got that new pet you wanted. Its name is #{new_pet.nickname},\n\t and it's an #{new_pet.weight} lbs #{new_pet.age}-year-old #{new_pet.species}. \n\t And the $#{new_pet.price} it costed is coming out of YOUR paycheck!"
+            
+    
+            sleep(6)
+            
+            self.start_work
         
         end 
 
@@ -244,31 +283,7 @@ class CLI
 
     def self.adopt_a_new_pet
 
-        system('clear')
-        self.title
-        new_prompt = TTY::Prompt.new
 
-        puts "\n\nTime to get a new pet!\n\n"
-
-        selection_hash = new_prompt.collect do 
-            key(:species).ask("What species is the pet?")
-
-            key(:nickname).ask("What is the pet's nickname?")
-        end 
-
-        system('clear')
-        self.title
-
-        new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: rand(0..1), years_in_captivity: 0, price: rand(1.5...100.0).round(2))
-        Adoption.create(employee_id: @@user.id, pet_id: new_pet.id)
-
-        self.print_boss_art
-        puts "#{@@boss_name}:  Alright, #{@@resume[:name]}, fine--I got that new pet you wanted. Its name is #{new_pet.name},\n\t and it's an #{new_pet.weight} lbs #{new_pet.age}-year-old #{new_pet.species}. \n\t And the $#{pet_id.price} it costed is coming out of YOUR paycheck!"
-        
-
-        sleep(6)
-        
-        self.start_work
 
     end
 
