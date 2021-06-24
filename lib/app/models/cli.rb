@@ -12,8 +12,8 @@ class CLI
 
     # system('rake db:seed')
 
-    def self.print_art
-        test = <<-'HRD'
+    def self.print_title_art
+        art = <<-'HRD'
                       /^--^\     /^--^\     /^--^\
                       \____/     \____/     \____/
                      /      \   /      \   /      \
@@ -25,14 +25,76 @@ class CLI
 | | | | | | | | | | | | \/| | | | \/| | | | | |\/ | | | | | | | | | | | |
 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|
     HRD
-    puts test
+    puts art
+    end
+
+    def self.print_resume_art
+
+        art = <<-'HRD'
+                          _______
+                         | ___  o|
+                         |[_-_]_ |
+      ______________     |[_____]|
+     |.------------.|    |[_____]|
+     ||            ||    |[====o]|
+     ||    Job     ||    |[_.--_]|
+     ||Application ||    |[_____]|
+     ||            ||    |      :|
+     ||____________||    |      :|
+ .==.|""  ......    |.==.|      :|
+ |::| '-.________.-' |::||      :|
+ |''|  (__________)-.|''||______:|
+ `""`_.............._\""`______
+    /:::::::::::'':::\`;'-.-.  `\
+   /::=========.:.-::"\ \ \--\   \
+   \`""""""""""""""""`/  \ \__)   \
+    `""""""""""""""""`    '========'
+    HRD
+    puts art
+    end
+
+    def self.print_boss_art
+        art = <<-'HRD'
+                                
+                   ;;;;;;;;;;;;;;;;;
+                ;;;;;;;;;;;;     ;;;;;
+               ;;;;;    ;;;         \;;
+              ;;;;;      ;;          |;
+             ;;;;         ;          |
+             ;;;                     |
+              ;;                     )
+               \    ~~~~ ~~~~~~~    /
+                \    ~~~~~~~  ~~   /
+              |\ \                / /|
+               \\| %%%%%    %%%%% |//
+              [[====================]]
+               | |  ^          ^  |
+               | | :@: |/  \| :@: | |
+                \______/\  /\______/
+                 |     (@\/@)     |
+                /                  \
+               /  ;-----\  ______;  \
+               \         \/         /
+                )                  (
+               /                    \
+               \__                  /
+                \_                _/
+                 \______/\/\______/
+                  _|    /--\    |_
+                 /%%\  /"'"'\  /%%\
+  ______________/%%%%\/\'"'"/\/%%%%\______________
+ / :  :  :  /  .\%%%%%%%\"'/%%%%%%%/.  \  :  :  : \
+)  :  :  :  \.  .\%%%%%%/'"\%%%%%%/.  ./  :  :  :  (
+
+        HRD
+        puts art
     end
 
 
     def self.title_screen
         system('clear')
         self.title
-        self.print_art
+        self.print_title_art
         self.start_menu
     end
 
@@ -65,7 +127,9 @@ class CLI
     def self.build_resume
         system('clear')
         self.title
+        self.print_resume_art
         prompt = TTY::Prompt.new
+        puts "Let's make a Job Application!\n\n"
         @@resume = prompt.collect do 
             key(:name).ask("What is your name?")
 
@@ -93,19 +157,21 @@ class CLI
     def self.get_hired
         system('clear')
         self.title
+        self.print_boss_art
         
-        prompt = TTY::Prompt.new
+        # prompt = TTY::Prompt.new
 
         chosen_store_arr = @@chosen_store.split
 
         choosen_store_name_str = "#{chosen_store_arr[0]}" + " #{chosen_store_arr[1]}" + " #{chosen_store_arr[2]}" 
-
+        # get the store owner's name
+        boss_name = "#{chosen_store_arr[0]}"
+        boss_name = boss_name[0..((boss_name.length) - 3)]
+        
         # get wage, remove dollar sign
         avg_wage = "#{chosen_store_arr[5]}"
 
         avg_wage = (avg_wage[1..-1]).to_f
-
-        # Employee.create()
 
         store_obj = Store.all.find { |store| store.name == choosen_store_name_str }
 
@@ -115,9 +181,11 @@ class CLI
             full_time = 1
         end
 
+        puts "#{boss_name}: Congratulations, #{@@resume[:name]}, you're hired! Since you only have #{@@resume[:exp]} years of experience,\n\t you'll be payed half of our average salary and work 10 more hours than you asked, because, ya know, capitalism"
+
         # salary 
         
-        Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, @@resume[:hours], @@resume[:age], (avg_wage/2.0), store_obj.id)
+        Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, (@@resume[:hours] + 10), @@resume[:age], (avg_wage/2.0), store_obj.id)
     end
 
 
