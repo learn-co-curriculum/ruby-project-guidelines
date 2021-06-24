@@ -1,5 +1,6 @@
 require "tty-prompt"
 require "tty-font"
+require "tty-table"
 # require_relative "/../../../db/seeds.rb"
 # require_relative "/ascii_art"
 class CLI
@@ -214,18 +215,49 @@ class CLI
             # for quitting, Delete the obj from the db (.delete), then call self.start_menu
         end 
 
-        if selection == "View the all of the pets at my store"
+        if selection == "View the all of the pets that I have"
+            test_oof = user_obj.attributes.values
+
+            pets_objs_arr = user_obj.pets
+
+            all_pets = pets_objs_arr.each_with_object([]) do |pet, fin_arr|
+
+                vals = pet.attributes.values
+
+                vals_as_strs = vals.map do |val|
+                    val.to_s
+                end 
+
+                fin_arr << vals_as_strs[1..-1]
+            end 
+
             pet_names = user_obj.pets.map {|pet| pet.nickname}
+            pet_species = user_obj.pets.map {|pet| pet.species}
+            pet_weight = user_obj.pets.map {|pet| pet.weight}
+            pet_age = user_obj.pets.map {|pet| pet.age}
+            pet_alive = user_obj.pets.map {|pet| pet.alive}
+            pet_yrs_in_cap = user_obj.pets.map {|pet| pet.years_in_captivity}
+            pet_price = user_obj.pets.map {|pet| pet.price}
 
-            puts pet_names
+        
+            # puts all_pets
+            # puts all_pets[0]
 
+
+
+            # puts user_obj
+            # puts pet_names
+            # binding.pry
+            table = TTY::Table.new(["header1","header2", "h3", "h4", "h5", "h6", "h7"], [all_pets[0], all_pets[1], all_pets[2], all_pets[3], all_pets[4]])
+            # table = TTY::Table.new([all_pets[0], all_pets[1], all_pets[2], all_pets[3], all_pets[4], all_pets[5], all_pets[6]])
+            puts table.render(:ascii)
         elsif selection == "Adopt a new pet"
         
         end 
 
     end
 
-    self
+    
 
 
 
