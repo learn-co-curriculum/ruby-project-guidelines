@@ -307,13 +307,6 @@ class CLI
 
     end
 
-    def self.adopt_a_new_pet
-
-
-
-
-    end
-
 
     def self.return_to_work
         new_prompt = TTY::Prompt.new
