@@ -225,11 +225,12 @@ class CLI
                 vals = pet.attributes.values
 
                 # check to see if the user got a new pet, if so add it to vals
-                # if (user_obj.pets.last != Pet.last) && (user_obj.pets.last.id == Pet.last.id)
+                if (user_obj.pets.last != Pet.last) && (user_obj.pets.last.id == Pet.last.id)
 
-                #     vals += Pet.last.attributes.values
+                    vals += Pet.last.attributes.values
 
-                # end
+                end
+                
 
                 vals_as_strs = vals.map do |val|
                     val.to_s
