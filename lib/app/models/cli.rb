@@ -181,8 +181,8 @@ class CLI
             full_time = 1
         end
 
-        puts "#{boss_name}: Congratulations, #{@@resume[:name]}, you're hired! Since you only have #{@@resume[:exp]} years of experience,\n\t you'll be payed half of our average salary and work 10 more hours than you asked, because, ya know, capitalism"
-
+        puts "#{boss_name}:  Congratulations, #{@@resume[:name]}, you're hired! Since you only have #{@@resume[:exp]} years of experience,\n\t you'll be payed half of our average salary and work 10 more hours than you asked,\n\t because, ya know, capitalism"
+        puts "\nStarting Salary: $#{(avg_wage/2.0)}\tHours Scheduled: #{(@@resume[:hours] + 10)}"
         # salary 
         
         Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, (@@resume[:hours] + 10), @@resume[:age], (avg_wage/2.0), store_obj.id)
