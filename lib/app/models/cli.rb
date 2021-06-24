@@ -1,6 +1,7 @@
 require "tty-prompt"
 require "tty-font"
 # require_relative "/../../../db/seeds.rb"
+# require_relative "/ascii_art"
 class CLI
     @@prompt = TTY::Prompt.new
     @@pastel = Pastel.new
@@ -9,22 +10,10 @@ class CLI
     @@resume = nil
     @@first_time_resume = 1
 
-    system("rake db:seed")
+    # system('rake db:seed')
 
-
-    def self.title_screen
-        system('clear')
-        self.title
-        self.art
-        self.start_menu
-    end
-
-    def self.title
-        puts @@pastel.blue(@@font.write("Pet Store Simulator", letter_spacing: 2))
-    end
-
-    def self.art
-        art = <<-HRD
+    def self.print_art
+        test = <<-'HRD'
                       /^--^\     /^--^\     /^--^\
                       \____/     \____/     \____/
                      /      \   /      \   /      \
@@ -36,8 +25,24 @@ class CLI
 | | | | | | | | | | | | \/| | | | \/| | | | | |\/ | | | | | | | | | | | |
 |_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|
     HRD
-        puts art
+    puts test
     end
+
+
+    def self.title_screen
+        system('clear')
+        self.title
+        self.print_art
+        self.start_menu
+    end
+
+    def self.title
+        puts @@pastel.blue(@@font.write("Pet Store Simulator", letter_spacing: 2))
+    end
+
+    # def self.art
+
+    # end
 
     def self.start_menu
         new_prompt = TTY::Prompt.new
@@ -113,10 +118,6 @@ class CLI
         # salary 
         
         Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, @@resume[:hours], @@resume[:age], (avg_wage/2.0), store_obj.id)
-
-        
-
-
     end
 
 
