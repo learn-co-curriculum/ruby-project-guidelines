@@ -242,17 +242,26 @@ class CLI
     end
 
     def self.adopt_a_new_pet
+
+        system('clear')
+        self.title
         new_prompt = TTY::Prompt.new
 
+        puts "\n\nTime to get a new pet!\n\n"
+
         selection_hash = prompt.collect do 
-            key(:name).ask("What species is the pet?")
+            key(:species).ask("What species is the pet?")
 
-            key(:age).ask("What is the ", convert: :int)
-            
-            key(:hours).ask("How many hours do you want to work a week?", convert: :int)
-
-            key(:exp).ask("How many years experience do you have?", convert: :int)
+            key(:nickname).ask("What is the pet's nickname?", convert: :int)
         end 
+
+        system('clear')
+        self.title
+
+        new_pet = Pet.create(nickname: selection_hash[:nickname], species: selection_hash[:species], weight: rand(1.0..20.0).round(2), age: rand(1..20), alive: rand(0..1), years_in_captivity: rand(0..10), price: rand(1.5...100.0).round(2))
+        Adoption.create(employee_id: @@user.id, pet_id: new_pet.id)
+
+        
 
 
     end
