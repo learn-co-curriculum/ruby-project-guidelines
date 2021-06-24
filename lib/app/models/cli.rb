@@ -1,5 +1,6 @@
 require "tty-prompt"
 require "tty-font"
+# require_relative "/../../../db/seeds.rb"
 class CLI
     @@prompt = TTY::Prompt.new
     @@pastel = Pastel.new
@@ -7,6 +8,8 @@ class CLI
     @@chosen_store = nil
     @@resume = nil
     @@first_time_resume = 1
+
+    system("rake db:seed")
 
 
     def self.title_screen
@@ -48,6 +51,7 @@ class CLI
             self.build_resume
             self.choose_store
             # self.store_stats
+            self.get_hired
         else
             system('clear')
         end
@@ -57,38 +61,15 @@ class CLI
         system('clear')
         self.title
         prompt = TTY::Prompt.new
-        if @@first_time_resume
-            @@resume = prompt.collect do 
-                key(:name).ask("What is your name?")
+        @@resume = prompt.collect do 
+            key(:name).ask("What is your name?")
 
-                key(:age).ask("How old are you? (shhhhhh OSHA doesn't exist)", convert: :int)
+            key(:age).ask("How old are you? (shhhhhh OSHA doesn't exist)", convert: :int)
+            
+            key(:hours).ask("How many hours do you want to work a week?", convert: :int)
 
-                key(:hours).ask("How many hours do you want to work a week?", convert: :int)
-                
-                key(:exp).ask("How many years experience do you have?", convert: :int)
-            end 
-            @@first_time_resume = 0
-        end
-
-        # store_names = Store.all.each { |store| puts store.name } 
-
-        
-        # self.store_stats
-        
-        
-
-        
-
-        # puts choosen_store
-        # puts store_name
-        
-
-
-
-
-
-        # puts "#{Store.all}"
-
+            key(:exp).ask("How many years experience do you have?", convert: :int)
+        end 
 
     end
 
@@ -98,43 +79,40 @@ class CLI
         prompt = TTY::Prompt.new
         @@chosen_store = prompt.select("What store do you want to apply to?\n") do |menu|
             Store.all.map do |store|
-                menu.choice "#{store.name.rjust(20)}" + "(General Info Below): \n" + "\tAverage Wage: $#{store.avg_wage}" + "\t |   Number of Employees: #{store.num_emps_at_store}\n"
-                
+                menu.choice "#{store.name.rjust(20)}" + "\n\tAverage Wage: $#{store.avg_wage}" + "\t |   Number of Employees: #{store.num_emps_at_store}\n"
             end
-        
         end
 
-        puts @@chosen_store
-
-        puts Store.all
-
-        
     end
 
-    def self.store_stats
+    def self.get_hired
         system('clear')
         self.title
-        puts @@chosen_store
+        
         prompt = TTY::Prompt.new
 
-        store_obj = Store.all.find { |store| store.name == @@chosen_store }
+        chosen_store_arr = @@chosen_store.split
 
-        puts store_obj.name, store_obj.avg_wage, store_obj.num_emps_at_store
+        choosen_store_name_str = "#{chosen_store_arr[0]}" + " #{chosen_store_arr[1]}" + " #{chosen_store_arr[2]}" 
 
-        puts "\tAverage Wage: $#{store_obj.avg_wage}" + "\t Number of Employees: #{store_obj.num_emps_at_store}"
+        # get wage, remove dollar sign
+        avg_wage = "#{chosen_store_arr[5]}"
 
-        selection = prompt.select("\n\nDo you want to apply here?") do |opt|
-            opt.choice "Yes"
-            opt.choice "No (Go back to store list)"
+        avg_wage = (avg_wage[1..-1]).to_f
+
+        # Employee.create()
+
+        store_obj = Store.all.find { |store| store.name == choosen_store_name_str }
+
+        if @@resume[:hours] < 38 
+            full_time = 0
+        else 
+            full_time = 1
         end
 
-        if selection == "Yes"
-
-        else
-            system('clear')
-            self.title
-            self.choose_store
-        end 
+        # salary 
+        
+        Employee.add_to_db(@@resume[:name], @@resume[:exp], full_time, @@resume[:hours], @@resume[:age], (avg_wage/2.0), store_obj.id)
 
         
 
